@@ -586,11 +586,251 @@
     border: 2px solid var(--primary-color);
 }
 
+/* Module Flow Layout */
+.module-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.content-section {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.video-section {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.video-player {
+    width: 300px;
+    aspect-ratio: 16 / 9;
+    background: var(--dark-bg);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.video-info {
+    flex: 1;
+}
+
+.video-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.video-description {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.video-duration {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Activity Button Styles */
+.activity-button-section,
+.assessment-button-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.activity-button,
+.assessment-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--light-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.activity-button:hover,
+.assessment-button:hover {
+    border-color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.activity-thumbnail,
+.assessment-thumbnail {
+    width: 60px;
+    height: 60px;
+    background: var(--card-bg);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    flex-shrink: 0;
+    border: 2px solid var(--border-color);
+}
+
+.activity-content,
+.assessment-content {
+    flex: 1;
+}
+
+.activity-content h4,
+.assessment-content h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.activity-content p,
+.assessment-content p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.assessment-button {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+    border-color: var(--primary-color);
+}
+
+.assessment-button:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+}
+
+.assessment-thumbnail {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Back to Module Button */
+.back-to-module-btn {
+    padding: 0.5rem 1rem;
+    background: var(--light-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.back-to-module-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+/* Hidden Content */
+.hidden-content {
+    display: none;
+}
+
+/* Classification Game Styles */
+.classification-game {
+    margin-top: 1.5rem;
+}
+
+.classification-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.classification-item {
+    background: var(--light-bg);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.classification-item:hover {
+    border-color: var(--primary-color);
+}
+
+.item-image {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.classify-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.classify-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.classification-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+#classification-results {
+    background: var(--light-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Responsive Module Styles */
 @media (max-width: 768px) {
     .module-tabs {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    
+    .video-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .video-player {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .activity-button,
+    .assessment-button {
+        flex-direction: column;
+        text-align: center;
     }
     
     .drag-drop-container {
@@ -611,5 +851,9 @@
     
     .timer-display {
         font-size: 3rem;
+    }
+    
+    .classification-controls {
+        flex-direction: column;
     }
 }
