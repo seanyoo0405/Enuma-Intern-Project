@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 2: Computational Thinking - AI Literacy Training</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Module 2: Computational Thinking</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="moduleManager.goBack()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-page">
+        <div class="module-content">
+            <div class="module-header-detail">
+                <div class="module-header-top">
+                    <div>
+                        <h2>Computational Thinking</h2>
+                        <p>Master pattern recognition and algorithm design for AI education</p>
+                    </div>
+                    <div class="module-stats">
+                        <span>Duration: 2 hours</span>
+                        <span>Progress: <span class="progress-text">0%</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="module-tabs">
+                <button class="tab-btn active" data-tab="videos">Video Lessons</button>
+                <button class="tab-btn" data-tab="activities">Activities</button>
+                <button class="tab-btn" data-tab="quiz">Assessment</button>
+            </div>
+
+            <div class="tab-content active" id="videos">
+                <div class="video-section">
+                    <div class="video-player">
+                        <div class="play-btn">
+                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-list">
+                        <!-- Videos will be loaded by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="activities">
+                <div class="activities-container">
+                    <!-- Activities will be loaded by JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="quiz">
+                <div class="quiz-container">
+                    <div class="quiz-intro">
+                        <h3>Module 2 Assessment</h3>
+                        <p>Test your understanding of computational thinking concepts.</p>
+                        <button class="quiz-btn" onclick="startQuiz()">Start Quiz</button>
+                    </div>
+                    <div class="quiz-content" style="display: none;">
+                        <!-- Quiz will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/modules.js"></script>
+    <script src="../../js/activities.js"></script>
+    <script src="../../js/progress.js"></script>
+    <script>
+        const currentModuleId = 2;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            moduleManager.initializeModulePage(currentModuleId);
+            
+            // Add module 2 specific quiz questions
+            window.moduleContent[2].quiz = {
+                questions: [
+                    {
+                        id: 'q1',
+                        text: 'What is pattern recognition in computational thinking?',
+                        options: [
+                            'Finding similarities and differences in data',
+                            'Creating random patterns',
+                            'Drawing geometric shapes',
+                            'Memorizing sequences'
+                        ],
+                        correct: 0
+                    },
+                    {
+                        id: 'q2',
+                        text: 'Which is an example of decomposition?',
+                        options: [
+                            'Combining small problems into one big problem',
+                            'Breaking a complex problem into smaller parts',
+                            'Ignoring difficult problems',
+                            'Solving everything at once'
+                        ],
+                        correct: 1
+                    },
+                    {
+                        id: 'q3',
+                        text: 'What is abstraction in computational thinking?',
+                        options: [
+                            'Making things more complicated',
+                            'Adding more details',
+                            'Focusing on important information and ignoring irrelevant details',
+                            'Creating abstract art'
+                        ],
+                        correct: 2
+                    }
+                ]
+            };
+        });
+        
+        function startQuiz() {
+            document.querySelector('.quiz-intro').style.display = 'none';
+            document.querySelector('.quiz-content').style.display = 'block';
+            
+            // Load quiz implementation
+            const quizHTML = `
+                <div class="pattern-quiz">
+                    <h3>Pattern Recognition Challenge</h3>
+                    <div class="pattern-grid">
+                        ${generatePatternQuiz()}
+                    </div>
+                    <button class="quiz-btn" onclick="checkPatterns()">Check Answers</button>
+                </div>
+            `;
+            
+            document.querySelector('.quiz-content').innerHTML = quizHTML;
+        }
+        
+        function generatePatternQuiz() {
+            const patterns = [
+                { sequence: [2, 4, 6, '?'], answer: 8, rule: 'Add 2' },
+                { sequence: [1, 3, 9, '?'], answer: 27, rule: 'Multiply by 3' },
+                { sequence: [10, 8, 6, '?'], answer: 4, rule: 'Subtract 2' }
+            ];
+            
+            return patterns.map((pattern, index) => `
+                <div class="pattern-question">
+                    <div class="sequence">
+                        ${pattern.sequence.map(item => 
+                            item === '?' ? 
+                            `<input type="number" class="answer-input" data-correct="${pattern.answer}" data-index="${index}">` :
+                            `<span class="sequence-item">${item}</span>`
+                        ).join(' → ')}
+                    </div>
+                    <p class="pattern-hint">Find the pattern!</p>
+                </div>
+            `).join('');
+        }
+        
+        function checkPatterns() {
+            const inputs = document.querySelectorAll('.answer-input');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                const userAnswer = parseInt(input.value);
+                const correctAnswer = parseInt(input.dataset.correct);
+                
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    input.style.borderColor = 'var(--success-color)';
+                } else {
+                    input.style.borderColor = 'var(--danger-color)';
+                }
+            });
+            
+            const score = Math.round((correct / inputs.length) * 100);
+            
+            if (score === 100) {
+                window.progressTracker.markQuizCompleted(currentModuleId, score);
+                alert('Perfect! You\'ve mastered pattern recognition!');
+            } else {
+                alert(`You got ${correct} out of ${inputs.length} correct. Try again!`);
+            }
+        }
+        
+        // Additional functions for lesson plan
+        function setupLessonPlanForm(activityId, moduleId) {
+            const form = document.getElementById('lesson-plan-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    saveLessonPlan(activityId, moduleId);
+                });
+            }
+        }
+        
+        function saveLessonPlan(activityId, moduleId) {
+            const formData = new FormData(document.getElementById('lesson-plan-form'));
+            const lessonPlan = {
+                title: formData.get('title'),
+                grade: formData.get('grade'),
+                objectives: formData.get('objectives'),
+                framework: formData.getAll('framework'),
+                activities: formData.get('activities'),
+                assessment: formData.get('assessment'),
+                created: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            const plans = JSON.parse(localStorage.getItem('lessonPlans') || '[]');
+            plans.push(lessonPlan);
+            localStorage.setItem('lessonPlans', JSON.stringify(plans));
+            
+            // Complete activity
+            window.aiLiteracy.completeActivity(moduleId, activityId);
+            
+            alert('Lesson plan saved successfully!');
+        }
+        
+        function previewLessonPlan() {
+            const formData = new FormData(document.getElementById('lesson-plan-form'));
+            const preview = document.getElementById('lesson-preview');
+            
+            preview.innerHTML = `
+                <div class="lesson-plan-preview">
+                    <h3>Lesson Plan Preview</h3>
+                    <div class="preview-content">
+                        <h4>${formData.get('title')}</h4>
+                        <p><strong>Grade Level:</strong> ${formData.get('grade')}</p>
+                        <p><strong>Objectives:</strong><br>${formData.get('objectives')}</p>
+                        <p><strong>UNESCO Framework:</strong> ${formData.getAll('framework').join(', ')}</p>
+                        <p><strong>Activities:</strong><br>${formData.get('activities')}</p>
+                        <p><strong>Assessment:</strong><br>${formData.get('assessment')}</p>
+                    </div>
+                    <button class="activity-btn" onclick="exportLessonPlan()">Export as PDF</button>
+                </div>
+            `;
+            
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function exportLessonPlan() {
+            alert('PDF export feature would be implemented here');
+        }
+        
+        function checkRecommendations(activityId, moduleId) {
+            const pairs = document.querySelectorAll('.friend-pair');
+            if (pairs.length >= 2) {
+                window.aiLiteracy.completeActivity(moduleId, activityId);
+                alert('Great job creating friend recommendations based on shared interests!');
+            } else {
+                alert('Please create at least 2 friend recommendations.');
+            }
+        }
+        
+        // Add styles for module 2
+        const style = document.createElement('style');
+        style.textContent = `
+            .pattern-quiz {
+                padding: 2rem;
+                background: var(--light-bg);
+                border-radius: 1rem;
+            }
+            
+            .pattern-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                margin: 2rem 0;
+            }
+            
+            .pattern-question {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+                box-shadow: var(--shadow-sm);
+            }
+            
+            .sequence {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            
+            .sequence-item {
+                padding: 0.5rem 1rem;
+                background: var(--primary-color);
+                color: white;
+                border-radius: 0.5rem;
+                font-weight: 600;
+            }
+            
+            .answer-input {
+                width: 60px;
+                padding: 0.5rem;
+                border: 2px solid var(--border-color);
+                border-radius: 0.5rem;
+                text-align: center;
+                font-size: 1.25rem;
+                font-weight: 600;
+            }
+            
+            .pattern-hint {
+                color: var(--text-secondary);
+                font-style: italic;
+            }
+            
+            .lesson-plan-form {
+                background: var(--light-bg);
+                padding: 2rem;
+                border-radius: 1rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-group label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 0.75rem;
+                border: 2px solid var(--border-color);
+                border-radius: 0.5rem;
+                font-family: inherit;
+            }
+            
+            .checkbox-group {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .checkbox-group label {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-weight: normal;
+            }
+            
+            .form-actions {
+                display: flex;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            
+            .lesson-plan-preview {
+                margin-top: 2rem;
+                padding: 2rem;
+                background: white;
+                border-radius: 0.75rem;
+                box-shadow: var(--shadow-md);
+            }
+            
+            .student-cards {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+            
+            .student-card {
+                background: white;
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+            
+            .student-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-md);
+            }
+            
+            .student-card.selected {
+                border-color: var(--primary-color);
+                background: rgba(99, 102, 241, 0.05);
+            }
+            
+            .student-avatar {
+                width: 60px;
+                height: 60px;
+                background: var(--gradient-primary);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin: 0 auto 1rem;
+            }
+            
+            .interests {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+            
+            .interest-tag {
+                padding: 0.25rem 0.75rem;
+                background: var(--light-bg);
+                border-radius: 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .recommendation-pairs {
+                margin: 1rem 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .friend-pair {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.75rem;
+                background: var(--light-bg);
+                border-radius: 0.5rem;
+            }
+            
+            .remove-pair {
+                margin-left: auto;
+                background: var(--danger-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+            }
+            
+            .classification-demo {
+                background: var(--light-bg);
+                padding: 2rem;
+                border-radius: 1rem;
+            }
+            
+            .classification-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+            
+            .classification-item {
+                background: white;
+                padding: 1rem;
+                border-radius: 0.75rem;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+            
+            .item-image {
+                color: var(--primary-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .classify-btn {
+                margin-top: 0.5rem;
+                padding: 0.25rem 0.75rem;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 0.25rem;
+                font-size: 0.875rem;
+                cursor: pointer;
+            }
+            
+            .classification-controls {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+            }
+            
+            #classification-results {
+                margin-top: 1rem;
+                padding: 1rem;
+                background: white;
+                border-radius: 0.5rem;
+                text-align: center;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Make functions available globally
+        window.startQuiz = startQuiz;
+        window.checkPatterns = checkPatterns;
+        window.setupLessonPlanForm = setupLessonPlanForm;
+        window.saveLessonPlan = saveLessonPlan;
+        window.previewLessonPlan = previewLessonPlan;
+        window.exportLessonPlan = exportLessonPlan;
+        window.checkRecommendations = checkRecommendations;
+    </script>
+</body>
+</html>

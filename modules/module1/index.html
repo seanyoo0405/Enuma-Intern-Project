@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: AI Fundamentals - AI Literacy Learning</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Module 1: AI Fundamentals</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="moduleManager.goBack()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-page">
+        <div class="module-content">
+            <div class="module-header-detail">
+                <div class="module-header-top">
+                    <div>
+                        <h2>AI Fundamentals</h2>
+                        <p>Discover what AI is, how it works, and how it affects your daily life</p>
+                    </div>
+                    <div class="module-stats">
+                        <span>Duration: 2 hours</span>
+                        <span>Progress: <span class="progress-text">0%</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="module-tabs">
+                <button class="tab-btn active" data-tab="videos">Video Lessons</button>
+                <button class="tab-btn" data-tab="activities">Activities</button>
+                <button class="tab-btn" data-tab="quiz">Assessment</button>
+            </div>
+
+            <div class="tab-content active" id="videos">
+                <div class="video-section">
+                    <div class="video-player">
+                        <div class="play-btn">
+                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-list">
+                        <!-- Videos will be loaded by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="activities">
+                <div class="activities-container">
+                    <!-- Activities will be loaded by JavaScript -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="quiz">
+                <div class="quiz-container">
+                    <div class="quiz-progress">
+                        <span>Question <span id="current-question">1</span> of <span id="total-questions">3</span></span>
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="question-container" id="question-container">
+                        <!-- Quiz questions will be loaded by JavaScript -->
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="quiz-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                        <button class="quiz-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                        <button class="quiz-btn" id="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/modules.js"></script>
+    <script src="../../js/activities.js"></script>
+    <script src="../../js/progress.js"></script>
+    <script>
+        // Initialize module
+        const currentModuleId = 1;
+        
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let quizAnswers = {};
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            moduleManager.initializeModulePage(currentModuleId);
+            loadQuizQuestions();
+        });
+        
+        // Quiz functions
+        function loadQuizQuestions() {
+            const questions = window.moduleContent[1].quiz.questions;
+            showQuestion(0);
+        }
+        
+        function showQuestion(index) {
+            const questions = window.moduleContent[1].quiz.questions;
+            const question = questions[index];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <h3 class="question-text">${question.text}</h3>
+                <div class="answer-options">
+                    ${question.options.map((option, i) => `
+                        <div class="answer-option ${quizAnswers[question.id] === i ? 'selected' : ''}" 
+                             onclick="selectAnswer('${question.id}', ${i})">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Update progress
+            document.getElementById('current-question').textContent = index + 1;
+            document.getElementById('total-questions').textContent = questions.length;
+            document.querySelector('.quiz-progress-fill').style.width = `${((index + 1) / questions.length) * 100}%`;
+            
+            // Update buttons
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').style.display = index === questions.length - 1 ? 'none' : 'inline-block';
+            document.getElementById('submit-btn').style.display = index === questions.length - 1 ? 'inline-block' : 'none';
+        }
+        
+        function selectAnswer(questionId, answerIndex) {
+            quizAnswers[questionId] = answerIndex;
+            
+            // Update UI
+            document.querySelectorAll('.answer-option').forEach((option, i) => {
+                option.classList.toggle('selected', i === answerIndex);
+            });
+        }
+        
+        function nextQuestion() {
+            const questions = window.moduleContent[1].quiz.questions;
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function submitQuiz() {
+            const questions = window.moduleContent[1].quiz.questions;
+            let correct = 0;
+            
+            questions.forEach(question => {
+                if (quizAnswers[question.id] === question.correct) {
+                    correct++;
+                }
+            });
+            
+            const score = Math.round((correct / questions.length) * 100);
+            
+            // Mark quiz completed
+            window.progressTracker.markQuizCompleted(currentModuleId, score);
+            
+            // Show results
+            const container = document.getElementById('question-container');
+            container.innerHTML = `
+                <div class="quiz-results">
+                    <h2>Quiz Complete!</h2>
+                    <p class="score">Your Score: ${score}%</p>
+                    <p>You got ${correct} out of ${questions.length} questions correct.</p>
+                    ${score >= 70 ? 
+                        '<p class="success">Great job! You\'ve passed the assessment.</p>' : 
+                        '<p class="warning">Keep studying and try again to improve your score.</p>'
+                    }
+                    <button class="quiz-btn" onclick="location.reload()">Review Module</button>
+                </div>
+            `;
+            
+            document.querySelector('.quiz-actions').style.display = 'none';
+        }
+        
+        // Additional helper functions for activities
+        function generateBiasGamePhotos() {
+            const photos = [
+                { id: 1, description: 'Young woman', prediction: 'Student' },
+                { id: 2, description: 'Middle-aged man', prediction: 'CEO' },
+                { id: 3, description: 'Young man', prediction: 'Engineer' },
+                { id: 4, description: 'Older woman', prediction: 'Doctor' },
+                { id: 5, description: 'Person in wheelchair', prediction: 'Software Developer' },
+                { id: 6, description: 'Person with glasses', prediction: 'Scientist' }
+            ];
+            
+            return photos.map(photo => `
+                <div class="photo-card" onclick="showPrediction(${photo.id})">
+                    <div class="photo-placeholder">
+                        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <circle cx="40" cy="30" r="15" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 65C20 52 28 45 40 45C52 45 60 52 60 65" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <p class="photo-description">${photo.description}</p>
+                    <div class="prediction hidden" id="prediction-${photo.id}">
+                        AI Prediction: ${photo.prediction}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function showPrediction(photoId) {
+            const prediction = document.getElementById(`prediction-${photoId}`);
+            prediction.classList.remove('hidden');
+        }
+        
+        function setupBiasGame() {
+            // Add styles for bias game
+            const style = document.createElement('style');
+            style.textContent = `
+                .photo-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                    gap: 1rem;
+                    margin: 2rem 0;
+                }
+                
+                .photo-card {
+                    background: var(--light-bg);
+                    padding: 1rem;
+                    border-radius: 0.75rem;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+                
+                .photo-card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: var(--shadow-md);
+                }
+                
+                .photo-placeholder {
+                    color: var(--text-secondary);
+                    margin-bottom: 0.5rem;
+                }
+                
+                .prediction {
+                    margin-top: 0.5rem;
+                    padding: 0.5rem;
+                    background: var(--primary-color);
+                    color: white;
+                    border-radius: 0.5rem;
+                    font-weight: 600;
+                }
+                
+                .prediction.hidden {
+                    display: none;
+                }
+                
+                .bias-discussion {
+                    margin-top: 2rem;
+                    padding: 1.5rem;
+                    background: var(--light-bg);
+                    border-radius: 0.75rem;
+                }
+                
+                .reflection-input {
+                    width: 100%;
+                    min-height: 100px;
+                    padding: 0.75rem;
+                    border: 2px solid var(--border-color);
+                    border-radius: 0.5rem;
+                    margin-top: 1rem;
+                    font-family: inherit;
+                }
+                
+                .activity-btn {
+                    margin-top: 1rem;
+                    padding: 0.75rem 1.5rem;
+                    background: var(--gradient-primary);
+                    color: white;
+                    border: none;
+                    border-radius: 0.5rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function submitReflection(activityId, moduleId) {
+            const reflection = document.querySelector('.reflection-input').value;
+            if (reflection.trim().length > 10) {
+                window.aiLiteracy.completeActivity(moduleId, activityId);
+                alert('Reflection submitted successfully!');
+            } else {
+                alert('Please write a more detailed reflection.');
+            }
+        }
+        
+        function generateFishImages() {
+            const items = [
+                { id: 1, type: 'fish', name: 'Goldfish' },
+                { id: 2, type: 'shark', name: 'Great White' },
+                { id: 3, type: 'fish', name: 'Clownfish' },
+                { id: 4, type: 'fish', name: 'Tuna' },
+                { id: 5, type: 'shark', name: 'Hammerhead' },
+                { id: 6, type: 'fish', name: 'Salmon' }
+            ];
+            
+            return items.map(item => `
+                <div class="classification-item" data-type="${item.type}" data-id="${item.id}">
+                    <div class="item-image">
+                        <svg width="60" height="40" viewBox="0 0 60 40" fill="none">
+                            <ellipse cx="30" cy="20" rx="25" ry="15" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 20L0 15V25L5 20Z" fill="currentColor"/>
+                            ${item.type === 'shark' ? '<path d="M30 5L35 0L40 5" fill="currentColor"/>' : ''}
+                        </svg>
+                    </div>
+                    <p>${item.name}</p>
+                    <button class="classify-btn" onclick="classifyItem(${item.id}, '${item.type}')">
+                        ${item.type === 'fish' ? 'Fish' : 'Shark'}
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function trainClassifier(activityId) {
+            const results = document.getElementById('classification-results');
+            results.innerHTML = '<p>Training AI classifier... Done!</p><p>The AI has learned to distinguish between fish and sharks.</p>';
+        }
+        
+        function testClassifier(activityId, moduleId) {
+            const results = document.getElementById('classification-results');
+            results.innerHTML = '<p>Testing classifier... 100% accuracy!</p><p>Great job training the AI!</p>';
+            window.aiLiteracy.completeActivity(moduleId, activityId);
+        }
+        
+        // Make functions globally available
+        window.generateBiasGamePhotos = generateBiasGamePhotos;
+        window.showPrediction = showPrediction;
+        window.setupBiasGame = setupBiasGame;
+        window.submitReflection = submitReflection;
+        window.generateFishImages = generateFishImages;
+        window.trainClassifier = trainClassifier;
+        window.testClassifier = testClassifier;
+        window.nextQuestion = nextQuestion;
+        window.previousQuestion = previousQuestion;
+        window.submitQuiz = submitQuiz;
+        window.selectAnswer = selectAnswer;
+    </script>
+</body>
+</html>
