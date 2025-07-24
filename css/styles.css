@@ -128,9 +128,10 @@ body {
 .hero-section {
     text-align: center;
     margin-bottom: 5rem;
-    background-image: url('../hero-background.png');
-    background-size: cover;
-    background-position: center top;
+    background-color: #ede2f3;
+    background-image: url('../../ChatGPT Image Jul 24, 2025, 11_11_58 AM.png');
+    background-size: contain;
+    background-position: center center;
     background-repeat: no-repeat;
     padding: 1rem 2rem 5rem 2rem;
     border-radius: 2rem;
