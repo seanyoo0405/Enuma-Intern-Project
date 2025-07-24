@@ -6,12 +6,12 @@ const moduleContent = {
         title: 'AI Fundamentals',
         videos: [
             { id: 'v1', title: 'What is AI?', duration: '10:30', url: 'placeholder' },
-            { id: 'v2', title: 'How AI Learns', duration: '12:15', url: 'placeholder' },
+            { id: 'v2', title: 'Can AI Lie?', duration: '12:15', url: 'placeholder' },
             { id: 'v3', title: 'AI in Your Daily Life', duration: '8:45', url: 'placeholder' },
             { id: 'v4', title: 'AI Ethics and Bias', duration: '9:00', url: 'placeholder' }
         ],
         activities: [
-            { id: 'classification-game', title: 'AI Classification Game', type: 'interactive' },
+            { id: 'truth-hallucination', title: 'Truth or Hallucination?', type: 'interactive' },
             { id: 'bias-experience', title: 'AI Bias Experience', type: 'interactive' }
         ],
         quiz: {
@@ -284,3 +284,6 @@ window.moduleManager = {
     trackModuleProgress,
     goBack
 };
+
+// Export moduleContent
+window.moduleContent = moduleContent;

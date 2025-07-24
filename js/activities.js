@@ -2,38 +2,26 @@
 
 // Load interactive activity (drag and drop classification)
 function loadInteractiveActivity(container, moduleId, activity) {
-    if (activity.id === 'classification-game') {
+    if (activity.id === 'truth-hallucination') {
         container.innerHTML = `
-            <div class="drag-drop-container">
-                <div class="drag-items-section">
-                    <h4>Drag items to classify them</h4>
-                    <div class="drag-items" id="drag-source">
-                        <div class="drag-item" draggable="true" data-type="ai">Chatbot</div>
-                        <div class="drag-item" draggable="true" data-type="not-ai">Calculator</div>
-                        <div class="drag-item" draggable="true" data-type="ai">Face Filter</div>
-                        <div class="drag-item" draggable="true" data-type="not-ai">Digital Clock</div>
-                        <div class="drag-item" draggable="true" data-type="ai">Recommendation System</div>
-                        <div class="drag-item" draggable="true" data-type="not-ai">Spreadsheet</div>
-                        <div class="drag-item" draggable="true" data-type="ai">Voice Assistant</div>
-                        <div class="drag-item" draggable="true" data-type="not-ai">Text Editor</div>
-                    </div>
+            <div class="truth-game-container">
+                <h4>Truth or Hallucination?</h4>
+                <p>Read each statement and decide if it's a real fact or an AI hallucination (made-up information).</p>
+                <div class="game-instructions">
+                    <p><strong>Instructions:</strong> Click "Truth" if you think the statement is a real fact, or "Hallucination" if you think it's AI-generated misinformation.</p>
                 </div>
-                <div class="drop-zones">
-                    <div class="drop-zone" data-category="ai">
-                        <div class="drop-zone-label">AI Technology</div>
-                        <div class="dropped-items"></div>
-                    </div>
-                    <div class="drop-zone" data-category="not-ai">
-                        <div class="drop-zone-label">Not AI Technology</div>
-                        <div class="dropped-items"></div>
-                    </div>
+                <div class="statements-container" id="statements-container">
+                    ${generateTruthStatements()}
                 </div>
+                <div class="game-controls">
+                    <button class="activity-btn" onclick="checkTruthAnswers('${activity.id}', ${moduleId})">Check My Answers</button>
+                    <button class="activity-btn" onclick="resetTruthGame('${activity.id}')" style="display: none;" id="reset-btn">Try Again</button>
+                </div>
+                <div class="feedback-area" id="feedback-${activity.id}"></div>
             </div>
-            <button class="activity-btn check-btn" onclick="checkClassification('${activity.id}', ${moduleId})">Check Answers</button>
-            <div class="feedback-area" id="feedback-${activity.id}"></div>
         `;
         
-        setupDragAndDrop();
+        setupTruthGame();
     } else if (activity.id === 'bias-experience') {
         container.innerHTML = `
             <div class="bias-game-container">
@@ -615,6 +603,165 @@ function updateTimerDisplay() {
     }
 }
 
+// Generate truth/hallucination statements
+function generateTruthStatements() {
+    const statements = [
+        {
+            id: 1,
+            text: "The Great Wall of China is visible from space with the naked eye.",
+            isTrue: false,
+            explanation: "This is a common myth! The Great Wall is not visible from space without aid."
+        },
+        {
+            id: 2,
+            text: "Octopuses have three hearts and blue blood.",
+            isTrue: true,
+            explanation: "This is true! Octopuses have 3 hearts and blue blood due to copper-based hemocyanin."
+        },
+        {
+            id: 3,
+            text: "Shakespeare invented over 1,700 words that we still use today, including 'emoji' and 'selfie'.",
+            isTrue: false,
+            explanation: "Shakespeare did invent many words, but 'emoji' and 'selfie' are modern inventions from the digital age."
+        },
+        {
+            id: 4,
+            text: "Honey never spoils and can last thousands of years.",
+            isTrue: true,
+            explanation: "True! Honey's low moisture and acidic pH make it naturally antimicrobial."
+        },
+        {
+            id: 5,
+            text: "A group of flamingos is called a 'flamboyance'.",
+            isTrue: true,
+            explanation: "This is correct! A group of flamingos is indeed called a flamboyance."
+        },
+        {
+            id: 6,
+            text: "Bananas grow on trees and are technically a type of wood fruit.",
+            isTrue: false,
+            explanation: "Bananas grow on large herbaceous flowering plants, not trees, and are berries, not wood fruits."
+        },
+        {
+            id: 7,
+            text: "The human brain uses approximately 20% of the body's total energy.",
+            isTrue: true,
+            explanation: "True! Despite being only 2% of body weight, the brain uses about 20% of our energy."
+        },
+        {
+            id: 8,
+            text: "Goldfish have a 3-second memory span.",
+            isTrue: false,
+            explanation: "This is a myth! Goldfish can remember things for months, not just 3 seconds."
+        }
+    ];
+    
+    return statements.map(statement => `
+        <div class="statement-card" data-statement-id="${statement.id}" data-is-true="${statement.isTrue}">
+            <div class="statement-text">${statement.text}</div>
+            <div class="statement-buttons">
+                <button class="truth-btn" onclick="selectAnswer(${statement.id}, true)">Truth</button>
+                <button class="hallucination-btn" onclick="selectAnswer(${statement.id}, false)">Hallucination</button>
+            </div>
+            <div class="statement-explanation hidden" id="explanation-${statement.id}">
+                ${statement.explanation}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Setup truth game interactions
+function setupTruthGame() {
+    // Reset any previous game state
+    window.truthGameAnswers = {};
+}
+
+// Select answer for a statement
+function selectAnswer(statementId, userAnswer) {
+    window.truthGameAnswers = window.truthGameAnswers || {};
+    window.truthGameAnswers[statementId] = userAnswer;
+    
+    // Update UI to show selection
+    const card = document.querySelector(`[data-statement-id="${statementId}"]`);
+    const buttons = card.querySelectorAll('.truth-btn, .hallucination-btn');
+    
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    
+    if (userAnswer) {
+        card.querySelector('.truth-btn').classList.add('selected');
+    } else {
+        card.querySelector('.hallucination-btn').classList.add('selected');
+    }
+}
+
+// Check all truth game answers
+function checkTruthAnswers(activityId, moduleId) {
+    const statements = document.querySelectorAll('.statement-card');
+    let correct = 0;
+    let total = statements.length;
+    
+    statements.forEach(statement => {
+        const statementId = parseInt(statement.dataset.statementId);
+        const isTrue = statement.dataset.isTrue === 'true';
+        const userAnswer = window.truthGameAnswers[statementId];
+        const explanation = statement.querySelector('.statement-explanation');
+        
+        // Show explanation
+        explanation.classList.remove('hidden');
+        
+        // Check if correct
+        if (userAnswer === isTrue) {
+            correct++;
+            statement.classList.add('correct');
+        } else {
+            statement.classList.add('incorrect');
+        }
+    });
+    
+    const feedback = document.getElementById(`feedback-${activityId}`);
+    const percentage = Math.round((correct / total) * 100);
+    
+    feedback.innerHTML = `
+        <div class="feedback ${percentage >= 70 ? 'success' : 'partial'}">
+            <h4>Results: ${correct}/${total} correct (${percentage}%)</h4>
+            ${percentage >= 70 ? 
+                '<p>Great job! You\'re getting good at spotting AI hallucinations!</p>' : 
+                '<p>Keep practicing! Understanding AI accuracy is an important skill.</p>'
+            }
+            <p><strong>Remember:</strong> AI can sometimes generate false information that sounds convincing. Always verify important facts!</p>
+        </div>
+    `;
+    
+    // Show reset button
+    document.getElementById('reset-btn').style.display = 'inline-block';
+    
+    if (percentage >= 70) {
+        window.aiLiteracy.completeActivity(moduleId, activityId);
+    }
+}
+
+// Reset truth game
+function resetTruthGame(activityId) {
+    window.truthGameAnswers = {};
+    
+    // Reset UI
+    const statements = document.querySelectorAll('.statement-card');
+    statements.forEach(statement => {
+        statement.classList.remove('correct', 'incorrect');
+        statement.querySelectorAll('.truth-btn, .hallucination-btn').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        statement.querySelector('.statement-explanation').classList.add('hidden');
+    });
+    
+    // Clear feedback
+    const feedback = document.getElementById(`feedback-${activityId}`);
+    feedback.innerHTML = '';
+    
+    // Hide reset button
+    document.getElementById('reset-btn').style.display = 'none';
+}
+
 // Export activity functions
 window.activities = {
     loadInteractiveActivity,
@@ -629,5 +776,10 @@ window.activities = {
     saveDrawing,
     startTimer,
     stopTimer,
-    resetTimer
+    resetTimer,
+    generateTruthStatements,
+    setupTruthGame,
+    selectAnswer,
+    checkTruthAnswers,
+    resetTruthGame
 };

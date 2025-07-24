@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 4: AI in Your Future - AI Literacy Learning</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Module 4: AI in Your Future</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="moduleManager.goBack()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-page">
+        <div class="module-content">
+            <div class="module-header-detail">
+                <div class="module-header-top">
+                    <div>
+                        <h2>AI in Your Future</h2>
+                        <p>Explore career paths and imagine how AI will shape your future</p>
+                    </div>
+                    <div class="module-stats">
+                        <span>Duration: 2 hours</span>
+                        <span>Progress: <span class="progress-text">0%</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="module-flow">
+                <!-- Video 1 -->
+                <div class="content-section">
+                    <div class="video-section">
+                        <div class="video-player">
+                            <div class="play-btn">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">AI in Today's World</h3>
+                            <p class="video-description">Discover how AI is already changing industries and daily life around us.</p>
+                            <span class="video-duration">Duration: 12:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="content-section">
+                    <div class="video-section">
+                        <div class="video-player">
+                            <div class="play-btn">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Future Career Opportunities</h3>
+                            <p class="video-description">Explore exciting career paths in AI and technology fields.</p>
+                            <span class="video-duration">Duration: 14:15</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Activity Button after Video 2 -->
+                    <div class="activity-button-section">
+                        <button class="activity-button" onclick="startActivity('career-explorer')">
+                            <div class="activity-thumbnail">
+                                <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M15 45C15 35 21 30 30 30C39 30 45 35 45 45" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="25" y="10" width="10" height="6" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Career Explorer</h4>
+                                <p>Discover AI careers that match your interests</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="content-section">
+                    <div class="video-section">
+                        <div class="video-player">
+                            <div class="play-btn">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Preparing for an AI Future</h3>
+                            <p class="video-description">Learn the skills and mindset needed to thrive in an AI-powered world.</p>
+                            <span class="video-duration">Duration: 11:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video 4 -->
+                <div class="content-section">
+                    <div class="video-section">
+                        <div class="video-player">
+                            <div class="play-btn">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Your AI Learning Journey</h3>
+                            <p class="video-description">Reflect on what you've learned and plan your next steps in AI education.</p>
+                            <span class="video-duration">Duration: 10:30</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Activity Button after Video 4 -->
+                    <div class="activity-button-section">
+                        <button class="activity-button" onclick="startActivity('future-vision')">
+                            <div class="activity-thumbnail">
+                                <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+                                    <path d="M30 15L35 25L45 25L37 32L40 42L30 37L20 42L23 32L15 25L25 25L30 15Z" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="30" cy="30" r="3" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Future Vision Board</h4>
+                                <p>Create a vision of your AI-powered future</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Assessment Button -->
+                <div class="content-section">
+                    <div class="assessment-button-section">
+                        <button class="assessment-button" onclick="startAssessment()">
+                            <div class="assessment-thumbnail">
+                                <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+                                    <path d="M30 15L35 25L45 25L37 32L40 42L30 37L20 42L23 32L15 25L25 25L30 15Z" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="30" cy="30" r="3" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="assessment-content">
+                                <h4>Final Assessment & Certificate</h4>
+                                <p>Complete your AI literacy journey and earn your certificate</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hidden containers for activities and quiz -->
+                <div class="hidden-content" id="activities" style="display: none;">
+                    <div class="activities-container">
+                        <!-- Activities will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="hidden-content" id="quiz" style="display: none;">
+                    <div class="quiz-container">
+                        <div class="quiz-progress">
+                            <span>Question <span id="current-question">1</span> of <span id="total-questions">3</span></span>
+                            <div class="quiz-progress-bar">
+                                <div class="quiz-progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="question-container" id="question-container">
+                            <!-- Quiz questions will be loaded by JavaScript -->
+                        </div>
+                        <div class="quiz-actions">
+                            <button class="quiz-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                            <button class="quiz-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                            <button class="quiz-btn" id="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/modules.js"></script>
+    <script src="../../js/activities.js"></script>
+    <script src="../../js/progress.js"></script>
+    <script>
+        const currentModuleId = 4;
+        let currentQuestionIndex = 0;
+        let quizAnswers = {};
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            moduleManager.initializeModulePage(currentModuleId);
+            
+            // Add module 4 specific quiz questions
+            window.moduleContent[4] = {
+                quiz: {
+                    questions: [
+                        {
+                            id: 'q1',
+                            text: 'What is the best way to prepare for a future with AI?',
+                            options: [
+                                'Ignore AI completely',
+                                'Learn to work alongside AI and develop human skills',
+                                'Only focus on technical skills',
+                                'Wait for others to figure it out'
+                            ],
+                            correct: 1
+                        },
+                        {
+                            id: 'q2',
+                            text: 'Which career will likely be enhanced (not replaced) by AI?',
+                            options: [
+                                'Creative professions like art and writing',
+                                'Jobs requiring empathy and human connection',
+                                'Problem-solving and critical thinking roles',
+                                'All of the above'
+                            ],
+                            correct: 3
+                        },
+                        {
+                            id: 'q3',
+                            text: 'What is the most important skill for the AI future?',
+                            options: [
+                                'Memorizing facts',
+                                'Learning how to learn and adapt',
+                                'Avoiding technology',
+                                'Working alone'
+                            ],
+                            correct: 1
+                        }
+                    ]
+                }
+            };
+        });
+        
+        // Functions for the flow-based layout
+        function startActivity(activityId) {
+            const moduleFlow = document.querySelector('.module-flow');
+            const activitiesContainer = document.getElementById('activities');
+            
+            moduleFlow.style.display = 'none';
+            activitiesContainer.style.display = 'block';
+            
+            if (activityId === 'career-explorer') {
+                loadCareerExplorer();
+            } else if (activityId === 'future-vision') {
+                loadFutureVision();
+            }
+        }
+        
+        function startAssessment() {
+            const moduleFlow = document.querySelector('.module-flow');
+            const quizContainer = document.getElementById('quiz');
+            
+            moduleFlow.style.display = 'none';
+            quizContainer.style.display = 'block';
+            
+            loadQuizQuestions();
+        }
+        
+        function backToModule() {
+            const moduleFlow = document.querySelector('.module-flow');
+            const activitiesContainer = document.getElementById('activities');
+            const quizContainer = document.getElementById('quiz');
+            
+            moduleFlow.style.display = 'block';
+            activitiesContainer.style.display = 'none';
+            quizContainer.style.display = 'none';
+        }
+        
+        function loadQuizQuestions() {
+            const questions = window.moduleContent[4].quiz.questions;
+            showQuestion(0);
+        }
+        
+        function showQuestion(index) {
+            const questions = window.moduleContent[4].quiz.questions;
+            const question = questions[index];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <h3 class="question-text">${question.text}</h3>
+                <div class="answer-options">
+                    ${question.options.map((option, i) => `
+                        <div class="answer-option ${quizAnswers[question.id] === i ? 'selected' : ''}" 
+                             onclick="selectAnswer('${question.id}', ${i})">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('current-question').textContent = index + 1;
+            document.getElementById('total-questions').textContent = questions.length;
+            document.querySelector('.quiz-progress-fill').style.width = `${((index + 1) / questions.length) * 100}%`;
+            
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').style.display = index === questions.length - 1 ? 'none' : 'inline-block';
+            document.getElementById('submit-btn').style.display = index === questions.length - 1 ? 'inline-block' : 'none';
+        }
+        
+        function selectAnswer(questionId, answerIndex) {
+            quizAnswers[questionId] = answerIndex;
+            document.querySelectorAll('.answer-option').forEach((option, i) => {
+                option.classList.toggle('selected', i === answerIndex);
+            });
+        }
+        
+        function nextQuestion() {
+            const questions = window.moduleContent[4].quiz.questions;
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function submitQuiz() {
+            const questions = window.moduleContent[4].quiz.questions;
+            let correct = 0;
+            
+            questions.forEach(question => {
+                if (quizAnswers[question.id] === question.correct) {
+                    correct++;
+                }
+            });
+            
+            const score = Math.round((correct / questions.length) * 100);
+            window.progressTracker.markQuizCompleted(currentModuleId, score);
+            
+            const container = document.getElementById('question-container');
+            container.innerHTML = `
+                <div class="certificate-container">
+                    <div class="certificate">
+                        <h2>🎉 Congratulations! 🎉</h2>
+                        <h3>Certificate of Completion</h3>
+                        <p>This certifies that you have successfully completed</p>
+                        <h4>AI Literacy Learning Program</h4>
+                        <p>Final Score: ${score}%</p>
+                        <div class="certificate-badge">
+                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                <path d="M30 10L35 20L46 22L38 30L40 41L30 36L20 41L22 30L14 22L25 20L30 10Z" fill="var(--primary-color)"/>
+                            </svg>
+                        </div>
+                        <p class="completion-message">You are now AI Literacy certified!</p>
+                    </div>
+                    <button class="quiz-btn" onclick="downloadCertificate()">Download Certificate</button>
+                    <button class="quiz-btn" onclick="backToModule()">Back to Module</button>
+                </div>
+            `;
+            
+            document.querySelector('.quiz-actions').style.display = 'none';
+        }
+        
+        function loadCareerExplorer() {
+            const container = document.querySelector('#activities .activities-container');
+            container.innerHTML = `
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <h3 class="activity-title">Career Explorer</h3>
+                        <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
+                    </div>
+                    <p>Discover AI careers by selecting your interests!</p>
+                    <div class="career-explorer">
+                        <h4>What interests you most?</h4>
+                        <div class="interests-grid">
+                            <div class="interest-card" data-career="ai-researcher" onclick="selectInterest(this)">
+                                <div class="interest-icon">🔬</div>
+                                <p>Science & Research</p>
+                            </div>
+                            <div class="interest-card" data-career="ai-designer" onclick="selectInterest(this)">
+                                <div class="interest-icon">🎨</div>
+                                <p>Art & Design</p>
+                            </div>
+                            <div class="interest-card" data-career="ai-developer" onclick="selectInterest(this)">
+                                <div class="interest-icon">💻</div>
+                                <p>Technology & Coding</p>
+                            </div>
+                            <div class="interest-card" data-career="ai-teacher" onclick="selectInterest(this)">
+                                <div class="interest-icon">📚</div>
+                                <p>Teaching & Education</p>
+                            </div>
+                            <div class="interest-card" data-career="ai-healthcare" onclick="selectInterest(this)">
+                                <div class="interest-icon">🏥</div>
+                                <p>Healthcare & Medicine</p>
+                            </div>
+                            <div class="interest-card" data-career="ai-business" onclick="selectInterest(this)">
+                                <div class="interest-icon">💼</div>
+                                <p>Business & Management</p>
+                            </div>
+                        </div>
+                        <div id="career-results"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadFutureVision() {
+            const container = document.querySelector('#activities .activities-container');
+            container.innerHTML = `
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <h3 class="activity-title">Future Vision Board</h3>
+                        <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
+                    </div>
+                    <p>Create a vision of how you'll use AI in your future!</p>
+                    <div class="vision-board">
+                        <div class="vision-form">
+                            <div class="form-group">
+                                <label>In 5 years, I want to:</label>
+                                <textarea id="future-goal" placeholder="Describe your future goals..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>AI will help me by:</label>
+                                <textarea id="ai-assistance" placeholder="How will AI support your goals?"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Skills I want to develop:</label>
+                                <input type="text" id="skills-to-learn" placeholder="What skills will you need?">
+                            </div>
+                            <div class="form-group">
+                                <label>My commitment to ethical AI:</label>
+                                <textarea id="ethical-commitment" placeholder="How will you use AI responsibly?"></textarea>
+                            </div>
+                            <button class="activity-btn" onclick="createVisionBoard()">Create Vision Board</button>
+                        </div>
+                        <div id="vision-display"></div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function selectInterest(card) {
+            document.querySelectorAll('.interest-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            
+            const career = card.dataset.career;
+            const careers = {
+                'ai-researcher': {
+                    title: 'AI Researcher',
+                    description: 'Discover new ways AI can solve problems and push the boundaries of what\'s possible.',
+                    skills: 'Math, Science, Critical Thinking, Research Methods',
+                    path: 'Study computer science, mathematics, or related fields. Pursue graduate research.'
+                },
+                'ai-designer': {
+                    title: 'AI-Assisted Designer',
+                    description: 'Create amazing art, products, and experiences using AI as your creative partner.',
+                    skills: 'Creativity, Design Thinking, AI Tools, Communication',
+                    path: 'Study design, art, or media. Learn AI design tools and human-centered design.'
+                },
+                'ai-developer': {
+                    title: 'AI Developer',
+                    description: 'Build AI applications and systems that help people and solve real problems.',
+                    skills: 'Programming, Problem Solving, AI Frameworks, Software Engineering',
+                    path: 'Learn programming languages, study computer science, practice building projects.'
+                },
+                'ai-teacher': {
+                    title: 'AI Education Specialist',
+                    description: 'Help others learn about AI and use it responsibly in their lives and work.',
+                    skills: 'Teaching, Communication, AI Knowledge, Curriculum Design',
+                    path: 'Study education and AI literacy. Gain teaching experience and AI expertise.'
+                },
+                'ai-healthcare': {
+                    title: 'AI Healthcare Professional',
+                    description: 'Use AI to improve patient care, medical research, and health outcomes.',
+                    skills: 'Medical Knowledge, Data Analysis, Ethics, Patient Care',
+                    path: 'Study medicine, nursing, or health sciences. Learn about medical AI applications.'
+                },
+                'ai-business': {
+                    title: 'AI Strategy Consultant',
+                    description: 'Help organizations use AI effectively and responsibly to achieve their goals.',
+                    skills: 'Business Strategy, AI Understanding, Communication, Ethics',
+                    path: 'Study business, gain AI knowledge, develop strategic thinking skills.'
+                }
+            };
+            
+            const careerInfo = careers[career];
+            document.getElementById('career-results').innerHTML = `
+                <div class="career-card">
+                    <h4>${careerInfo.title}</h4>
+                    <p><strong>What you'll do:</strong> ${careerInfo.description}</p>
+                    <p><strong>Key skills:</strong> ${careerInfo.skills}</p>
+                    <p><strong>How to get there:</strong> ${careerInfo.path}</p>
+                </div>
+            `;
+            
+            window.aiLiteracy.completeActivity(currentModuleId, 'career-explorer');
+        }
+        
+        function createVisionBoard() {
+            const goal = document.getElementById('future-goal').value;
+            const aiHelp = document.getElementById('ai-assistance').value;
+            const skills = document.getElementById('skills-to-learn').value;
+            const ethics = document.getElementById('ethical-commitment').value;
+            
+            if (goal && aiHelp && skills && ethics) {
+                document.getElementById('vision-display').innerHTML = `
+                    <div class="vision-result">
+                        <h4>🌟 My AI Future Vision 🌟</h4>
+                        <div class="vision-item">
+                            <strong>My Goal:</strong> ${goal}
+                        </div>
+                        <div class="vision-item">
+                            <strong>AI's Role:</strong> ${aiHelp}
+                        </div>
+                        <div class="vision-item">
+                            <strong>Skills to Develop:</strong> ${skills}
+                        </div>
+                        <div class="vision-item">
+                            <strong>My Ethical Promise:</strong> ${ethics}
+                        </div>
+                        <p class="success">Your vision board is complete! Keep this as a guide for your AI journey.</p>
+                    </div>
+                `;
+                window.aiLiteracy.completeActivity(currentModuleId, 'future-vision');
+            } else {
+                alert('Please fill in all sections to complete your vision board!');
+            }
+        }
+        
+        function downloadCertificate() {
+            alert('Certificate download feature would be implemented here - your achievement has been recorded!');
+        }
+        
+        // Add styles for module 4
+        const style = document.createElement('style');
+        style.textContent = `
+            .certificate-container {
+                text-align: center;
+                padding: 2rem;
+            }
+            
+            .certificate {
+                background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                color: white;
+                padding: 3rem 2rem;
+                border-radius: 1rem;
+                margin: 2rem auto;
+                max-width: 500px;
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .certificate h2 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+            
+            .certificate h3 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .certificate h4 {
+                font-size: 1.25rem;
+                margin: 1rem 0;
+            }
+            
+            .certificate-badge {
+                margin: 1.5rem 0;
+            }
+            
+            .completion-message {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-top: 1rem;
+            }
+            
+            .activity-card {
+                background: var(--card-bg);
+                border-radius: 1rem;
+                padding: 2rem;
+                box-shadow: var(--shadow-md);
+            }
+            
+            .activity-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+            
+            .back-to-module-btn {
+                background: var(--text-secondary);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-size: 0.875rem;
+            }
+            
+            .activity-btn {
+                margin: 0.5rem 0.5rem 0.5rem 0;
+                padding: 0.75rem 1.5rem;
+                background: var(--gradient-primary);
+                color: white;
+                border: none;
+                border-radius: 0.5rem;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            
+            .interests-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+                margin: 2rem 0;
+            }
+            
+            .interest-card {
+                background: var(--light-bg);
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+            
+            .interest-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-md);
+            }
+            
+            .interest-card.selected {
+                border-color: var(--primary-color);
+                background: rgba(99, 102, 241, 0.1);
+            }
+            
+            .interest-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .career-card {
+                background: white;
+                padding: 2rem;
+                border-radius: 0.75rem;
+                margin-top: 2rem;
+                box-shadow: var(--shadow-sm);
+            }
+            
+            .vision-form {
+                background: var(--light-bg);
+                padding: 2rem;
+                border-radius: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-group label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                width: 100%;
+                padding: 0.75rem;
+                border: 2px solid var(--border-color);
+                border-radius: 0.5rem;
+                font-family: inherit;
+            }
+            
+            .form-group textarea {
+                min-height: 80px;
+                resize: vertical;
+            }
+            
+            .vision-result {
+                background: white;
+                padding: 2rem;
+                border-radius: 0.75rem;
+                box-shadow: var(--shadow-sm);
+            }
+            
+            .vision-item {
+                margin: 1rem 0;
+                padding: 1rem;
+                background: var(--light-bg);
+                border-radius: 0.5rem;
+            }
+            
+            .success {
+                color: var(--success-color);
+                background: rgba(16, 185, 129, 0.1);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                margin-top: 1rem;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Make functions available globally
+        window.startActivity = startActivity;
+        window.startAssessment = startAssessment;
+        window.backToModule = backToModule;
+        window.nextQuestion = nextQuestion;
+        window.previousQuestion = previousQuestion;
+        window.submitQuiz = submitQuiz;
+        window.selectAnswer = selectAnswer;
+        window.selectInterest = selectInterest;
+        window.createVisionBoard = createVisionBoard;
+        window.downloadCertificate = downloadCertificate;
+    </script>
+</body>
+</html>

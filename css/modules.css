@@ -857,3 +857,176 @@
         flex-direction: column;
     }
 }
+
+/* Truth or Hallucination Game Styles */
+.truth-game-container {
+    background: var(--light-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+}
+
+.game-instructions {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+    border: 2px solid var(--border-color);
+}
+
+.statements-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.statement-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.statement-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.statement-card.correct {
+    border-color: var(--success-color);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.statement-card.incorrect {
+    border-color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.statement-text {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.statement-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.truth-btn,
+.hallucination-btn {
+    padding: 0.75rem 2rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.truth-btn {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.truth-btn:hover {
+    background: var(--success-color);
+    color: white;
+}
+
+.truth-btn.selected {
+    background: var(--success-color);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.hallucination-btn {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.hallucination-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+.hallucination-btn.selected {
+    background: var(--danger-color);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.statement-explanation {
+    background: var(--light-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    border-left: 4px solid var(--primary-color);
+}
+
+.statement-explanation.hidden {
+    display: none;
+}
+
+.game-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.feedback-area {
+    margin-top: 1.5rem;
+}
+
+.feedback {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    border: 2px solid;
+}
+
+.feedback.success {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.feedback.partial {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.feedback h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.feedback p {
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .statement-buttons {
+        flex-direction: column;
+    }
+    
+    .truth-btn,
+    .hallucination-btn {
+        width: 100%;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+    }
+}

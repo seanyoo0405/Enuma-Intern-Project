@@ -75,15 +75,15 @@
                             </div>
                         </div>
                         <div class="video-info">
-                            <h3 class="video-title">How AI Learns</h3>
-                            <p class="video-description">Discover the process of machine learning and how AI systems improve over time.</p>
+                            <h3 class="video-title">Can AI Lie?</h3>
+                            <p class="video-description">Explore how AI systems sometimes give wrong information and learn to identify AI "hallucinations".</p>
                             <span class="video-duration">Duration: 12:15</span>
                         </div>
                     </div>
                     
                     <!-- Activity Button after Video 2 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('classification-game')">
+                        <button class="activity-button" onclick="startActivity('truth-hallucination')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="10" y="10" width="40" height="40" rx="8" stroke="currentColor" stroke-width="2"/>
@@ -92,8 +92,8 @@
                                 </svg>
                             </div>
                             <div class="activity-content">
-                                <h4>AI Classification Game</h4>
-                                <p>Practice sorting items to understand how AI categorizes data</p>
+                                <h4>Truth or Hallucination?</h4>
+                                <p>Learn to identify when AI gives accurate vs. incorrect information</p>
                             </div>
                         </button>
                     </div>
@@ -214,11 +214,24 @@
         let quizAnswers = {};
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize progress tracking first
+            if (window.progressTracker) {
+                window.progressTracker.initializeProgress();
+            }
+            
             moduleManager.initializeModulePage(currentModuleId);
             loadQuizQuestions();
+            
+            // Debug: Check if moduleContent is now available
+            console.log('DOM loaded - window.moduleContent:', window.moduleContent);
         });
         
         // Quiz functions
+        function loadQuiz(moduleId, quiz) {
+            // Implementation for loading quiz - placeholder for now
+            console.log('Loading quiz for module:', moduleId);
+        }
+        
         function loadQuizQuestions() {
             const questions = window.moduleContent[1].quiz.questions;
             showQuestion(0);
@@ -411,6 +424,34 @@
                     font-weight: 600;
                     cursor: pointer;
                 }
+                
+                .visible-content {
+                    display: block !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                }
+                
+                #activities.visible-content {
+                    display: block !important;
+                }
+                
+                .activity-card {
+                    display: block !important;
+                    visibility: visible !important;
+                    background: var(--card-bg);
+                    border-radius: 1rem;
+                    padding: 2rem;
+                    box-shadow: var(--shadow-md);
+                    margin: 1rem 0;
+                }
+                
+                .activity-header {
+                    display: flex !important;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+                    background: red; /* Temporary debugging color */
+                }
             `;
             document.head.appendChild(style);
         }
@@ -465,19 +506,113 @@
         
         // New functions for the flow-based layout
         function startActivity(activityId) {
-            const moduleFlow = document.querySelector('.module-flow');
-            const activitiesContainer = document.getElementById('activities');
+            console.log('Starting activity:', activityId);
             
-            // Hide the main flow and show activities
-            moduleFlow.style.display = 'none';
-            activitiesContainer.style.display = 'block';
-            
-            // Initialize the specific activity
-            if (activityId === 'classification-game') {
-                loadClassificationGame();
-            } else if (activityId === 'bias-experience') {
-                loadBiasExperience();
+            if (activityId === 'truth-hallucination') {
+                // Create the activity content directly in the main page
+                const moduleFlow = document.querySelector('.module-flow');
+                
+                // Create a new container for the activity
+                const activityContainer = document.createElement('div');
+                activityContainer.id = 'truth-game-main';
+                activityContainer.style.cssText = 'display: block; background: white; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);';
+                
+                activityContainer.innerHTML = `
+                    <div style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+                        <h2 style="margin: 0; display: inline-block;">Truth or Hallucination?</h2>
+                        <button onclick="closeTruthGame()" style="float: right; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">← Back to Module</button>
+                        <div style="clear: both; margin-top: 10px;">
+                            <p style="margin: 5px 0;">Can you tell the difference between real facts and AI hallucinations?</p>
+                        </div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <p style="margin: 0; font-weight: 600;"><strong>Instructions:</strong> Click "Truth" if you think the statement is a real fact, or "Hallucination" if you think it's AI-generated misinformation.</p>
+                    </div>
+                    <div id="truth-statements-container">
+                        ${generateTruthStatements()}
+                    </div>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button onclick="checkAllTruthAnswers()" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-right: 10px;">Check My Answers</button>
+                        <button onclick="resetAllTruthAnswers()" id="reset-truth-btn" style="background: #64748b; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: none;">Try Again</button>
+                    </div>
+                    <div id="truth-feedback-area"></div>
+                `;
+                
+                // Hide the module flow and insert the activity
+                if (moduleFlow) {
+                    moduleFlow.style.display = 'none';
+                    moduleFlow.parentNode.insertBefore(activityContainer, moduleFlow.nextSibling);
+                }
+                
+                console.log('Activity container created and inserted');
             }
+        }
+        
+        function closeTruthGame() {
+            const activityContainer = document.getElementById('truth-game-main');
+            const moduleFlow = document.querySelector('.module-flow');
+            
+            if (activityContainer) {
+                activityContainer.remove();
+            }
+            if (moduleFlow) {
+                moduleFlow.style.display = 'block';
+            }
+        }
+        
+        function returnToModule() {
+            closeTruthGame();
+            
+            // Force update progress
+            setTimeout(() => {
+                // Debug progress calculation
+                console.log('Debug: window.progressTracker:', window.progressTracker);
+                console.log('Debug: window.moduleContent:', window.moduleContent);
+                console.log('Debug: currentModuleId:', currentModuleId);
+                
+                if (window.progressTracker && window.progressTracker.calculateModuleProgress) {
+                    const moduleProgress = window.progressTracker.calculateModuleProgress(currentModuleId);
+                    console.log('Module progress:', moduleProgress);
+                    
+                    // Also check the internal progress state
+                    const progressState = JSON.parse(localStorage.getItem('aiLiteracyDetailedProgress') || '{}');
+                    console.log('Progress state from localStorage:', progressState);
+                    console.log('Module 1 activities:', progressState.modules?.[1]?.activities);
+                } else {
+                    console.error('progressTracker.calculateModuleProgress not available');
+                }
+                
+                // Update module progress bar
+                const moduleProgress = window.progressTracker?.calculateModuleProgress?.(currentModuleId) || 0;
+                console.log('Final module progress:', moduleProgress);
+                
+                const moduleProgressBar = document.querySelector('.progress-fill');
+                if (moduleProgressBar) {
+                    moduleProgressBar.style.width = `${moduleProgress}%`;
+                    console.log('Updated module progress bar to:', moduleProgress + '%');
+                }
+                
+                // Update progress text
+                const progressText = document.querySelector('.progress-text');
+                if (progressText) {
+                    progressText.textContent = `${moduleProgress}% Complete`;
+                    console.log('Updated progress text to:', moduleProgress + '% Complete');
+                }
+                
+                // Update navbar progress bar (total progress)
+                let totalProgress = 0;
+                for (let i = 1; i <= 4; i++) {
+                    totalProgress += (window.progressTracker?.calculateModuleProgress?.(i) || 0);
+                }
+                totalProgress = Math.round(totalProgress / 4);
+                console.log('Total progress:', totalProgress);
+                
+                const navProgressBar = document.querySelector('.nav-container .progress-fill');
+                if (navProgressBar) {
+                    navProgressBar.style.width = `${totalProgress}%`;
+                    console.log('Updated navbar progress bar to:', totalProgress + '%');
+                }
+            }, 100);
         }
         
         function startAssessment() {
@@ -507,22 +642,66 @@
             container.innerHTML = `
                 <div class="activity-card">
                     <div class="activity-header">
-                        <h3 class="activity-title">AI Classification Game</h3>
+                        <h3 class="activity-title">Truth or Hallucination?</h3>
                         <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
                     </div>
-                    <p>Help train an AI to classify different types of sea creatures!</p>
-                    <div class="classification-game">
-                        <div class="classification-items">
-                            ${generateFishImages()}
+                    <p>Can you tell the difference between real facts and AI hallucinations? Test your skills!</p>
+                    <div class="truth-game">
+                        <div class="game-instructions">
+                            <p><strong>Instructions:</strong> Read each statement and decide if it's a real fact or an AI hallucination (made-up information).</p>
                         </div>
-                        <div class="classification-controls">
-                            <button class="activity-btn" onclick="trainClassifier('classification-game')">Train AI</button>
-                            <button class="activity-btn" onclick="testClassifier('classification-game', ${currentModuleId})">Test Classifier</button>
+                        <div class="statements-container" id="statements-container">
+                            ${generateTruthStatements()}
                         </div>
-                        <div id="classification-results"></div>
+                        <div class="game-controls">
+                            <button class="activity-btn" onclick="checkAllAnswers()">Check My Answers</button>
+                            <button class="activity-btn" onclick="resetGame()" style="display: none;" id="reset-btn">Try Again</button>
+                        </div>
+                        <div id="game-results"></div>
                     </div>
                 </div>
             `;
+        }
+        
+        function loadTruthHallucinationGame() {
+            console.log('loadTruthHallucinationGame called');
+            const container = document.querySelector('#activities .activities-container');
+            console.log('Container found:', container);
+            
+            if (!container) {
+                console.error('Container not found!');
+                return;
+            }
+            
+            const htmlContent = `
+                <div class="activity-card" style="display: block !important; background: red; padding: 20px; margin: 20px;">
+                    <div class="activity-header" style="display: block !important; background: blue; color: white; padding: 10px;">
+                        <h3 class="activity-title">Truth or Hallucination?</h3>
+                        <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
+                    </div>
+                    <p style="display: block !important; background: green; color: white; padding: 10px;">Read each statement and decide if it's a real fact or an AI hallucination (made-up information).</p>
+                    <div class="truth-game-container" style="display: block !important; background: yellow; padding: 10px;">
+                        <div class="game-instructions">
+                            <p><strong>Instructions:</strong> Click "Truth" if you think the statement is a real fact, or "Hallucination" if you think it's AI-generated misinformation.</p>
+                        </div>
+                        <div class="statements-container" id="statements-container">
+                            ${generateTruthStatements()}
+                        </div>
+                        <div class="game-controls">
+                            <button class="activity-btn" onclick="checkTruthAnswers('truth-hallucination', ${currentModuleId})">Check My Answers</button>
+                            <button class="activity-btn" onclick="resetTruthGame('truth-hallucination')" style="display: none;" id="reset-btn">Try Again</button>
+                        </div>
+                        <div class="feedback-area" id="feedback-truth-hallucination"></div>
+                    </div>
+                </div>
+            `;
+            
+            console.log('Setting HTML content:', htmlContent);
+            container.innerHTML = htmlContent;
+            console.log('Container after setting HTML:', container);
+            console.log('HTML set, calling setupTruthGame');
+            setupTruthGame();
+            console.log('setupTruthGame completed');
         }
         
         function loadBiasExperience() {
@@ -548,6 +727,329 @@
             `;
         }
 
+        // Truth or Hallucination Game Functions
+        function generateTruthStatements() {
+            const statements = [
+                {
+                    id: 1,
+                    text: "The Great Wall of China is visible from space with the naked eye.",
+                    isTrue: false,
+                    explanation: "This is a common myth! The Great Wall is not visible from space without aid."
+                },
+                {
+                    id: 2,
+                    text: "Octopuses have three hearts and blue blood.",
+                    isTrue: true,
+                    explanation: "This is true! Octopuses have 3 hearts and blue blood due to copper-based hemocyanin."
+                },
+                {
+                    id: 3,
+                    text: "Shakespeare invented over 1,700 words that we still use today, including 'emoji' and 'selfie'.",
+                    isTrue: false,
+                    explanation: "Shakespeare did invent many words, but 'emoji' and 'selfie' are modern inventions from the digital age."
+                },
+                {
+                    id: 4,
+                    text: "Honey never spoils and can last thousands of years.",
+                    isTrue: true,
+                    explanation: "True! Honey's low moisture and acidic pH make it naturally antimicrobial."
+                },
+                {
+                    id: 5,
+                    text: "A group of flamingos is called a 'flamboyance'.",
+                    isTrue: true,
+                    explanation: "This is correct! A group of flamingos is indeed called a flamboyance."
+                },
+                {
+                    id: 6,
+                    text: "Bananas grow on trees and are technically a type of wood fruit.",
+                    isTrue: false,
+                    explanation: "Bananas grow on large herbaceous flowering plants, not trees, and are berries, not wood fruits."
+                },
+                {
+                    id: 7,
+                    text: "The human brain uses approximately 20% of the body's total energy.",
+                    isTrue: true,
+                    explanation: "True! Despite being only 2% of body weight, the brain uses about 20% of our energy."
+                },
+                {
+                    id: 8,
+                    text: "Goldfish have a 3-second memory span.",
+                    isTrue: false,
+                    explanation: "This is a myth! Goldfish can remember things for months, not just 3 seconds."
+                }
+            ];
+            
+            return statements.map(statement => `
+                <div style="background: white; border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 15px; transition: all 0.3s ease;" 
+                     class="truth-statement-card" data-statement-id="${statement.id}" data-is-true="${statement.isTrue}">
+                    <div style="font-size: 18px; line-height: 1.6; margin-bottom: 15px; color: #1e293b; font-weight: 500;">
+                        ${statement.text}
+                    </div>
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 15px;">
+                        <button onclick="selectTruthAnswer(${statement.id}, true)" 
+                                style="padding: 10px 25px; border: 2px solid #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; background: white; color: #10b981;"
+                                class="truth-choice-btn">Truth</button>
+                        <button onclick="selectTruthAnswer(${statement.id}, false)" 
+                                style="padding: 10px 25px; border: 2px solid #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; background: white; color: #ef4444;"
+                                class="hallucination-choice-btn">Hallucination</button>
+                    </div>
+                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-style: italic; color: #64748b; border-left: 4px solid #6366f1; display: none;" 
+                         class="truth-explanation" id="explanation-${statement.id}">
+                        ${statement.explanation}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function selectTruthAnswer(statementId, userAnswer) {
+            window.truthGameAnswers = window.truthGameAnswers || {};
+            window.truthGameAnswers[statementId] = userAnswer;
+            
+            // Find the statement card
+            const card = document.querySelector(`[data-statement-id="${statementId}"]`);
+            if (!card) {
+                console.error('Card not found for statement:', statementId);
+                return;
+            }
+            
+            const truthBtn = card.querySelector('.truth-choice-btn');
+            const hallucinationBtn = card.querySelector('.hallucination-choice-btn');
+            
+            if (!truthBtn || !hallucinationBtn) {
+                console.error('Buttons not found. TruthBtn:', truthBtn, 'HallucinationBtn:', hallucinationBtn);
+                return;
+            }
+            
+            // Reset button styles
+            truthBtn.style.background = 'white';
+            truthBtn.style.color = '#10b981';
+            hallucinationBtn.style.background = 'white';
+            hallucinationBtn.style.color = '#ef4444';
+            
+            // Highlight selected button with enhanced visual feedback
+            if (userAnswer) {
+                truthBtn.style.background = '#10b981';
+                truthBtn.style.color = 'white';
+                truthBtn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                truthBtn.style.transform = 'translateY(-2px)';
+                truthBtn.style.borderWidth = '3px';
+                // Make unselected button colorless
+                hallucinationBtn.style.background = '#f8fafc';
+                hallucinationBtn.style.color = '#64748b';
+                hallucinationBtn.style.borderColor = '#e2e8f0';
+                hallucinationBtn.style.transform = 'none';
+                hallucinationBtn.style.borderWidth = '2px';
+            } else {
+                hallucinationBtn.style.background = '#ef4444';
+                hallucinationBtn.style.color = 'white';
+                hallucinationBtn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                hallucinationBtn.style.transform = 'translateY(-2px)';
+                hallucinationBtn.style.borderWidth = '3px';
+                // Make unselected button colorless
+                truthBtn.style.background = '#f8fafc';
+                truthBtn.style.color = '#64748b';
+                truthBtn.style.borderColor = '#e2e8f0';
+                truthBtn.style.transform = 'none';
+                truthBtn.style.borderWidth = '2px';
+            }
+        }
+        
+        function checkAllTruthAnswers() {
+            const statements = document.querySelectorAll('.truth-statement-card');
+            let correct = 0;
+            let total = statements.length;
+            
+            statements.forEach(statement => {
+                const statementId = parseInt(statement.dataset.statementId);
+                const isTrue = statement.dataset.isTrue === 'true';
+                const userAnswer = window.truthGameAnswers[statementId];
+                const explanation = statement.querySelector('.truth-explanation');
+                
+                // Show explanation
+                explanation.style.display = 'block';
+                
+                // Check if correct and update card styling
+                if (userAnswer === isTrue) {
+                    correct++;
+                    statement.style.borderColor = '#10b981';
+                    statement.style.background = 'rgba(16, 185, 129, 0.05)';
+                } else {
+                    statement.style.borderColor = '#ef4444';
+                    statement.style.background = 'rgba(239, 68, 68, 0.05)';
+                }
+            });
+            
+            const percentage = Math.round((correct / total) * 100);
+            const feedbackArea = document.getElementById('truth-feedback-area');
+            
+            feedbackArea.innerHTML = `
+                <div style="background: ${percentage >= 70 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}; 
+                            border: 2px solid ${percentage >= 70 ? '#10b981' : '#f59e0b'}; 
+                            border-radius: 10px; padding: 20px; text-align: center; margin-top: 20px;">
+                    <h3 style="margin: 0 0 10px 0; color: ${percentage >= 70 ? '#10b981' : '#f59e0b'};">
+                        Results: ${correct}/${total} correct (${percentage}%)
+                    </h3>
+                    <p style="margin: 10px 0; font-size: 16px;">
+                        ${percentage >= 70 ? 
+                            'Great job! You\'re getting good at spotting AI hallucinations!' : 
+                            'Keep practicing! Understanding AI accuracy is an important skill.'
+                        }
+                    </p>
+                    <p style="margin: 10px 0; font-weight: 600;">
+                        <strong>Remember:</strong> AI can sometimes generate false information that sounds convincing. Always verify important facts!
+                    </p>
+                </div>
+            `;
+            
+            // Show reset button
+            document.getElementById('reset-truth-btn').style.display = 'inline-block';
+            
+            if (percentage >= 70) {
+                // Mark activity as completed
+                console.log('Marking activity as completed');
+                console.log('Current module ID:', currentModuleId);
+                console.log('Activity ID: truth-hallucination');
+                
+                if (window.progressTracker && window.progressTracker.markActivityCompleted) {
+                    // Check progress before marking complete
+                    const progressBefore = JSON.parse(localStorage.getItem('aiLiteracyDetailedProgress') || '{}');
+                    console.log('Progress before marking complete:', progressBefore);
+                    
+                    window.progressTracker.markActivityCompleted(currentModuleId, 'truth-hallucination');
+                    console.log('Activity marked as completed via progressTracker');
+                    
+                    // Check progress after marking complete
+                    const progressAfter = JSON.parse(localStorage.getItem('aiLiteracyDetailedProgress') || '{}');
+                    console.log('Progress after marking complete:', progressAfter);
+                    console.log('Module 1 activities after:', progressAfter.modules?.[1]?.activities);
+                } else {
+                    console.error('progressTracker not available');
+                }
+                
+                if (window.aiLiteracy && window.aiLiteracy.completeActivity) {
+                    window.aiLiteracy.completeActivity(currentModuleId, 'truth-hallucination');
+                    console.log('Activity marked as completed via aiLiteracy');
+                }
+                
+                // Add return button
+                feedbackArea.innerHTML += `
+                    <div style="margin-top: 30px; text-align: center;">
+                        <button onclick="returnToModule()" style="
+                            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                            color: white;
+                            border: none;
+                            padding: 15px 40px;
+                            border-radius: 10px;
+                            font-size: 18px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                            transform: scale(1);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            🎉 Return to Module
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function resetAllTruthAnswers() {
+            window.truthGameAnswers = {};
+            
+            // Reset all statement cards
+            const statements = document.querySelectorAll('.truth-statement-card');
+            statements.forEach(statement => {
+                statement.style.borderColor = '#e2e8f0';
+                statement.style.background = 'white';
+                
+                // Reset buttons
+                const truthBtn = statement.querySelector('.truth-choice-btn');
+                const hallucinationBtn = statement.querySelector('.hallucination-choice-btn');
+                truthBtn.style.background = 'white';
+                truthBtn.style.color = '#10b981';
+                truthBtn.style.boxShadow = 'none';
+                hallucinationBtn.style.background = 'white';
+                hallucinationBtn.style.color = '#ef4444';
+                hallucinationBtn.style.boxShadow = 'none';
+                
+                // Hide explanation
+                statement.querySelector('.truth-explanation').style.display = 'none';
+            });
+            
+            // Clear feedback
+            document.getElementById('truth-feedback-area').innerHTML = '';
+            
+            // Hide reset button
+            document.getElementById('reset-truth-btn').style.display = 'none';
+        }
+
+        function setupTruthGame() {
+            window.truthGameAnswers = {};
+        }
+
+
+        function checkTruthAnswers(activityId, moduleId) {
+            const statements = document.querySelectorAll('.statement-card');
+            let correct = 0;
+            let total = statements.length;
+            
+            statements.forEach(statement => {
+                const statementId = parseInt(statement.dataset.statementId);
+                const isTrue = statement.dataset.isTrue === 'true';
+                const userAnswer = window.truthGameAnswers[statementId];
+                const explanation = statement.querySelector('.statement-explanation');
+                
+                explanation.classList.remove('hidden');
+                
+                if (userAnswer === isTrue) {
+                    correct++;
+                    statement.classList.add('correct');
+                } else {
+                    statement.classList.add('incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById(`feedback-${activityId}`);
+            const percentage = Math.round((correct / total) * 100);
+            
+            feedback.innerHTML = `
+                <div class="feedback ${percentage >= 70 ? 'success' : 'partial'}">
+                    <h4>Results: ${correct}/${total} correct (${percentage}%)</h4>
+                    ${percentage >= 70 ? 
+                        '<p>Great job! You\'re getting good at spotting AI hallucinations!</p>' : 
+                        '<p>Keep practicing! Understanding AI accuracy is an important skill.</p>'
+                    }
+                    <p><strong>Remember:</strong> AI can sometimes generate false information that sounds convincing. Always verify important facts!</p>
+                </div>
+            `;
+            
+            document.getElementById('reset-btn').style.display = 'inline-block';
+            
+            if (percentage >= 70) {
+                window.aiLiteracy.completeActivity(moduleId, activityId);
+            }
+        }
+
+        function resetTruthGame(activityId) {
+            window.truthGameAnswers = {};
+            
+            const statements = document.querySelectorAll('.statement-card');
+            statements.forEach(statement => {
+                statement.classList.remove('correct', 'incorrect');
+                statement.querySelectorAll('.truth-btn, .hallucination-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                statement.querySelector('.statement-explanation').classList.add('hidden');
+            });
+            
+            const feedback = document.getElementById(`feedback-${activityId}`);
+            feedback.innerHTML = '';
+            
+            document.getElementById('reset-btn').style.display = 'none';
+        }
+
         // Make functions globally available
         window.generateBiasGamePhotos = generateBiasGamePhotos;
         window.showPrediction = showPrediction;
@@ -563,6 +1065,12 @@
         window.startActivity = startActivity;
         window.startAssessment = startAssessment;
         window.backToModule = backToModule;
+        window.generateTruthStatements = generateTruthStatements;
+        window.setupTruthGame = setupTruthGame;
+        window.selectTruthAnswer = selectTruthAnswer;
+        window.checkTruthAnswers = checkTruthAnswers;
+        window.resetTruthGame = resetTruthGame;
+        window.returnToModule = returnToModule;
     </script>
 </body>
 </html>
