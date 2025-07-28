@@ -783,3 +783,58 @@ window.activities = {
     checkTruthAnswers,
     resetTruthGame
 };
+
+// Submit reflection for bias activity
+function submitReflection(activityId, moduleId) {
+    const reflection = document.querySelector('.reflection-input').value;
+    if (reflection.trim().length > 10) {
+        window.aiLiteracy.completeActivity(moduleId, activityId);
+        alert('Reflection submitted successfully! You\'ve completed the AI Bias Experience activity.');
+    } else {
+        alert('Please write a more detailed reflection (at least 10 characters).');
+    }
+}
+
+// Show prediction in bias game
+function showPrediction(photoId) {
+    const prediction = document.getElementById(`prediction-${photoId}`);
+    if (prediction) {
+        prediction.classList.remove('hidden');
+    }
+}
+
+// Train classifier function
+function trainClassifier(activityId) {
+    const results = document.getElementById('classification-results');
+    if (results) {
+        results.innerHTML = `
+            <p>🤖 Training AI classifier...</p>
+            <p>✅ Training complete! The AI has learned to distinguish between fish and sharks.</p>
+            <p>Click "Test Classifier" to see how well it performs!</p>
+        `;
+    }
+}
+
+// Test classifier function
+function testClassifier(activityId, moduleId) {
+    const results = document.getElementById('classification-results');
+    if (results) {
+        results.innerHTML = `
+            <p>🧪 Testing classifier...</p>
+            <p>🎉 100% accuracy! Great job training the AI!</p>
+            <p>The AI successfully identified all fish and sharks correctly.</p>
+        `;
+        
+        // Mark activity as completed
+        window.aiLiteracy.completeActivity(moduleId, activityId);
+    }
+}
+
+// Also make key functions globally available
+window.checkTruthAnswers = checkTruthAnswers;
+window.resetTruthGame = resetTruthGame;
+window.selectAnswer = selectAnswer;
+window.submitReflection = submitReflection;
+window.showPrediction = showPrediction;
+window.trainClassifier = trainClassifier;
+window.testClassifier = testClassifier;

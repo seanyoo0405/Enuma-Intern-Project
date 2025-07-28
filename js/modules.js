@@ -277,13 +277,333 @@ function goBack() {
     window.location.href = '../../index.html';
 }
 
+// Create lesson viewer sidebar
+function createLessonViewer() {
+    const sidebar = document.createElement('div');
+    sidebar.id = 'lesson-sidebar';
+    sidebar.className = 'lesson-sidebar';
+    sidebar.innerHTML = `
+        <div class="sidebar-header">
+            <h3>Lesson Contents</h3>
+            <button class="sidebar-close" onclick="closeLessonSidebar()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div class="lesson-sections"></div>
+        </div>
+        <div class="sidebar-footer">
+            <button class="sidebar-nav-btn" id="prev-lesson" onclick="navigateLesson('prev')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Previous
+            </button>
+            <button class="sidebar-nav-btn" id="next-lesson" onclick="navigateLesson('next')">
+                Next
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(sidebar);
+    
+    // Add toggle button to module pages
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sidebar-toggle';
+    toggleBtn.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Lesson Contents</span>
+    `;
+    toggleBtn.onclick = toggleLessonSidebar;
+    
+    const moduleContent = document.querySelector('.module-content');
+    if (moduleContent) {
+        moduleContent.insertBefore(toggleBtn, moduleContent.firstChild);
+    }
+}
+
+// Toggle lesson sidebar
+function toggleLessonSidebar() {
+    const sidebar = document.getElementById('lesson-sidebar');
+    const isOpen = sidebar.classList.contains('open');
+    
+    if (!isOpen) {
+        openLessonSidebar();
+    } else {
+        closeLessonSidebar();
+    }
+}
+
+// Open lesson sidebar with module content
+function openLessonSidebar(moduleId = null) {
+    const sidebar = document.getElementById('lesson-sidebar');
+    if (!sidebar) {
+        createLessonViewer();
+        return openLessonSidebar(moduleId);
+    }
+    
+    sidebar.classList.add('open');
+    
+    // Get current module ID if not provided
+    if (!moduleId) {
+        moduleId = window.currentModuleId || getCurrentModuleId();
+    }
+    
+    // Load module content into sidebar
+    loadSidebarContent(moduleId);
+}
+
+// Close lesson sidebar
+function closeLessonSidebar() {
+    const sidebar = document.getElementById('lesson-sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('open');
+    }
+}
+
+// Load content into sidebar
+function loadSidebarContent(moduleId) {
+    const module = moduleContent[moduleId];
+    if (!module) return;
+    
+    const sectionsContainer = document.querySelector('.lesson-sections');
+    if (!sectionsContainer) return;
+    
+    let currentSection = getCurrentSection();
+    
+    sectionsContainer.innerHTML = `
+        <div class="sidebar-section">
+            <h4 class="section-title">📹 Video Lessons</h4>
+            <div class="section-items">
+                ${module.videos.map((video, index) => `
+                    <div class="sidebar-item ${currentSection.type === 'video' && currentSection.index === index ? 'active' : ''}" 
+                         onclick="loadLessonContent('video', ${index}, ${moduleId})">
+                        <span class="item-number">${index + 1}</span>
+                        <span class="item-title">${video.title}</span>
+                        <span class="item-duration">${video.duration}</span>
+                        <span class="item-status ${isCompleted(moduleId, 'video', video.id) ? 'completed' : ''}">
+                            ${isCompleted(moduleId, 'video', video.id) ? '✓' : ''}
+                        </span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4 class="section-title">🎯 Activities</h4>
+            <div class="section-items">
+                ${module.activities.map((activity, index) => `
+                    <div class="sidebar-item ${currentSection.type === 'activity' && currentSection.index === index ? 'active' : ''}" 
+                         onclick="loadLessonContent('activity', ${index}, ${moduleId})">
+                        <span class="item-number">${index + 1}</span>
+                        <span class="item-title">${activity.title}</span>
+                        <span class="item-status ${isCompleted(moduleId, 'activity', activity.id) ? 'completed' : ''}">
+                            ${isCompleted(moduleId, 'activity', activity.id) ? '✓' : ''}
+                        </span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        ${module.quiz ? `
+        <div class="sidebar-section">
+            <h4 class="section-title">📝 Assessment</h4>
+            <div class="section-items">
+                <div class="sidebar-item ${currentSection.type === 'quiz' ? 'active' : ''}" 
+                     onclick="loadLessonContent('quiz', 0, ${moduleId})">
+                    <span class="item-title">Module Quiz</span>
+                    <span class="item-status ${isCompleted(moduleId, 'quiz') ? 'completed' : ''}">
+                        ${isCompleted(moduleId, 'quiz') ? '✓' : ''}
+                    </span>
+                </div>
+            </div>
+        </div>
+        ` : ''}
+    `;
+    
+    // Update navigation buttons
+    updateSidebarNavigation();
+}
+
+// Get current section info
+function getCurrentSection() {
+    const activeTab = document.querySelector('.tab-btn.active');
+    const tabType = activeTab ? activeTab.dataset.tab : 'videos';
+    
+    // Try to determine current index based on active content
+    let index = 0;
+    
+    return { type: tabType, index: index };
+}
+
+// Check if content is completed
+function isCompleted(moduleId, type, itemId) {
+    const progress = window.progressState?.modules[moduleId];
+    if (!progress) return false;
+    
+    switch (type) {
+        case 'video':
+            return progress.videos[itemId] ? true : false;
+        case 'activity':
+            return progress.activities[itemId] ? true : false;
+        case 'quiz':
+            return progress.quiz?.completed || false;
+        default:
+            return false;
+    }
+}
+
+// Load lesson content from sidebar
+function loadLessonContent(type, index, moduleId) {
+    const module = moduleContent[moduleId];
+    if (!module) return;
+    
+    // Switch to appropriate tab
+    const tabMap = {
+        'video': 'videos',
+        'activity': 'activities',
+        'quiz': 'quiz'
+    };
+    
+    const targetTab = tabMap[type];
+    const tabBtn = document.querySelector(`[data-tab="${targetTab}"]`);
+    if (tabBtn) {
+        tabBtn.click();
+    }
+    
+    // Load specific content
+    setTimeout(() => {
+        switch (type) {
+            case 'video':
+                const videoItem = document.querySelectorAll('.video-item')[index];
+                if (videoItem) videoItem.click();
+                break;
+            
+            case 'activity':
+                const activityCard = document.querySelectorAll('.activity-card')[index];
+                if (activityCard) {
+                    activityCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // For Truth or Hallucination activity, ensure it's visible
+                    const activity = module.activities[index];
+                    if (activity && activity.id === 'truth-hallucination') {
+                        // Force expand/highlight the activity
+                        const activityContent = activityCard.querySelector('.activity-content');
+                        if (activityContent && activityContent.style.display === 'none') {
+                            activityContent.style.display = 'block';
+                        }
+                        
+                        // Add highlight effect
+                        activityCard.style.border = '2px solid var(--primary-color)';
+                        activityCard.style.boxShadow = '0 0 10px rgba(99, 102, 241, 0.3)';
+                        
+                        // Remove highlight after 2 seconds
+                        setTimeout(() => {
+                            activityCard.style.border = '';
+                            activityCard.style.boxShadow = '';
+                        }, 2000);
+                    }
+                }
+                break;
+            
+            case 'quiz':
+                const startQuizBtn = document.querySelector('.quiz-intro button');
+                if (startQuizBtn) startQuizBtn.click();
+                break;
+        }
+        
+        // Update sidebar active state
+        updateSidebarActiveState(type, index);
+    }, 300);
+}
+
+// Update sidebar active state
+function updateSidebarActiveState(type, index) {
+    // Remove all active states
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Add active state to current item
+    const sections = document.querySelectorAll('.sidebar-section');
+    const sectionMap = { 'video': 0, 'activity': 1, 'quiz': 2 };
+    const sectionIndex = sectionMap[type];
+    
+    if (sections[sectionIndex]) {
+        const items = sections[sectionIndex].querySelectorAll('.sidebar-item');
+        if (items[index]) {
+            items[index].classList.add('active');
+        }
+    }
+}
+
+// Navigate between lessons
+function navigateLesson(direction) {
+    const moduleId = window.currentModuleId || getCurrentModuleId();
+    const module = moduleContent[moduleId];
+    if (!module) return;
+    
+    const allItems = [
+        ...module.videos.map((v, i) => ({ type: 'video', index: i })),
+        ...module.activities.map((a, i) => ({ type: 'activity', index: i })),
+        ...(module.quiz ? [{ type: 'quiz', index: 0 }] : [])
+    ];
+    
+    const currentSection = getCurrentSection();
+    const currentIndex = allItems.findIndex(item => 
+        item.type === currentSection.type && item.index === currentSection.index
+    );
+    
+    let nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    
+    if (nextIndex >= 0 && nextIndex < allItems.length) {
+        const nextItem = allItems[nextIndex];
+        loadLessonContent(nextItem.type, nextItem.index, moduleId);
+    }
+}
+
+// Update navigation buttons
+function updateSidebarNavigation() {
+    const prevBtn = document.getElementById('prev-lesson');
+    const nextBtn = document.getElementById('next-lesson');
+    
+    // Logic to enable/disable navigation buttons based on current position
+    // This would need to be implemented based on current content state
+}
+
+// Get current module ID
+function getCurrentModuleId() {
+    // Extract from URL or page content
+    const match = window.location.pathname.match(/module(\d+)/);
+    return match ? parseInt(match[1]) : 1;
+}
+
 // Export functions
 window.moduleManager = {
     initializeModulePage,
     loadModuleContent,
     trackModuleProgress,
-    goBack
+    goBack,
+    createLessonViewer,
+    openLessonSidebar,
+    closeLessonSidebar,
+    toggleLessonSidebar,
+    loadLessonContent,
+    navigateLesson
 };
 
 // Export moduleContent
 window.moduleContent = moduleContent;
+
+// Make functions globally available
+window.closeLessonSidebar = closeLessonSidebar;
+window.toggleLessonSidebar = toggleLessonSidebar;
+window.loadLessonContent = loadLessonContent;
+window.navigateLesson = navigateLesson;
