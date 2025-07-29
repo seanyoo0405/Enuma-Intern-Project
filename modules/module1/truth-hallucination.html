@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truth or Hallucination - Module 1</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+</head>
+<body>
+    <div class="activity-page">
+        <div class="activity-container">
+            <div class="activity-header">
+                <div style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h1 style="margin: 0; display: inline-block;">Truth or Hallucination?</h1>
+                    <button onclick="returnToModule()" class="back-to-module-btn" style="float: right; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">← Return to Module</button>
+                    <div style="clear: both; margin-top: 10px;">
+                        <p style="margin: 5px 0;">Can you tell the difference between real facts and AI hallucinations?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="activity-content">
+                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="margin: 0; font-weight: 600;"><strong>Instructions:</strong> Click "Truth" if you think the statement is a real fact, or "Hallucination" if you think it's AI-generated misinformation.</p>
+                </div>
+                
+                <div id="truth-statements-container">
+                    <!-- Statements will be loaded by JavaScript -->
+                </div>
+                
+                <div class="activity-actions" style="text-align: center; margin: 30px 0;">
+                    <button onclick="checkAllTruthAnswers()" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-right: 15px;">Check My Answers</button>
+                    <button onclick="resetAllTruthAnswers()" id="reset-truth-btn" style="background: #64748b; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: none; margin-right: 15px;">Try Again</button>
+                    <button onclick="proceedNext()" id="next-truth-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; display: none; margin-right: 15px;">Next</button>
+                    <button onclick="returnToModule()" class="back-to-module-btn" style="background: #6b7280; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">Return to Module</button>
+                </div>
+                
+                <div id="truth-feedback-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let truthGameAnswers = {};
+        
+        const truthStatements = [
+            {
+                id: 1,
+                text: "The Great Wall of China is visible from space with the naked eye.",
+                isTrue: false,
+                explanation: "This is a common myth! The Great Wall is not visible from space without aid."
+            },
+            {
+                id: 2,
+                text: "Octopuses have three hearts and blue blood.",
+                isTrue: true,
+                explanation: "This is true! Octopuses have 3 hearts and blue blood due to copper-based hemocyanin."
+            },
+            {
+                id: 3,
+                text: "Shakespeare invented over 1,700 words that we still use today, including 'emoji' and 'selfie'.",
+                isTrue: false,
+                explanation: "Shakespeare did invent many words, but 'emoji' and 'selfie' are modern inventions from the digital age."
+            },
+            {
+                id: 4,
+                text: "Honey never spoils and can last thousands of years.",
+                isTrue: true,
+                explanation: "True! Honey's low moisture and acidic pH make it naturally antimicrobial."
+            },
+            {
+                id: 5,
+                text: "A group of flamingos is called a 'flamboyance'.",
+                isTrue: true,
+                explanation: "This is correct! A group of flamingos is indeed called a flamboyance."
+            },
+            {
+                id: 6,
+                text: "Bananas grow on trees and are technically a type of wood fruit.",
+                isTrue: false,
+                explanation: "Bananas grow on large herbaceous flowering plants, not trees, and are berries, not wood fruits."
+            },
+            {
+                id: 7,
+                text: "The human brain uses approximately 20% of the body's total energy.",
+                isTrue: true,
+                explanation: "True! Despite being only 2% of body weight, the brain uses about 20% of our energy."
+            },
+            {
+                id: 8,
+                text: "Goldfish have a 3-second memory span.",
+                isTrue: false,
+                explanation: "This is a myth! Goldfish can remember things for months, not just 3 seconds."
+            }
+        ];
+        
+        function generateTruthStatements() {
+            return truthStatements.map(statement => `
+                <div class="statement-card" data-statement-id="${statement.id}" data-is-true="${statement.isTrue}" style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #e5e7eb; margin-bottom: 15px; transition: all 0.3s ease;">
+                    <div class="statement-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 15px; color: #374151; font-weight: 500;">${statement.text}</div>
+                    <div class="statement-buttons" style="display: flex; gap: 15px; justify-content: center; margin-bottom: 15px;">
+                        <button class="truth-btn" onclick="selectTruthAnswer(${statement.id}, true)" style="padding: 10px 25px; border: 2px solid #10b981; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; background: white; color: #10b981;">Truth</button>
+                        <button class="hallucination-btn" onclick="selectTruthAnswer(${statement.id}, false)" style="padding: 10px 25px; border: 2px solid #ef4444; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; background: white; color: #ef4444;">Hallucination</button>
+                    </div>
+                    <div class="statement-explanation" id="explanation-${statement.id}" style="display: none; background: #f8fafc; padding: 15px; border-radius: 8px; font-style: italic; color: #6b7280; border-left: 4px solid #6366f1;">
+                        ${statement.explanation}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function selectTruthAnswer(statementId, userAnswer) {
+            truthGameAnswers[statementId] = userAnswer;
+            
+            // Update UI to show selection
+            const card = document.querySelector(`[data-statement-id="${statementId}"]`);
+            const buttons = card.querySelectorAll('.truth-btn, .hallucination-btn');
+            
+            buttons.forEach(btn => {
+                btn.style.background = 'white';
+                btn.style.boxShadow = 'none';
+            });
+            
+            if (userAnswer) {
+                const truthBtn = card.querySelector('.truth-btn');
+                truthBtn.style.background = '#10b981';
+                truthBtn.style.color = 'white';
+                truthBtn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            } else {
+                const hallucinationBtn = card.querySelector('.hallucination-btn');
+                hallucinationBtn.style.background = '#ef4444';
+                hallucinationBtn.style.color = 'white';
+                hallucinationBtn.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            }
+        }
+        
+        function checkAllTruthAnswers() {
+            const statements = document.querySelectorAll('.statement-card');
+            let correct = 0;
+            let total = statements.length;
+            
+            statements.forEach(statement => {
+                const statementId = parseInt(statement.dataset.statementId);
+                const isTrue = statement.dataset.isTrue === 'true';
+                const userAnswer = truthGameAnswers[statementId];
+                const explanation = statement.querySelector('.statement-explanation');
+                
+                // Show explanation
+                explanation.style.display = 'block';
+                
+                // Check if correct and update card styling
+                if (userAnswer === isTrue) {
+                    correct++;
+                    statement.style.borderColor = '#10b981';
+                    statement.style.background = 'rgba(16, 185, 129, 0.05)';
+                } else {
+                    statement.style.borderColor = '#ef4444';
+                    statement.style.background = 'rgba(239, 68, 68, 0.05)';
+                }
+            });
+            
+            const feedback = document.getElementById('truth-feedback-area');
+            const percentage = Math.round((correct / total) * 100);
+            
+            feedback.innerHTML = `
+                <div class="feedback" style="padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ${percentage >= 70 ? '#10b981' : '#f59e0b'}; background: ${percentage >= 70 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}; color: ${percentage >= 70 ? '#10b981' : '#f59e0b'}; margin-top: 20px;">
+                    <h4 style="font-size: 20px; margin-bottom: 10px;">Results: ${correct}/${total} correct (${percentage}%)</h4>
+                    <p style="line-height: 1.5; margin-bottom: 10px;">${percentage >= 70 ? 
+                        'Great job! You\'re getting good at spotting AI hallucinations!' : 
+                        'Keep practicing! Understanding AI accuracy is an important skill.'
+                    }</p>
+                    <p style="line-height: 1.5; margin-bottom: 0;"><strong>Remember:</strong> AI can sometimes generate false information that sounds convincing. Always verify important facts!</p>
+                </div>
+            `;
+            
+            // Show reset and next buttons
+            document.getElementById('reset-truth-btn').style.display = 'inline-block';
+            if (percentage >= 70) {
+                document.getElementById('next-truth-btn').style.display = 'inline-block';
+            }
+        }
+        
+        function resetAllTruthAnswers() {
+            truthGameAnswers = {};
+            
+            // Reset UI
+            const statements = document.querySelectorAll('.statement-card');
+            statements.forEach(statement => {
+                statement.style.borderColor = '#e5e7eb';
+                statement.style.background = 'white';
+                statement.querySelectorAll('.truth-btn, .hallucination-btn').forEach(btn => {
+                    btn.style.background = 'white';
+                    btn.style.boxShadow = 'none';
+                    if (btn.classList.contains('truth-btn')) {
+                        btn.style.color = '#10b981';
+                    } else {
+                        btn.style.color = '#ef4444';
+                    }
+                });
+                statement.querySelector('.statement-explanation').style.display = 'none';
+            });
+            
+            // Clear feedback
+            const feedback = document.getElementById('truth-feedback-area');
+            feedback.innerHTML = '';
+            
+            // Hide reset and next buttons
+            document.getElementById('reset-truth-btn').style.display = 'none';
+            document.getElementById('next-truth-btn').style.display = 'none';
+        }
+        
+        function proceedNext() {
+            alert('Activity completed! Returning to module.');
+            window.location.href = 'index.html';
+        }
+        
+        function returnToModule() {
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize the activity
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('truth-statements-container').innerHTML = generateTruthStatements();
+        });
+    </script>
+</body>
+</html>

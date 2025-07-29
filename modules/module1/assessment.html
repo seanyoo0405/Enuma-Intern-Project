@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Assessment - Module 1</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+</head>
+<body>
+    <div class="activity-page">
+        <div class="activity-container">
+            <div class="activity-header">
+                <div style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h1 style="margin: 0; display: inline-block;">Module 1 Assessment</h1>
+                    <button onclick="returnToModule()" class="back-to-module-btn" style="float: right; background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">← Return to Module</button>
+                    <div style="clear: both; margin-top: 10px;">
+                        <p style="margin: 5px 0;">Test your knowledge of AI fundamentals with this interactive quiz.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <span>Question <span id="current-question">1</span> of <span id="total-questions">3</span></span>
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" id="progress-fill" style="width: 33%"></div>
+                    </div>
+                    <span id="progress-percent">33%</span>
+                </div>
+                
+                <div class="question-container" id="question-container">
+                    <!-- Questions will be loaded by JavaScript -->
+                </div>
+                
+                <div class="quiz-actions">
+                    <button class="quiz-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                    <button class="quiz-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+                    <button class="quiz-btn" id="submit-btn" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+                </div>
+                
+                <div id="quiz-results" style="display: none; margin-top: 20px;">
+                    <!-- Results will be shown here -->
+                </div>
+            </div>
+            
+            <div class="activity-actions" style="text-align: center; margin: 30px 0; display: none;" id="final-actions">
+                <button onclick="retakeQuiz()" style="background: #6b7280; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-right: 15px;">Try Again</button>
+                <button onclick="returnToModule()" class="back-to-module-btn" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;">Return to Module</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                id: 'q1',
+                text: 'What is the main difference between AI and traditional computer programs?',
+                options: [
+                    'AI can learn from data',
+                    'AI is faster',
+                    'AI uses more memory',
+                    'AI is more colorful'
+                ],
+                correct: 0
+            },
+            {
+                id: 'q2',
+                text: 'Which of the following is an example of AI bias?',
+                options: [
+                    'An AI system running slowly',
+                    'A facial recognition system working better for certain skin tones',
+                    'An AI using too much electricity',
+                    'A chatbot giving random responses'
+                ],
+                correct: 1
+            },
+            {
+                id: 'q3',
+                text: 'What does "machine learning" mean?',
+                options: [
+                    'Machines that can move',
+                    'Computers that improve through experience',
+                    'Robots that build other robots',
+                    'Software that never needs updates'
+                ],
+                correct: 1
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        let quizAnswers = {};
+        let quizSubmitted = false;
+        
+        function loadQuestion(questionIndex) {
+            const question = quizQuestions[questionIndex];
+            const container = document.getElementById('question-container');
+            
+            container.innerHTML = `
+                <div class="question-text">${question.text}</div>
+                <div class="answer-options">
+                    ${question.options.map((option, index) => `
+                        <div class="answer-option" onclick="selectAnswer(${questionIndex}, ${index})" data-option="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Restore previous selection if exists
+            if (quizAnswers[question.id] !== undefined) {
+                const selectedOption = container.querySelector(`[data-option="${quizAnswers[question.id]}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            }
+            
+            // Update progress
+            document.getElementById('current-question').textContent = questionIndex + 1;
+            const progressPercent = Math.round(((questionIndex + 1) / quizQuestions.length) * 100);
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+            document.getElementById('progress-percent').textContent = `${progressPercent}%`;
+            
+            // Update button states
+            document.getElementById('prev-btn').disabled = questionIndex === 0;
+            
+            if (questionIndex === quizQuestions.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'none';
+            }
+        }
+        
+        function selectAnswer(questionIndex, optionIndex) {
+            const question = quizQuestions[questionIndex];
+            quizAnswers[question.id] = optionIndex;
+            
+            // Update UI
+            const container = document.getElementById('question-container');
+            const options = container.querySelectorAll('.answer-option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+        }
+        
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+        
+        function submitQuiz() {
+            if (Object.keys(quizAnswers).length < quizQuestions.length) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+            
+            let correct = 0;
+            quizQuestions.forEach(question => {
+                if (quizAnswers[question.id] === question.correct) {
+                    correct++;
+                }
+            });
+            
+            const percentage = Math.round((correct / quizQuestions.length) * 100);
+            const passed = percentage >= 70;
+            
+            // Show results
+            const resultsContainer = document.getElementById('quiz-results');
+            resultsContainer.style.display = 'block';
+            resultsContainer.innerHTML = `
+                <div class="feedback ${passed ? 'success' : 'partial'}" style="padding: 20px; border-radius: 10px; text-align: center; border: 2px solid ${passed ? '#10b981' : '#f59e0b'}; background: ${passed ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}; color: ${passed ? '#10b981' : '#f59e0b'};">
+                    <h3>${passed ? '🎉 Congratulations!' : '📚 Keep Learning!'}</h3>
+                    <p><strong>Score: ${correct}/${quizQuestions.length} (${percentage}%)</strong></p>
+                    <p>${passed ? 
+                        'Excellent work! You have a solid understanding of AI fundamentals.' : 
+                        'Good effort! Review the module content and try again to improve your score.'
+                    }</p>
+                </div>
+            `;
+            
+            // Hide quiz controls
+            document.querySelector('.quiz-actions').style.display = 'none';
+            document.getElementById('final-actions').style.display = 'block';
+            
+            quizSubmitted = true;
+        }
+        
+        function retakeQuiz() {
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            quizAnswers = {};
+            quizSubmitted = false;
+            
+            // Hide results and show quiz controls
+            document.getElementById('quiz-results').style.display = 'none';
+            document.querySelector('.quiz-actions').style.display = 'flex';
+            document.getElementById('final-actions').style.display = 'none';
+            
+            // Reload first question
+            loadQuestion(0);
+        }
+        
+        function returnToModule() {
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('total-questions').textContent = quizQuestions.length;
+            loadQuestion(0);
+        });
+    </script>
+</body>
+</html>
