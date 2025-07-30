@@ -81,17 +81,43 @@ const moduleContent = {
         ]
     },
     4: {
-        title: 'Professional Development',
+        title: 'AI in Your Future',
         videos: [
-            { id: 'v1', title: 'Teaching AI Effectively', duration: '12:40', url: 'placeholder' },
-            { id: 'v2', title: 'Future of Education', duration: '10:55', url: 'placeholder' },
-            { id: 'v3', title: 'Case Studies', duration: '15:00', url: 'placeholder' },
-            { id: 'v4', title: 'Best Practices', duration: '11:25', url: 'placeholder' }
+            { id: 'v1', title: 'AI in Today\'s World', duration: '12:30', url: 'placeholder' },
+            { id: 'v2', title: 'Future Career Opportunities', duration: '14:15', url: 'placeholder' },
+            { id: 'v3', title: 'Preparing for an AI Future', duration: '11:00', url: 'placeholder' },
+            { id: 'v4', title: 'Your AI Learning Journey', duration: '10:30', url: 'placeholder' }
         ],
         activities: [
-            { id: 'mock-lesson', title: 'Practice Teaching', type: 'presentation' },
-            { id: 'future-classroom', title: '2035 Classroom Vision', type: 'drawing' },
-            { id: 'final-project', title: 'Final Project', type: 'submission' }
+            { id: 'career-explorer', title: 'Career Explorer', type: 'form' },
+            { id: 'future-vision', title: 'Future Vision Board', type: 'creative' }
+        ]
+    },
+    5: {
+        title: 'Cybersecurity and Global Impacts',
+        videos: [
+            { id: 'v1', title: 'Why Should You Care About Cybersecurity?', duration: '12:30', url: 'placeholder' },
+            { id: 'v2', title: 'Understanding Privacy and Data Protection', duration: '11:45', url: 'placeholder' },
+            { id: 'v3', title: 'Global Cybersecurity Threats', duration: '13:20', url: 'placeholder' },
+            { id: 'v4', title: 'Ethical Computing and Digital Citizenship', duration: '10:15', url: 'placeholder' }
+        ],
+        activities: [
+            { id: 'password-strength', title: 'Password Security Lab', type: 'interactive' },
+            { id: 'threat-simulation', title: 'Cybersecurity Threat Simulator', type: 'simulator' }
+        ]
+    },
+    6: {
+        title: 'Digital Citizenship and Future Technologies',
+        videos: [
+            { id: 'v1', title: 'Digital Rights and Responsibilities', duration: '11:30', url: 'placeholder' },
+            { id: 'v2', title: 'AI Governance and Policy', duration: '13:45', url: 'placeholder' },
+            { id: 'v3', title: 'Emerging Technologies and Society', duration: '14:20', url: 'placeholder' },
+            { id: 'v4', title: 'Building a Better Digital World', duration: '12:15', url: 'placeholder' }
+        ],
+        activities: [
+            { id: 'digital-rights-charter', title: 'Digital Rights Charter', type: 'form' },
+            { id: 'technology-impact-assessment', title: 'Technology Impact Assessment', type: 'interactive' },
+            { id: 'digital-future-manifesto', title: 'Digital Future Manifesto', type: 'creative' }
         ]
     }
 };
@@ -277,13 +303,257 @@ function goBack() {
     window.location.href = '../../index.html';
 }
 
+// Sidebar functionality (integrated from Sean's implementation)
+function createLessonViewer() {
+    const sidebar = document.createElement('div');
+    sidebar.id = 'lesson-sidebar';
+    sidebar.className = 'lesson-sidebar';
+    sidebar.innerHTML = `
+        <div class="sidebar-header">
+            <h3>Lesson Contents</h3>
+            <button class="sidebar-close" onclick="closeLessonSidebar()">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div class="lesson-sections">
+                <p>Loading lesson contents...</p>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <button class="sidebar-nav-btn" id="prev-lesson" onclick="navigateLesson('prev')">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Previous
+            </button>
+            <button class="sidebar-nav-btn" id="next-lesson" onclick="navigateLesson('next')">
+                Next
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(sidebar);
+    
+    // Add toggle button to module pages
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sidebar-toggle';
+    toggleBtn.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Lesson Contents</span>
+    `;
+    toggleBtn.onclick = toggleLessonSidebar;
+    
+    const moduleContentElement = document.querySelector('.module-content');
+    if (moduleContentElement) {
+        moduleContentElement.insertBefore(toggleBtn, moduleContentElement.firstChild);
+    }
+}
+
+// Toggle lesson sidebar
+function toggleLessonSidebar() {
+    const sidebar = document.getElementById('lesson-sidebar');
+    if (!sidebar) {
+        createLessonViewer();
+        return openLessonSidebar();
+    }
+    
+    if (sidebar.classList.contains('open')) {
+        closeLessonSidebar();
+    } else {
+        openLessonSidebar();
+    }
+}
+
+// Open lesson sidebar
+function openLessonSidebar(moduleId) {
+    const sidebar = document.getElementById('lesson-sidebar');
+    if (!sidebar) {
+        createLessonViewer();
+        return openLessonSidebar(moduleId);
+    }
+    
+    sidebar.classList.add('open');
+    
+    // Get current module ID if not provided
+    if (!moduleId) {
+        moduleId = window.currentModuleId || getCurrentModuleId();
+    }
+    
+    // Load module content into sidebar
+    loadSidebarContent(moduleId);
+}
+
+// Close lesson sidebar
+function closeLessonSidebar() {
+    const sidebar = document.getElementById('lesson-sidebar');
+    if (sidebar) {
+        sidebar.classList.remove('open');
+    }
+}
+
+// Load content into sidebar
+function loadSidebarContent(moduleId) {
+    const module = moduleContent[moduleId];
+    if (!module) return;
+    
+    const sectionsContainer = document.querySelector('.lesson-sections');
+    if (!sectionsContainer) return;
+    
+    let currentSection = getCurrentSection();
+    
+    const htmlContent = `
+        <div class="sidebar-section">
+            <h4 class="section-title">📹 Video Lessons</h4>
+            <div class="section-items">
+                ${module.videos.map((video, index) => `
+                    <div class="sidebar-item ${currentSection.type === 'video' && currentSection.index === index ? 'active' : ''}" 
+                         onclick="loadLessonContent('video', ${index}, ${moduleId})">
+                        <span class="item-number">${index + 1}</span>
+                        <span class="item-title">${video.title}</span>
+                        <span class="item-duration">${video.duration}</span>
+                        <span class="item-status ${isCompleted(moduleId, 'video', video.id) ? 'completed' : ''}">
+                            ${isCompleted(moduleId, 'video', video.id) ? '✓' : ''}
+                        </span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4 class="section-title">🎯 Activities</h4>
+            <div class="section-items">
+                ${module.activities.map((activity, index) => `
+                    <div class="sidebar-item ${currentSection.type === 'activity' && currentSection.index === index ? 'active' : ''}" 
+                         onclick="loadLessonContent('activity', ${index}, ${moduleId})">
+                        <span class="item-number">${index + 1}</span>
+                        <span class="item-title">${activity.title}</span>
+                        <span class="item-status ${isCompleted(moduleId, 'activity', activity.id) ? 'completed' : ''}">
+                            ${isCompleted(moduleId, 'activity', activity.id) ? '✓' : ''}
+                        </span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4 class="section-title">📝 Assessment</h4>
+            <div class="section-items">
+                <div class="sidebar-item ${currentSection.type === 'quiz' ? 'active' : ''}" 
+                     onclick="loadLessonContent('quiz', 0, ${moduleId})">
+                    <span class="item-number">📝</span>
+                    <span class="item-title">Module Quiz</span>
+                    <span class="item-status ${isCompleted(moduleId, 'quiz', 'quiz') ? 'completed' : ''}">
+                        ${isCompleted(moduleId, 'quiz', 'quiz') ? '✓' : ''}
+                    </span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    sectionsContainer.innerHTML = htmlContent;
+}
+
+// Load lesson content based on sidebar selection
+function loadLessonContent(type, index, moduleId) {
+    // For activities, use the existing openActivityWindow function
+    if (type === 'activity') {
+        const module = moduleContent[moduleId];
+        const activity = module.activities[index];
+        if (activity && window.openActivityWindow) {
+            window.openActivityWindow(activity.id);
+        }
+    } else if (type === 'quiz') {
+        if (window.openActivityWindow) {
+            window.openActivityWindow('assessment');
+        }
+    } else if (type === 'video') {
+        // For videos, we'll highlight the section in the main content
+        const contentSections = document.querySelectorAll('.content-section');
+        if (contentSections[index]) {
+            contentSections[index].scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    // Update active state in sidebar
+    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+    const activeItem = document.querySelector(`.sidebar-item[onclick*="${type}, ${index}"]`);
+    if (activeItem) {
+        activeItem.classList.add('active');
+    }
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        closeLessonSidebar();
+    }
+}
+
+// Navigate through lessons
+function navigateLesson(direction) {
+    // This would implement prev/next navigation
+    // For now, we'll keep it simple and just close the sidebar
+    closeLessonSidebar();
+}
+
+// Helper functions
+function getCurrentSection() {
+    // Simple implementation - could be enhanced based on current content
+    return { type: 'video', index: 0 };
+}
+
+function getCurrentModuleId() {
+    // Extract module ID from URL or use currentModuleId
+    return window.currentModuleId || 1;
+}
+
+function isCompleted(moduleId, type, id) {
+    // Check if item is completed using progress tracker
+    if (window.progressTracker && typeof window.progressTracker.getModuleProgress === 'function') {
+        try {
+            const progress = window.progressTracker.getModuleProgress(moduleId);
+            if (progress) {
+                if (type === 'video') {
+                    return progress.videosWatched && progress.videosWatched.includes(id);
+                } else if (type === 'activity') {
+                    return progress.activitiesCompleted && progress.activitiesCompleted.includes(id);
+                } else if (type === 'quiz') {
+                    return progress.quizCompleted;
+                }
+            }
+        } catch (error) {
+            console.log('Progress tracking error:', error);
+        }
+    }
+    return false;
+}
+
 // Export functions
 window.moduleManager = {
     initializeModulePage,
     loadModuleContent,
     trackModuleProgress,
-    goBack
+    goBack,
+    createLessonViewer,
+    openLessonSidebar,
+    closeLessonSidebar,
+    toggleLessonSidebar,
+    loadLessonContent,
+    loadSidebarContent,
+    navigateLesson
 };
 
 // Export moduleContent
 window.moduleContent = moduleContent;
+
+// Make sidebar functions globally available
+window.closeLessonSidebar = closeLessonSidebar;
+window.toggleLessonSidebar = toggleLessonSidebar;
+window.loadLessonContent = loadLessonContent;
+window.navigateLesson = navigateLesson;

@@ -255,6 +255,17 @@
             
             moduleManager.initializeModulePage(currentModuleId);
             
+            // Initialize sidebar
+            if (moduleManager.createLessonViewer) {
+                moduleManager.createLessonViewer();
+                // Open the sidebar and load content
+                setTimeout(() => {
+                    if (moduleManager.openLessonSidebar) {
+                        moduleManager.openLessonSidebar(currentModuleId);
+                    }
+                }, 50);
+            }
+            
             // Add module 2 specific quiz questions
             window.moduleContent[2].quiz = {
                 questions: [

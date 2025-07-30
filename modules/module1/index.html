@@ -260,6 +260,17 @@
             moduleManager.initializeModulePage(currentModuleId);
             loadQuizQuestions();
             
+            // Initialize sidebar
+            if (moduleManager.createLessonViewer) {
+                moduleManager.createLessonViewer();
+                // Open the sidebar and load content
+                setTimeout(() => {
+                    if (moduleManager.openLessonSidebar) {
+                        moduleManager.openLessonSidebar(currentModuleId);
+                    }
+                }, 50);
+            }
+            
             // Debug: Check if moduleContent is now available
             console.log('DOM loaded - window.moduleContent:', window.moduleContent);
         });
