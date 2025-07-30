@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Builder Game - Module 2</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Algorithm Builder Game</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Module
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-page">
+        <div class="module-content">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>🧩 Algorithm Builder Challenge</h2>
+                    <p>Build step-by-step solutions using code blocks!</p>
+                </div>
+
+                <!-- Problem Selection -->
+                <div class="problem-selector">
+                    <h3>Choose a Problem to Solve:</h3>
+                    <div class="problem-buttons">
+                        <button class="problem-btn active" onclick="selectProblem(0)" id="problem-0">
+                            Problem 1: Number Guessing
+                        </button>
+                        <button class="problem-btn" onclick="selectProblem(1)" id="problem-1">
+                            Problem 2: Sort Numbers
+                        </button>
+                        <button class="problem-btn" onclick="selectProblem(2)" id="problem-2">
+                            Problem 3: Maze Navigator
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Area -->
+                <div class="game-area">
+                    <!-- Problem Description -->
+                    <div class="problem-description">
+                        <h4 id="problem-title">Problem 1: Make Breakfast</h4>
+                        <p id="problem-text">Create an algorithm to make breakfast. Think about the steps you need to take and put them in the right order!</p>
+                        <div class="problem-goal">
+                            <strong>Goal:</strong> <span id="problem-goal">Arrange the steps to successfully make breakfast</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Game Interface -->
+                    <div class="builder-interface">
+                        <!-- Available Blocks -->
+                        <div class="blocks-panel">
+                            <h4>Available Blocks</h4>
+                            <div class="blocks-container" id="blocks-container">
+                                <!-- Blocks will be generated here -->
+                            </div>
+                        </div>
+
+                        <!-- Algorithm Building Area -->
+                        <div class="algorithm-panel">
+                            <h4>Your Algorithm</h4>
+                            <div class="algorithm-area" id="algorithm-area">
+                                <div class="drop-hint">
+                                    Drag blocks here to build your algorithm
+                                </div>
+                            </div>
+                            <div class="algorithm-controls">
+                                <button class="game-btn primary" onclick="runAlgorithm()">
+                                    ▶️ Run Algorithm
+                                </button>
+                                <button class="game-btn secondary" onclick="clearAlgorithm()">
+                                    🗑️ Clear All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Area -->
+                    <div class="feedback-area" id="feedback-area">
+                        <!-- Feedback will appear here -->
+                    </div>
+                </div>
+
+                <!-- Progress Tracking -->
+                <div class="progress-section">
+                    <h4>Problems Solved</h4>
+                    <div class="progress-indicators">
+                        <div class="problem-indicator" id="indicator-0">
+                            <span class="problem-number">1</span>
+                            <span class="problem-name">Guess</span>
+                            <span class="status-icon">⏳</span>
+                        </div>
+                        <div class="problem-indicator" id="indicator-1">
+                            <span class="problem-number">2</span>
+                            <span class="problem-name">Sort</span>
+                            <span class="status-icon">⏳</span>
+                        </div>
+                        <div class="problem-indicator" id="indicator-2">
+                            <span class="problem-number">3</span>
+                            <span class="problem-name">Maze</span>
+                            <span class="status-icon">⏳</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProblem = 0;
+        let solvedProblems = [false, false, false];
+        let draggedElement = null;
+
+        // Universal block palette (like Scratch)
+        const blockPalette = [
+            // Control blocks
+            { id: 'start', text: 'START', type: 'control', color: '#10b981', category: 'Control' },
+            { id: 'end', text: 'END', type: 'control', color: '#10b981', category: 'Control' },
+            
+            // Loop blocks
+            { id: 'for-loop', text: 'FOR [variable] = [start] to [end]', type: 'loop', color: '#f59e0b', category: 'Loops', editable: true },
+            { id: 'while-loop', text: 'WHILE [condition]', type: 'loop', color: '#f59e0b', category: 'Loops', editable: true },
+            { id: 'end-loop', text: 'END LOOP', type: 'loop', color: '#f59e0b', category: 'Loops' },
+            
+            // Condition blocks
+            { id: 'if-statement', text: 'IF [condition]', type: 'condition', color: '#ef4444', category: 'Conditions', editable: true },
+            { id: 'end-if', text: 'END IF', type: 'condition', color: '#ef4444', category: 'Conditions' },
+            
+            // Variable blocks
+            { id: 'set-variable', text: 'SET [variable] = [value]', type: 'variable', color: '#8b5cf6', category: 'Variables', editable: true },
+            { id: 'increment', text: 'SET [variable] = [variable] + 1', type: 'variable', color: '#8b5cf6', category: 'Variables', editable: true },
+            
+            // Action blocks
+            { id: 'action-block', text: '[Custom Action]', type: 'action', color: '#6366f1', category: 'Actions', editable: true },
+            { id: 'output', text: 'OUTPUT [value]', type: 'action', color: '#6366f1', category: 'Actions', editable: true },
+            { id: 'swap', text: 'SWAP [item1] and [item2]', type: 'action', color: '#6366f1', category: 'Actions', editable: true },
+            
+            // Movement blocks (for maze)
+            { id: 'move-up', text: 'MOVE UP', type: 'movement', color: '#22c55e', category: 'Movement' },
+            { id: 'move-down', text: 'MOVE DOWN', type: 'movement', color: '#22c55e', category: 'Movement' },
+            { id: 'move-left', text: 'MOVE LEFT', type: 'movement', color: '#22c55e', category: 'Movement' },
+            { id: 'move-right', text: 'MOVE RIGHT', type: 'movement', color: '#22c55e', category: 'Movement' },
+            { id: 'check-wall', text: 'IF wall ahead', type: 'condition', color: '#ef4444', category: 'Conditions' },
+            { id: 'check-goal', text: 'IF at goal', type: 'condition', color: '#ef4444', category: 'Conditions' }
+        ];
+
+        // Problem definitions with solutions and hints
+        const problems = [
+            {
+                title: "Problem 1: Smart Number Guessing (Binary Search)",
+                description: "Create an algorithm to guess a number between 1-100 efficiently using binary search strategy!",
+                goal: "Build an algorithm that can find any number in the range 1-100 in maximum 7 guesses",
+                hint: "Always guess the middle number and eliminate half the possibilities! Start with 50, then go to 25 or 75 based on feedback.",
+                targetNumber: 73,
+                range: [1, 100],
+                checkSolution: function(sequence) {
+                    if (!sequence.some(item => item.includes('START'))) return false;
+                    if (!sequence.some(item => item.includes('END'))) return false;
+                    
+                    // Must set initial range
+                    const hasInitialRange = sequence.some(item => 
+                        (item.includes('SET') && item.includes('low')) || 
+                        (item.includes('SET') && item.includes('high'))
+                    );
+                    if (!hasInitialRange) return false;
+                    
+                    // Must have a loop
+                    const hasLoop = sequence.some(item => 
+                        item.includes('WHILE') || item.includes('FOR')
+                    );
+                    if (!hasLoop) return false;
+                    
+                    // Must calculate middle/guess
+                    const hasMiddleCalc = sequence.some(item => 
+                        (item.includes('middle') || item.includes('guess')) && item.includes('SET')
+                    );
+                    if (!hasMiddleCalc) return false;
+                    
+                    // Must have comparison logic
+                    const hasComparison = sequence.some(item => 
+                        item.includes('IF') && (item.includes('too high') || item.includes('too low') || item.includes('correct'))
+                    );
+                    
+                    return hasComparison;
+                }
+            },
+            {
+                title: "Problem 2: Sort Numbers (Bubble Sort)",
+                description: "Create a bubble sort algorithm to arrange numbers from smallest to largest!",
+                goal: "Build an algorithm that sorts the array [4, 2, 7, 1, 3] into [1, 2, 3, 4, 7]",
+                hint: "You need nested loops - an outer loop and an inner loop. Compare adjacent elements and swap if needed!",
+                checkSolution: function(sequence) {
+                    if (!sequence.includes('start') || !sequence.includes('end')) return false;
+                    if (sequence[0] !== 'start' || sequence[sequence.length - 1] !== 'end') return false;
+                    
+                    // Must have nested loops
+                    const forLoops = sequence.filter(item => item.includes('FOR') || item.includes('for-loop')).length;
+                    const endLoops = sequence.filter(item => item.includes('END LOOP') || item.includes('end-loop')).length;
+                    if (forLoops < 2 || endLoops < 2) return false;
+                    
+                    // Must have comparison and swap
+                    const hasComparison = sequence.some(item => item.includes('IF') || item.includes('if-statement'));
+                    const hasSwap = sequence.some(item => item.includes('SWAP') || item.includes('swap'));
+                    
+                    return hasComparison && hasSwap;
+                }
+            },
+            {
+                title: "Problem 3: Maze Navigator",
+                description: "Create an algorithm to navigate through a simple maze from start to goal!",
+                goal: "Build an algorithm that can navigate from S to G in the maze below",
+                hint: "Use movement blocks to navigate and conditions to check for walls. Think about the path: Right → Down → Right → Down!",
+                maze: [
+                    ['S', ' ', '#', ' '],
+                    ['#', ' ', '#', ' '],
+                    ['#', ' ', ' ', ' '],
+                    ['#', '#', '#', 'G']
+                ],
+                checkSolution: function(sequence) {
+                    if (!sequence.some(item => item.includes('START'))) return false;
+                    if (!sequence.some(item => item.includes('END'))) return false;
+                    
+                    // Must have movement commands
+                    const movements = sequence.filter(item => 
+                        item.includes('MOVE RIGHT') || item.includes('MOVE DOWN') || 
+                        item.includes('MOVE LEFT') || item.includes('MOVE UP')
+                    );
+                    
+                    if (movements.length < 4) return false; // Need at least 4 moves to reach goal
+                    
+                    // Check if the sequence contains the correct path (flexible checking)
+                    const hasRightMoves = sequence.filter(item => item.includes('MOVE RIGHT')).length >= 2;
+                    const hasDownMoves = sequence.filter(item => item.includes('MOVE DOWN')).length >= 2;
+                    
+                    return hasRightMoves && hasDownMoves;
+                }
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            selectProblem(0);
+        });
+
+        function selectProblem(problemIndex) {
+            currentProblem = problemIndex;
+            
+            // Update problem selector buttons
+            document.querySelectorAll('.problem-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', index === problemIndex);
+            });
+            
+            // Update problem description
+            const problem = problems[problemIndex];
+            document.getElementById('problem-title').textContent = problem.title;
+            document.getElementById('problem-text').textContent = problem.description;
+            document.getElementById('problem-goal').textContent = problem.goal;
+            
+            // Add visualizations for different problem types
+            const problemGoalDiv = document.querySelector('.problem-goal');
+            const existingMaze = document.querySelector('.maze-display');
+            const existingRange = document.querySelector('.range-display');
+            if (existingMaze) {
+                existingMaze.remove();
+            }
+            if (existingRange) {
+                existingRange.remove();
+            }
+            
+            if (problem.maze) {
+                const mazeDiv = document.createElement('div');
+                mazeDiv.className = 'maze-display';
+                mazeDiv.innerHTML = '<h5>Maze Layout:</h5>';
+                
+                const mazeGrid = document.createElement('div');
+                mazeGrid.className = 'maze-grid';
+                
+                problem.maze.forEach((row, rowIndex) => {
+                    row.forEach((cell, colIndex) => {
+                        const cellDiv = document.createElement('div');
+                        cellDiv.className = 'maze-cell';
+                        
+                        if (cell === '#') {
+                            cellDiv.classList.add('wall');
+                            cellDiv.textContent = '🧱';
+                        } else if (cell === 'S') {
+                            cellDiv.classList.add('start');
+                            cellDiv.textContent = '🏁';
+                        } else if (cell === 'G') {
+                            cellDiv.classList.add('goal');
+                            cellDiv.textContent = '🎯';
+                        } else {
+                            cellDiv.classList.add('path');
+                            cellDiv.textContent = '⬜';
+                        }
+                        
+                        mazeGrid.appendChild(cellDiv);
+                    });
+                });
+                
+                mazeDiv.appendChild(mazeGrid);
+                problemGoalDiv.appendChild(mazeDiv);
+            }
+            
+            // Add number range visualization for binary search problem
+            if (problem.range && problem.targetNumber) {
+                const rangeDiv = document.createElement('div');
+                rangeDiv.className = 'range-display';
+                rangeDiv.innerHTML = '<h5>Number Range & Target:</h5>';
+                
+                const rangeVisual = document.createElement('div');
+                rangeVisual.className = 'range-visual';
+                rangeVisual.innerHTML = `
+                    <div class="range-info">
+                        <div class="range-item">
+                            <span class="range-label">Range:</span>
+                            <span class="range-value">${problem.range[0]} - ${problem.range[1]}</span>
+                        </div>
+                        <div class="range-item">
+                            <span class="range-label">Secret Number:</span>
+                            <span class="range-value target-number">${problem.targetNumber}</span>
+                        </div>
+                        <div class="range-item">
+                            <span class="range-label">Max Guesses:</span>
+                            <span class="range-value">7</span>
+                        </div>
+                    </div>
+                    <div class="binary-search-demo">
+                        <div class="search-step">Step 1: Guess 50 (middle of 1-100)</div>
+                        <div class="search-step">Step 2: If too low → try 75 (middle of 51-100)</div>
+                        <div class="search-step">Step 3: Keep halving the search space!</div>
+                    </div>
+                `;
+                
+                rangeDiv.appendChild(rangeVisual);
+                problemGoalDiv.appendChild(rangeDiv);
+            }
+            
+            // Generate blocks
+            generateBlocks();
+            
+            // Clear algorithm area
+            clearAlgorithm();
+            
+            // Clear feedback
+            document.getElementById('feedback-area').innerHTML = '';
+        }
+
+        function generateBlocks() {
+            const container = document.getElementById('blocks-container');
+            container.innerHTML = '';
+            
+            // Create category sections
+            const categories = ['Control', 'Loops', 'Conditions', 'Variables', 'Actions', 'Movement'];
+            
+            categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'block-category';
+                categoryDiv.innerHTML = `<h5 class="category-title">${category}</h5>`;
+                
+                const categoryBlocks = blockPalette.filter(block => block.category === category);
+                
+                categoryBlocks.forEach(block => {
+                    const blockElement = document.createElement('div');
+                    blockElement.className = 'code-block scratch-block';
+                    blockElement.draggable = true;
+                    blockElement.dataset.blockId = block.id;
+                    blockElement.dataset.editable = block.editable || false;
+                    blockElement.style.backgroundColor = block.color;
+                    blockElement.innerHTML = `
+                        <span class="block-text">${block.text}</span>
+                        ${block.editable ? '<span class="edit-indicator">✏️</span>' : ''}
+                    `;
+                    
+                    // Add drag event listeners
+                    blockElement.addEventListener('dragstart', handleDragStart);
+                    blockElement.addEventListener('dragend', handleDragEnd);
+                    
+                    categoryDiv.appendChild(blockElement);
+                });
+                
+                container.appendChild(categoryDiv);
+            });
+            
+            // Add hint section
+            const hintDiv = document.createElement('div');
+            hintDiv.className = 'problem-hint';
+            hintDiv.innerHTML = `
+                <h5>💡 Hint</h5>
+                <p>${problems[currentProblem].hint}</p>
+            `;
+            container.appendChild(hintDiv);
+        }
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedElement = null;
+        }
+
+        // Set up drop zone
+        document.addEventListener('DOMContentLoaded', () => {
+            const algorithmArea = document.getElementById('algorithm-area');
+            
+            algorithmArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                algorithmArea.classList.add('drag-over');
+            });
+            
+            algorithmArea.addEventListener('dragleave', (e) => {
+                if (!algorithmArea.contains(e.relatedTarget)) {
+                    algorithmArea.classList.remove('drag-over');
+                }
+            });
+            
+            algorithmArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                algorithmArea.classList.remove('drag-over');
+                
+                if (draggedElement) {
+                    addBlockToAlgorithm(draggedElement.dataset.blockId);
+                }
+            });
+        });
+
+        function addBlockToAlgorithm(blockId) {
+            const algorithmArea = document.getElementById('algorithm-area');
+            const block = blockPalette.find(b => b.id === blockId);
+            
+            if (!block) return;
+            
+            // Remove drop hint if it exists
+            const dropHint = algorithmArea.querySelector('.drop-hint');
+            if (dropHint) {
+                dropHint.remove();
+            }
+            
+            // Create unique ID for this instance
+            const uniqueId = blockId + '_' + Date.now();
+            let blockText = block.text;
+            
+            // Create algorithm block
+            const algorithmBlock = document.createElement('div');
+            algorithmBlock.className = 'algorithm-block';
+            algorithmBlock.dataset.blockId = blockId;
+            algorithmBlock.dataset.uniqueId = uniqueId;
+            algorithmBlock.dataset.editable = block.editable || false;
+            algorithmBlock.style.backgroundColor = block.color;
+            algorithmBlock.innerHTML = `
+                <span class="block-number">${algorithmArea.children.length + 1}</span>
+                <span class="block-text" ${block.editable ? 'contenteditable="true"' : ''}>${blockText}</span>
+                ${block.editable ? '<span class="edit-btn" onclick="editBlock(this)">✏️</span>' : ''}
+                <button class="remove-btn" onclick="removeBlock(this)">×</button>
+            `;
+            
+            // Add double-click to edit for editable blocks
+            if (block.editable) {
+                const textSpan = algorithmBlock.querySelector('.block-text');
+                textSpan.addEventListener('dblclick', function() {
+                    this.focus();
+                    // Select all text
+                    const range = document.createRange();
+                    range.selectNodeContents(this);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                });
+                
+                textSpan.addEventListener('blur', function() {
+                    // Update the text when editing is complete
+                    updateBlockNumbering();
+                });
+                
+                textSpan.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        this.blur();
+                        e.preventDefault();
+                    }
+                });
+            }
+            
+            algorithmArea.appendChild(algorithmBlock);
+        }
+        
+        function editBlock(button) {
+            const textSpan = button.parentElement.querySelector('.block-text');
+            textSpan.focus();
+        }
+
+        function removeBlock(button) {
+            const block = button.parentElement;
+            block.remove();
+            updateBlockNumbering();
+        }
+        
+        function updateBlockNumbering() {
+            const algorithmArea = document.getElementById('algorithm-area');
+            const blocks = algorithmArea.querySelectorAll('.algorithm-block');
+            
+            blocks.forEach((block, index) => {
+                const numberSpan = block.querySelector('.block-number');
+                if (numberSpan) {
+                    numberSpan.textContent = index + 1;
+                }
+            });
+            
+            // Add drop hint if no blocks remain
+            if (blocks.length === 0) {
+                algorithmArea.innerHTML = '<div class="drop-hint">Drag blocks here to build your algorithm</div>';
+            }
+        }
+
+        function clearAlgorithm() {
+            const algorithmArea = document.getElementById('algorithm-area');
+            algorithmArea.innerHTML = '<div class="drop-hint">Drag blocks here to build your algorithm</div>';
+        }
+
+        function runAlgorithm() {
+            const algorithmArea = document.getElementById('algorithm-area');
+            const blocks = algorithmArea.querySelectorAll('.algorithm-block');
+            
+            if (blocks.length === 0) {
+                showFeedback('Please add some blocks to your algorithm first!', 'warning');
+                return;
+            }
+            
+            // Get current algorithm sequence (including edited text)
+            const currentSequence = Array.from(blocks).map(block => {
+                const textSpan = block.querySelector('.block-text');
+                return textSpan.textContent.trim();
+            });
+            
+            // Check if algorithm is correct using the problem's checkSolution function
+            const problem = problems[currentProblem];
+            const isCorrect = problem.checkSolution(currentSequence);
+            
+            if (isCorrect) {
+                showFeedback('🎉 Excellent! Your algorithm is correct!', 'success');
+                markProblemSolved(currentProblem);
+                
+                // Check if all problems are solved
+                if (solvedProblems.every(solved => solved)) {
+                    setTimeout(() => {
+                        showCompletionMessage();
+                    }, 2000);
+                }
+            } else {
+                showFeedback('❌ Not quite right. Check your algorithm structure and logic!', 'error');
+                showSmartHints(currentSequence);
+            }
+        }
+
+        function showFeedback(message, type) {
+            const feedbackArea = document.getElementById('feedback-area');
+            feedbackArea.innerHTML = `
+                <div class="feedback ${type}">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function showSmartHints(currentSequence) {
+            const feedbackArea = document.getElementById('feedback-area');
+            let hints = [];
+            
+            // General structure hints
+            const hasStart = currentSequence.some(item => item.includes('START'));
+            const hasEnd = currentSequence.some(item => item.includes('END'));
+            
+            if (!hasStart) {
+                hints.push('💡 Every algorithm needs a START block!');
+            }
+            if (!hasEnd) {
+                hints.push('💡 Every algorithm needs an END block!');
+            }
+            if (hasStart && currentSequence[0] && !currentSequence[0].includes('START')) {
+                hints.push('💡 Your algorithm should begin with START');
+            }
+            if (hasEnd && currentSequence[currentSequence.length - 1] && !currentSequence[currentSequence.length - 1].includes('END')) {
+                hints.push('💡 Your algorithm should end with END');
+            }
+            
+            // Problem-specific hints
+            const problem = problems[currentProblem];
+            
+            if (currentProblem === 0) { // Binary search
+                const hasRange = currentSequence.some(item => 
+                    (item.includes('SET') && item.includes('low')) || 
+                    (item.includes('SET') && item.includes('high'))
+                );
+                if (!hasRange) {
+                    hints.push('💡 Initialize the search range with low = 1 and high = 100!');
+                }
+                
+                const hasLoop = currentSequence.some(item => item.includes('WHILE'));
+                if (!hasLoop) {
+                    hints.push('💡 You need a WHILE loop to keep guessing until you find the number!');
+                }
+                
+                const hasMiddle = currentSequence.some(item => 
+                    (item.includes('middle') || item.includes('guess')) && item.includes('SET')
+                );
+                if (!hasMiddle) {
+                    hints.push('💡 Calculate the middle: SET guess = (low + high) / 2!');
+                }
+                
+                const hasComparison = currentSequence.some(item => 
+                    item.includes('IF') && (item.includes('too high') || item.includes('too low'))
+                );
+                if (!hasComparison) {
+                    hints.push('💡 Add IF statements to check if your guess is too high or too low!');
+                }
+            } else if (currentProblem === 1) { // Bubble sort
+                const hasNestedLoops = currentSequence.filter(item => item.includes('FOR')).length >= 2;
+                if (!hasNestedLoops) {
+                    hints.push('💡 Bubble sort requires nested loops - you need an outer loop and an inner loop!');
+                }
+                
+                const hasComparison = currentSequence.some(item => item.includes('IF'));
+                if (!hasComparison) {
+                    hints.push('💡 You need to compare adjacent elements using an IF statement!');
+                }
+                
+                const hasSwap = currentSequence.some(item => item.includes('SWAP'));
+                if (!hasSwap) {
+                    hints.push('💡 Don\'t forget to swap elements when they\'re in the wrong order!');
+                }
+            } else if (currentProblem === 2) { // Maze navigator
+                const hasMovement = currentSequence.some(item => item.includes('MOVE'));
+                if (!hasMovement) {
+                    hints.push('💡 You need movement blocks to navigate the maze!');
+                }
+                
+                const rightMoves = currentSequence.filter(item => item.includes('MOVE RIGHT')).length;
+                const downMoves = currentSequence.filter(item => item.includes('MOVE DOWN')).length;
+                
+                if (rightMoves < 2) {
+                    hints.push('💡 Look at the maze - you need to move RIGHT at least twice!');
+                }
+                
+                if (downMoves < 2) {
+                    hints.push('💡 Look at the maze - you need to move DOWN at least twice!');
+                }
+                
+                if (currentSequence.length < 6) {
+                    hints.push('💡 The path requires at least 4 movement commands plus START and END!');
+                }
+            }
+            
+            if (hints.length > 0) {
+                feedbackArea.innerHTML += `
+                    <div class="hints">
+                        <h4>Hints:</h4>
+                        ${hints.map(hint => `<p>${hint}</p>`).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function markProblemSolved(problemIndex) {
+            solvedProblems[problemIndex] = true;
+            const indicator = document.getElementById(`indicator-${problemIndex}`);
+            const statusIcon = indicator.querySelector('.status-icon');
+            statusIcon.textContent = '✅';
+            indicator.classList.add('solved');
+        }
+
+        function showCompletionMessage() {
+            const feedbackArea = document.getElementById('feedback-area');
+            feedbackArea.innerHTML = `
+                <div class="completion-message">
+                    <h3>🎊 Congratulations!</h3>
+                    <p>You've successfully solved all three algorithm building challenges!</p>
+                    <p>You've mastered both everyday problem-solving and computer science fundamentals.</p>
+                    <div class="completion-stats">
+                        <p><strong>Skills Developed:</strong></p>
+                        <ul>
+                            <li>✅ Binary search and divide-and-conquer</li>
+                            <li>✅ Sorting algorithms (Bubble Sort)</li>
+                            <li>✅ Pathfinding and navigation (Maze)</li>
+                            <li>✅ Loop structures and iteration</li>
+                            <li>✅ Conditional logic (IF statements)</li>
+                            <li>✅ Algorithm efficiency and optimization</li>
+                            <li>✅ Problem decomposition strategies</li>
+                        </ul>
+                    </div>
+                    <button class="game-btn primary" onclick="window.location.href='index.html'">
+                        Return to Module 2
+                    </button>
+                </div>
+            `;
+            
+            // Mark activity as completed
+            if (window.progressTracker) {
+                window.progressTracker.markActivityCompleted(2, 'algorithm-builder');
+            }
+        }
+
+    </script>
+
+    <style>
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-selector {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .problem-selector h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .problem-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .problem-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .problem-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .problem-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .game-area {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .problem-description {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+        }
+
+        .problem-description h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-goal {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 0.5rem;
+        }
+
+        .builder-interface {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .blocks-panel, .algorithm-panel {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .blocks-panel h4, .algorithm-panel h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .blocks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+        
+        .block-category {
+            margin-bottom: 1rem;
+        }
+        
+        .category-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            padding: 0.5rem;
+            background: var(--border-color);
+            border-radius: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .scratch-block {
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .edit-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .problem-hint {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid var(--primary-color);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .problem-hint h5 {
+            color: var(--primary-color);
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .problem-hint p {
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        
+        .maze-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+        }
+        
+        .maze-display h5 {
+            margin: 0 0 1rem 0;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .maze-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .maze-cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .maze-cell.wall {
+            background: #6b7280;
+        }
+        
+        .maze-cell.start {
+            background: #10b981;
+        }
+        
+        .maze-cell.goal {
+            background: #f59e0b;
+        }
+        
+        .maze-cell.path {
+            background: #f9fafb;
+        }
+        
+        .range-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            border: 2px solid var(--border-color);
+        }
+        
+        .range-display h5 {
+            margin: 0 0 1rem 0;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .range-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .range-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 0.75rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .range-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        
+        .range-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .target-number {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .binary-search-demo {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .search-step {
+            font-size: 0.875rem;
+            margin: 0.25rem 0;
+            color: var(--text-primary);
+        }
+        
+        .search-step:first-child {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .code-block {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: grab;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .code-block:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .code-block.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .algorithm-area {
+            min-height: 300px;
+            border: 2px dashed var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .algorithm-area.drag-over {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .drop-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 280px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .algorithm-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            position: relative;
+        }
+
+        .block-number {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .block-text {
+            flex: 1;
+            outline: none;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .block-text[contenteditable="true"] {
+            cursor: text;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+        
+        .block-text[contenteditable="true"]:focus {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .edit-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.4rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+        
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .remove-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .remove-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .algorithm-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .game-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .game-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .game-btn.secondary {
+            background: var(--light-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .game-btn.secondary:hover {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .feedback-area {
+            margin-top: 2rem;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .feedback.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .feedback.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .feedback.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid #f59e0b;
+            color: #f59e0b;
+        }
+
+        .hints {
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid var(--primary-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .hints h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .completion-stats {
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        .completion-stats ul {
+            margin: 0.5rem 0;
+        }
+
+        .progress-section {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+        }
+
+        .progress-section h4 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .progress-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .problem-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .problem-indicator.solved {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .problem-number {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+        }
+
+        .problem-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-icon {
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 1rem;
+            }
+
+            .builder-interface {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .problem-buttons {
+                flex-direction: column;
+            }
+
+            .progress-indicators {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .algorithm-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>

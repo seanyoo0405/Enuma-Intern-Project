@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Recognition Game - Module 2</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Pattern Recognition Game</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Module
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-page">
+        <div class="module-content">
+            <div class="activity-container">
+                <div class="activity-header">
+                    <h2>🎯 Pattern Recognition Challenge</h2>
+                    <p>Test your pattern recognition skills with these interactive challenges!</p>
+                </div>
+
+                <!-- Game Stats -->
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Level:</span>
+                        <span class="stat-value" id="current-level">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Score:</span>
+                        <span class="stat-value" id="current-score">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streak:</span>
+                        <span class="stat-value" id="current-streak">0</span>
+                    </div>
+                </div>
+
+                <!-- Game Area -->
+                <div class="game-container">
+                    <div class="game-instructions">
+                        <h3 id="game-title">Sequence Patterns</h3>
+                        <p id="game-instruction">Look at the sequence below and identify the missing element.</p>
+                    </div>
+
+                    <div class="pattern-display" id="pattern-display">
+                        <!-- Pattern will be displayed here -->
+                    </div>
+
+                    <div class="answer-options" id="answer-options">
+                        <!-- Answer options will be displayed here -->
+                    </div>
+
+                    <div class="game-feedback" id="game-feedback">
+                        <!-- Feedback will be shown here -->
+                    </div>
+
+                    <div class="game-controls">
+                        <button class="game-btn primary" id="next-pattern" onclick="generatePattern()" style="display: none;">
+                            Next Pattern
+                        </button>
+                        <button class="game-btn secondary" onclick="resetGame()">
+                            Reset Game
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div class="progress-section">
+                    <h4>Your Progress</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <p class="progress-text">Complete 10 patterns to master this skill!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 1;
+        let currentScore = 0;
+        let currentStreak = 0;
+        let patternsCompleted = 0;
+        let currentPattern = null;
+        let gameTypes = ['sequence', 'color', 'shape', 'number'];
+        let currentGameType = 'sequence';
+
+        // Pattern data for different types
+        const patternTemplates = {
+            sequence: [
+                { pattern: [1, 2, 3, 4, '?'], answer: 5, options: [4, 5, 6, 7] },
+                { pattern: [2, 4, 6, 8, '?'], answer: 10, options: [9, 10, 11, 12] },
+                { pattern: [1, 1, 2, 3, 5, '?'], answer: 8, options: [6, 7, 8, 9] },
+                { pattern: [10, 20, 30, '?', 50], answer: 40, options: [35, 40, 45, 50] },
+                { pattern: ['A', 'B', 'C', '?', 'E'], answer: 'D', options: ['C', 'D', 'E', 'F'] }
+            ],
+            color: [
+                { pattern: ['🔴', '🟢', '🔵', '🔴', '?'], answer: '🟢', options: ['🔴', '🟢', '🔵', '🟡'] },
+                { pattern: ['🟡', '🟡', '🔵', '🟡', '🟡', '?'], answer: '🔵', options: ['🟡', '🔵', '🔴', '🟢'] },
+                { pattern: ['🔴', '🟢', '🔴', '🟢', '?'], answer: '🔴', options: ['🔴', '🟢', '🔵', '🟡'] }
+            ],
+            shape: [
+                { pattern: ['⭐', '⭐', '🔹', '⭐', '⭐', '?'], answer: '🔹', options: ['⭐', '🔹', '🔸', '⚫'] },
+                { pattern: ['🔺', '🔻', '🔺', '🔻', '?'], answer: '🔺', options: ['🔺', '🔻', '🔸', '🔹'] },
+                { pattern: ['⚫', '⚪', '⚫', '⚪', '⚫', '?'], answer: '⚪', options: ['⚫', '⚪', '🔴', '🔵'] }
+            ],
+            number: [
+                { pattern: [3, 6, 9, 12, '?'], answer: 15, options: [13, 14, 15, 16] },
+                { pattern: [1, 4, 9, 16, '?'], answer: 25, options: [20, 25, 30, 36] },
+                { pattern: [2, 6, 18, 54, '?'], answer: 162, options: [108, 162, 216, 324] }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generatePattern();
+        });
+
+        function generatePattern() {
+            // Select random game type
+            currentGameType = gameTypes[Math.floor(Math.random() * gameTypes.length)];
+            
+            // Select random pattern from the current type
+            const patterns = patternTemplates[currentGameType];
+            currentPattern = patterns[Math.floor(Math.random() * patterns.length)];
+            
+            // Update game title and instruction based on type
+            updateGameInstructions();
+            
+            // Display the pattern
+            displayPattern();
+            
+            // Display answer options
+            displayAnswerOptions();
+            
+            // Clear feedback
+            document.getElementById('game-feedback').innerHTML = '';
+            document.getElementById('next-pattern').style.display = 'none';
+        }
+
+        function updateGameInstructions() {
+            const titleElement = document.getElementById('game-title');
+            const instructionElement = document.getElementById('game-instruction');
+            
+            const instructions = {
+                sequence: {
+                    title: 'Number Sequence Patterns',
+                    instruction: 'Look at the sequence below and identify the missing number or letter.'
+                },
+                color: {
+                    title: 'Color Pattern Recognition',
+                    instruction: 'Find the missing color that completes the pattern.'
+                },
+                shape: {
+                    title: 'Shape Pattern Challenge',
+                    instruction: 'Identify which shape should come next in the sequence.'
+                },
+                number: {
+                    title: 'Mathematical Patterns',
+                    instruction: 'Solve the mathematical pattern to find the missing number.'
+                }
+            };
+            
+            titleElement.textContent = instructions[currentGameType].title;
+            instructionElement.textContent = instructions[currentGameType].instruction;
+        }
+
+        function displayPattern() {
+            const patternDisplay = document.getElementById('pattern-display');
+            patternDisplay.innerHTML = '';
+            
+            currentPattern.pattern.forEach((item, index) => {
+                const patternItem = document.createElement('div');
+                patternItem.className = 'pattern-item';
+                
+                if (item === '?') {
+                    patternItem.className += ' missing';
+                    patternItem.innerHTML = '<span class="question-mark">?</span>';
+                } else {
+                    patternItem.textContent = item;
+                }
+                
+                patternDisplay.appendChild(patternItem);
+            });
+        }
+
+        function displayAnswerOptions() {
+            const optionsContainer = document.getElementById('answer-options');
+            optionsContainer.innerHTML = '';
+            
+            // Shuffle options
+            const shuffledOptions = [...currentPattern.options].sort(() => Math.random() - 0.5);
+            
+            shuffledOptions.forEach(option => {
+                const optionButton = document.createElement('button');
+                optionButton.className = 'option-btn';
+                optionButton.textContent = option;
+                optionButton.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(optionButton);
+            });
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const feedback = document.getElementById('game-feedback');
+            const isCorrect = selectedAnswer === currentPattern.answer;
+            
+            // Disable all option buttons
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent == currentPattern.answer) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent == selectedAnswer && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            if (isCorrect) {
+                currentScore += (10 * currentLevel);
+                currentStreak++;
+                patternsCompleted++;
+                
+                feedback.innerHTML = `
+                    <div class="feedback correct">
+                        <h4>🎉 Correct!</h4>
+                        <p>Great pattern recognition! You earned ${10 * currentLevel} points.</p>
+                    </div>
+                `;
+                
+                // Level up every 3 correct answers
+                if (currentStreak % 3 === 0) {
+                    currentLevel++;
+                    feedback.innerHTML += `
+                        <div class="level-up">
+                            <h4>🚀 Level Up!</h4>
+                            <p>You've reached Level ${currentLevel}!</p>
+                        </div>
+                    `;
+                }
+                
+            } else {
+                currentStreak = 0;
+                feedback.innerHTML = `
+                    <div class="feedback incorrect">
+                        <h4>❌ Not quite right</h4>
+                        <p>The correct answer was <strong>${currentPattern.answer}</strong>. Try to identify the pattern!</p>
+                    </div>
+                `;
+            }
+            
+            updateStats();
+            updateProgress();
+            document.getElementById('next-pattern').style.display = 'inline-block';
+            
+            // Check if game is complete
+            if (patternsCompleted >= 10) {
+                showCompletionMessage();
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('current-level').textContent = currentLevel;
+            document.getElementById('current-score').textContent = currentScore;
+            document.getElementById('current-streak').textContent = currentStreak;
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercent = (patternsCompleted / 10) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+        }
+
+        function showCompletionMessage() {
+            const feedback = document.getElementById('game-feedback');
+            feedback.innerHTML = `
+                <div class="completion-message">
+                    <h3>🎊 Congratulations!</h3>
+                    <p>You've completed the Pattern Recognition Challenge!</p>
+                    <p><strong>Final Score:</strong> ${currentScore} points</p>
+                    <p><strong>Highest Level:</strong> ${currentLevel}</p>
+                    <button class="game-btn primary" onclick="window.location.href='index.html'">
+                        Return to Module 2
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('next-pattern').style.display = 'none';
+            
+            // Mark activity as completed
+            if (window.progressTracker) {
+                window.progressTracker.markActivityCompleted(2, 'pattern-game');
+            }
+        }
+
+        function resetGame() {
+            currentLevel = 1;
+            currentScore = 0;
+            currentStreak = 0;
+            patternsCompleted = 0;
+            updateStats();
+            updateProgress();
+            generatePattern();
+        }
+    </script>
+
+    <style>
+        .activity-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .activity-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .activity-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .game-instructions {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-instructions h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .pattern-display {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pattern-item {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pattern-item.missing {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .question-mark {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .answer-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            min-width: 80px;
+            height: 60px;
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background: var(--light-bg);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .option-btn.incorrect {
+            background: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .game-feedback {
+            margin: 2rem 0;
+            min-height: 80px;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .level-up {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .completion-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .completion-message h3 {
+            margin-bottom: 1rem;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .game-btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .game-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .game-btn.secondary {
+            background: var(--light-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .game-btn.secondary:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .progress-section {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .progress-section h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .activity-container {
+                padding: 1rem;
+            }
+
+            .game-stats {
+                gap: 1rem;
+            }
+
+            .pattern-display {
+                gap: 0.5rem;
+            }
+
+            .pattern-item {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .answer-options {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

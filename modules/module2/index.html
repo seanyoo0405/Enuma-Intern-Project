@@ -29,19 +29,56 @@
 
     <div class="module-page">
         <div class="module-content">
-            <div class="module-header-detail">
-                <div class="module-header-top">
-                    <div>
-                        <h2>Computational Thinking</h2>
-                        <p>Master pattern recognition and algorithm design for AI education</p>
-                    </div>
-                    <div class="module-stats">
-                        <span>Duration: 2 hours</span>
-                        <span>Progress: <span class="progress-text">0%</span></span>
+            <!-- Enhanced Module Header with Image -->
+            <div class="module-hero-container">
+                <div class="module-hero-image">
+                    <!-- Placeholder for module image -->
+                    <div class="image-placeholder">
+                        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" class="placeholder-icon">
+                            <rect x="10" y="20" width="80" height="60" rx="8" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M20 30L30 40L50 20L80 35" stroke="currentColor" stroke-width="3" fill="none" opacity="0.4"/>
+                            <circle cx="25" cy="35" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="45" cy="25" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="75" cy="40" r="3" fill="currentColor" opacity="0.4"/>
+                        </svg>
+                        <p class="placeholder-text">Module Image</p>
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                
+                <!-- Overlaid Title (Top Left) -->
+                <div class="module-title-overlay">
+                    <button class="back-btn-overlay" onclick="window.location.href='../../index.html'">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 16L0 8L8 0L9.4 1.4L3.8 7H16V9H3.8L9.4 14.6L8 16Z" fill="currentColor"/>
+                        </svg>
+                        Back
+                    </button>
+                    <div class="module-meta-overlay">
+                        <span class="module-number">Module 02</span>
+                        <span class="module-duration">~2 hours</span>
+                    </div>
+                    <h1 class="module-title-main">Computational Thinking</h1>
+                    <p class="module-description-overlay">Master pattern recognition, algorithm design, and problem-solving skills essential for AI education.</p>
+                </div>
+                
+                <!-- Progress Bar (Bottom) -->
+                <div class="module-progress-overlay">
+                    <div class="progress-info-overlay">
+                        <span class="progress-text-overlay">0% Complete</span>
+                    </div>
+                    <div class="progress-bar-overlay">
+                        <div class="progress-fill-overlay module-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Start Unit Button -->
+                <div class="start-unit-container">
+                    <button class="start-unit-btn" onclick="startUnit()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="start-icon">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Start Unit
+                    </button>
                 </div>
             </div>
 
@@ -83,7 +120,7 @@
                     
                     <!-- Activity Button after Video 2 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('pattern-game')">
+                        <button class="activity-button" onclick="openActivityWindow('pattern-game')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="10" y="10" width="15" height="15" stroke="currentColor" stroke-width="2"/>
@@ -137,7 +174,7 @@
                     
                     <!-- Activity Button after Video 4 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('algorithm-builder')">
+                        <button class="activity-button" onclick="openActivityWindow('algorithm-builder')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="15" y="10" width="30" height="8" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -157,7 +194,7 @@
                 <!-- Assessment Button -->
                 <div class="content-section">
                     <div class="assessment-button-section">
-                        <button class="assessment-button" onclick="startAssessment()">
+                        <button class="assessment-button" onclick="openActivityWindow('assessment')">
                             <div class="assessment-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="15" y="10" width="30" height="40" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -211,6 +248,11 @@
         const currentModuleId = 2;
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize progress tracking first
+            if (window.progressTracker) {
+                window.progressTracker.initializeProgress();
+            }
+            
             moduleManager.initializeModulePage(currentModuleId);
             
             // Add module 2 specific quiz questions
@@ -252,693 +294,473 @@
                 ]
             };
         });
-        
-        // New functions for the flow-based layout
-        function startActivity(activityId) {
-            const moduleFlow = document.querySelector('.module-flow');
-            const activitiesContainer = document.getElementById('activities');
-            
-            // Hide the main flow and show activities
-            moduleFlow.style.display = 'none';
-            activitiesContainer.style.display = 'block';
-            
-            // Initialize the specific activity
-            if (activityId === 'pattern-game') {
-                loadPatternGame();
-            } else if (activityId === 'algorithm-builder') {
-                loadAlgorithmBuilder();
-            }
-        }
-        
-        function startAssessment() {
-            const moduleFlow = document.querySelector('.module-flow');
-            const quizContainer = document.getElementById('quiz');
-            
-            // Hide the main flow and show quiz
-            moduleFlow.style.display = 'none';
-            quizContainer.style.display = 'block';
-            
-            loadQuizQuestions();
-        }
-        
-        function backToModule() {
-            const moduleFlow = document.querySelector('.module-flow');
-            const activitiesContainer = document.getElementById('activities');
-            const quizContainer = document.getElementById('quiz');
-            
-            // Show the main flow and hide others
-            moduleFlow.style.display = 'block';
-            activitiesContainer.style.display = 'none';
-            quizContainer.style.display = 'none';
-        }
-        
-        function loadQuizQuestions() {
-            const questions = window.moduleContent[2].quiz.questions;
-            showQuestion(0);
-        }
-        
-        function showQuestion(index) {
-            const questions = window.moduleContent[2].quiz.questions;
-            const question = questions[index];
-            const container = document.getElementById('question-container');
-            
-            container.innerHTML = `
-                <h3 class="question-text">${question.text}</h3>
-                <div class="answer-options">
-                    ${question.options.map((option, i) => `
-                        <div class="answer-option ${quizAnswers[question.id] === i ? 'selected' : ''}" 
-                             onclick="selectAnswer('${question.id}', ${i})">
-                            ${option}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            // Update progress
-            document.getElementById('current-question').textContent = index + 1;
-            document.getElementById('total-questions').textContent = questions.length;
-            document.querySelector('.quiz-progress-fill').style.width = `${((index + 1) / questions.length) * 100}%`;
-            
-            // Update buttons
-            document.getElementById('prev-btn').disabled = index === 0;
-            document.getElementById('next-btn').style.display = index === questions.length - 1 ? 'none' : 'inline-block';
-            document.getElementById('submit-btn').style.display = index === questions.length - 1 ? 'inline-block' : 'none';
-        }
-        
-        let currentQuestionIndex = 0;
-        let quizAnswers = {};
-        
-        function selectAnswer(questionId, answerIndex) {
-            quizAnswers[questionId] = answerIndex;
-            
-            // Update UI
-            document.querySelectorAll('.answer-option').forEach((option, i) => {
-                option.classList.toggle('selected', i === answerIndex);
-            });
-        }
-        
-        function nextQuestion() {
-            const questions = window.moduleContent[2].quiz.questions;
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion(currentQuestionIndex);
-            }
-        }
-        
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showQuestion(currentQuestionIndex);
-            }
-        }
-        
-        function submitQuiz() {
-            const questions = window.moduleContent[2].quiz.questions;
-            let correct = 0;
-            
-            questions.forEach(question => {
-                if (quizAnswers[question.id] === question.correct) {
-                    correct++;
+
+        // Add CSS styles for Module Hero Container
+        function addHeroStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Module Hero Container Styles */
+                .module-hero-container {
+                    position: relative;
+                    width: 100%;
+                    height: 400px;
+                    background: var(--light-bg);
+                    border-radius: 1rem;
+                    margin-bottom: 2rem;
+                    overflow: hidden;
+                    box-shadow: var(--shadow-lg);
                 }
-            });
-            
-            const score = Math.round((correct / questions.length) * 100);
-            
-            // Mark quiz completed
-            window.progressTracker.markQuizCompleted(currentModuleId, score);
-            
-            // Show results
-            const container = document.getElementById('question-container');
-            container.innerHTML = `
-                <div class="quiz-results">
-                    <h2>Quiz Complete!</h2>
-                    <p class="score">Your Score: ${score}%</p>
-                    <p>You got ${correct} out of ${questions.length} questions correct.</p>
-                    ${score >= 70 ? 
-                        '<p class="success">Great job! You\'ve passed the assessment.</p>' : 
-                        '<p class="warning">Keep studying and try again to improve your score.</p>'
+                
+                .module-hero-image {
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .image-placeholder {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+                    color: var(--text-secondary);
+                }
+                
+                .placeholder-text {
+                    font-size: 1.125rem;
+                    font-weight: 500;
+                    color: var(--text-secondary);
+                    margin: 0;
+                }
+                
+                .module-title-overlay {
+                    position: absolute;
+                    top: 2rem;
+                    left: 2rem;
+                    right: 2rem;
+                    z-index: 10;
+                }
+                
+                .back-btn-overlay {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(8px);
+                    border: none;
+                    border-radius: 0.5rem;
+                    color: var(--text-primary);
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    margin-bottom: 1rem;
+                    font-weight: 500;
+                }
+                
+                .back-btn-overlay:hover {
+                    background: rgba(255, 255, 255, 1);
+                    transform: translateY(-2px);
+                    box-shadow: var(--shadow-md);
+                }
+                
+                .module-meta-overlay {
+                    display: flex;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .module-number {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: var(--primary-color);
+                    text-transform: uppercase;
+                }
+                
+                .module-duration {
+                    font-size: 0.875rem;
+                    color: var(--text-secondary);
+                }
+                
+                .module-title-main {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                    margin: 0 0 0.5rem 0;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+                
+                .module-description-overlay {
+                    font-size: 1.125rem;
+                    color: var(--text-secondary);
+                    margin: 0;
+                    max-width: 600px;
+                    line-height: 1.6;
+                }
+                
+                .module-progress-overlay {
+                    position: absolute;
+                    bottom: 2rem;
+                    left: 2rem;
+                    right: 2rem;
+                    z-index: 10;
+                }
+                
+                .progress-info-overlay {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .progress-text-overlay {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                }
+                
+                .progress-bar-overlay {
+                    width: 100%;
+                    height: 8px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 4px;
+                    overflow: hidden;
+                    backdrop-filter: blur(8px);
+                }
+                
+                .progress-fill-overlay {
+                    height: 100%;
+                    background: var(--gradient-primary);
+                    transition: width 0.3s ease;
+                    border-radius: 4px;
+                }
+                
+                .start-unit-container {
+                    position: absolute;
+                    bottom: 2rem;
+                    right: 2rem;
+                    z-index: 10;
+                }
+                
+                .start-unit-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 1rem 2rem;
+                    background: var(--gradient-primary);
+                    color: white;
+                    border: none;
+                    border-radius: 0.75rem;
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: var(--shadow-lg);
+                }
+                
+                .start-unit-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 15px 25px -3px rgba(0, 0, 0, 0.15);
+                }
+                
+                .start-unit-btn:active {
+                    transform: translateY(-1px);
+                }
+                
+                /* Sequential Content Styles */
+                .module-flow.sequential-mode .content-section {
+                    display: none;
+                }
+                
+                .module-flow.sequential-mode .content-section.active {
+                    display: block;
+                    animation: fadeInUp 0.5s ease-out;
+                }
+                
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
                     }
-                    <button class="quiz-btn" onclick="backToModule()">Back to Module</button>
-                </div>
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .sequential-nav {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1.5rem;
+                    background: var(--card-bg);
+                    border-radius: 0.75rem;
+                    margin-top: 2rem;
+                    box-shadow: var(--shadow-sm);
+                }
+                
+                .sequential-progress {
+                    flex: 1;
+                    margin: 0 2rem;
+                    text-align: center;
+                }
+                
+                .sequential-progress-text {
+                    font-size: 0.875rem;
+                    color: var(--text-secondary);
+                    margin-bottom: 0.5rem;
+                }
+                
+                .sequential-progress-bar {
+                    width: 100%;
+                    height: 6px;
+                    background: var(--border-color);
+                    border-radius: 3px;
+                    overflow: hidden;
+                }
+                
+                .sequential-progress-fill {
+                    height: 100%;
+                    background: var(--gradient-primary);
+                    transition: width 0.3s ease;
+                }
+                
+                .nav-btn {
+                    padding: 0.75rem 1.5rem;
+                    border: 2px solid var(--border-color);
+                    border-radius: 0.5rem;
+                    background: var(--card-bg);
+                    color: var(--text-primary);
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                }
+                
+                .nav-btn:hover {
+                    border-color: var(--primary-color);
+                    background: var(--primary-color);
+                    color: white;
+                }
+                
+                .nav-btn:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+                
+                .nav-btn.primary {
+                    background: var(--gradient-primary);
+                    color: white;
+                    border-color: var(--primary-color);
+                }
             `;
+            document.head.appendChild(style);
+        }
+        
+        addHeroStyles();
+
+        // Sequential Unit System
+        let sequentialMode = false;
+        let currentSequentialIndex = 0;
+        let sequentialContent = [];
+        
+        function startUnit() {
+            console.log('Starting sequential unit mode');
+            sequentialMode = true;
             
-            document.querySelector('.quiz-actions').style.display = 'none';
-        }
-        
-        function loadPatternGame() {
-            const container = document.querySelector('#activities .activities-container');
-            container.innerHTML = `
-                <div class="activity-card">
-                    <div class="activity-header">
-                        <h3 class="activity-title">Pattern Recognition Game</h3>
-                        <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
-                    </div>
-                    <p>Complete the patterns by finding the missing numbers!</p>
-                    <div class="pattern-quiz">
-                        <div class="pattern-grid">
-                            ${generatePatternQuiz()}
-                        </div>
-                        <button class="activity-btn" onclick="checkPatterns()">Check Answers</button>
-                        <div id="pattern-results"></div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function loadAlgorithmBuilder() {
-            const container = document.querySelector('#activities .activities-container');
-            container.innerHTML = `
-                <div class="activity-card">
-                    <div class="activity-header">
-                        <h3 class="activity-title">Algorithm Builder</h3>
-                        <button class="back-to-module-btn" onclick="backToModule()">Back to Module</button>
-                    </div>
-                    <p>Create a step-by-step algorithm to make a peanut butter and jelly sandwich!</p>
-                    <div class="algorithm-builder">
-                        <div class="steps-container" id="steps-container">
-                            <div class="step">
-                                <input type="text" placeholder="Step 1: What's the first thing to do?" class="step-input">
-                                <button class="remove-step" onclick="removeStep(this)">×</button>
-                            </div>
-                        </div>
-                        <button class="activity-btn" onclick="addStep()">Add Step</button>
-                        <button class="activity-btn" onclick="testAlgorithm()">Test Algorithm</button>
-                        <div id="algorithm-results"></div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function generatePatternQuiz() {
-            const patterns = [
-                { sequence: [2, 4, 6, '?'], answer: 8, rule: 'Add 2' },
-                { sequence: [1, 3, 9, '?'], answer: 27, rule: 'Multiply by 3' },
-                { sequence: [10, 8, 6, '?'], answer: 4, rule: 'Subtract 2' }
+            // Define the sequential content order for Module 2
+            sequentialContent = [
+                { type: 'video', id: 'v1', title: 'Introduction to Computational Thinking', element: '.content-section:nth-child(1)' },
+                { type: 'video', id: 'v2', title: 'Pattern Recognition', element: '.content-section:nth-child(2)' },
+                { type: 'activity', id: 'pattern-game', title: 'Pattern Recognition Game', element: '.content-section:nth-child(2)' },
+                { type: 'video', id: 'v3', title: 'Decomposition & Abstraction', element: '.content-section:nth-child(3)' },
+                { type: 'video', id: 'v4', title: 'Algorithm Design', element: '.content-section:nth-child(4)' },
+                { type: 'activity', id: 'algorithm-builder', title: 'Algorithm Builder', element: '.content-section:nth-child(4)' },
+                { type: 'assessment', id: 'quiz', title: 'Module Assessment', element: '#quiz' }
             ];
             
-            return patterns.map((pattern, index) => `
-                <div class="pattern-question">
-                    <div class="sequence">
-                        ${pattern.sequence.map(item => 
-                            item === '?' ? 
-                            `<input type="number" class="answer-input" data-correct="${pattern.answer}" data-index="${index}">` :
-                            `<span class="sequence-item">${item}</span>`
-                        ).join(' → ')}
-                    </div>
-                    <p class="pattern-hint">Find the pattern!</p>
-                </div>
-            `).join('');
-        }
-        
-        function checkPatterns() {
-            const inputs = document.querySelectorAll('.answer-input');
-            let correct = 0;
+            currentSequentialIndex = 0;
             
-            inputs.forEach(input => {
-                const userAnswer = parseInt(input.value);
-                const correctAnswer = parseInt(input.dataset.correct);
+            // Hide the hero container and show sequential mode
+            const heroContainer = document.querySelector('.module-hero-container');
+            const moduleFlow = document.querySelector('.module-flow');
+            
+            if (heroContainer) {
+                heroContainer.style.display = 'none';
+            }
+            
+            if (moduleFlow) {
+                moduleFlow.classList.add('sequential-mode');
                 
-                if (userAnswer === correctAnswer) {
-                    correct++;
-                    input.style.borderColor = 'var(--success-color)';
-                } else {
-                    input.style.borderColor = 'var(--danger-color)';
-                }
-            });
-            
-            const score = Math.round((correct / inputs.length) * 100);
-            const results = document.getElementById('pattern-results');
-            
-            if (score === 100) {
-                window.aiLiteracy.completeActivity(currentModuleId, 'pattern-game');
-                results.innerHTML = '<p class="success">Perfect! You\'ve mastered pattern recognition!</p>';
-            } else {
-                results.innerHTML = `<p class="warning">You got ${correct} out of ${inputs.length} correct. Try again!</p>`;
-            }
-        }
-        
-        function addStep() {
-            const container = document.getElementById('steps-container');
-            const stepCount = container.children.length + 1;
-            const stepDiv = document.createElement('div');
-            stepDiv.className = 'step';
-            stepDiv.innerHTML = `
-                <input type="text" placeholder="Step ${stepCount}: What's next?" class="step-input">
-                <button class="remove-step" onclick="removeStep(this)">×</button>
-            `;
-            container.appendChild(stepDiv);
-        }
-        
-        function removeStep(button) {
-            button.parentElement.remove();
-            updateStepNumbers();
-        }
-        
-        function updateStepNumbers() {
-            const steps = document.querySelectorAll('.step-input');
-            steps.forEach((input, index) => {
-                input.placeholder = `Step ${index + 1}: ${index === 0 ? "What's the first thing to do?" : "What's next?"}`;
-            });
-        }
-        
-        function testAlgorithm() {
-            const steps = Array.from(document.querySelectorAll('.step-input')).map(input => input.value.trim());
-            const validSteps = steps.filter(step => step.length > 0);
-            const results = document.getElementById('algorithm-results');
-            
-            if (validSteps.length >= 3) {
-                window.aiLiteracy.completeActivity(currentModuleId, 'algorithm-builder');
-                results.innerHTML = `
-                    <div class="success">
-                        <h4>Great Algorithm!</h4>
-                        <p>You created ${validSteps.length} clear steps. Your algorithm is ready to test!</p>
-                        <ol>
-                            ${validSteps.map(step => `<li>${step}</li>`).join('')}
-                        </ol>
+                // Add sequential navigation
+                const sequentialNav = document.createElement('div');
+                sequentialNav.className = 'sequential-nav';
+                sequentialNav.innerHTML = `
+                    <button class="nav-btn" id="prev-btn" onclick="previousSequentialItem()" disabled>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 16L0 8L8 0L9.4 1.4L3.8 7H16V9H3.8L9.4 14.6L8 16Z" fill="currentColor"/>
+                        </svg>
+                        Previous
+                    </button>
+                    <div class="sequential-progress">
+                        <div class="sequential-progress-text">
+                            <span id="current-item">1</span> of <span id="total-items">${sequentialContent.length}</span>
+                        </div>
+                        <div class="sequential-progress-bar">
+                            <div class="sequential-progress-fill" id="sequential-progress-fill" style="width: ${(1/sequentialContent.length)*100}%"></div>
+                        </div>
                     </div>
+                    <button class="nav-btn primary" id="next-btn" onclick="nextSequentialItem()">
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 0L16 8L8 16L6.6 14.6L12.2 9H0V7H12.2L6.6 1.4L8 0Z" fill="currentColor"/>
+                        </svg>
+                    </button>
                 `;
-            } else {
-                results.innerHTML = '<p class="warning">Please add at least 3 steps to complete your algorithm.</p>';
+                
+                moduleFlow.appendChild(sequentialNav);
+            }
+            
+            // Show the first item
+            showSequentialItem(0);
+        }
+        
+        function showSequentialItem(index) {
+            if (index < 0 || index >= sequentialContent.length) return;
+            
+            const currentItem = sequentialContent[index];
+            const moduleFlow = document.querySelector('.module-flow');
+            
+            // Hide all content sections
+            const contentSections = moduleFlow.querySelectorAll('.content-section');
+            contentSections.forEach(section => section.classList.remove('active'));
+            
+            // Hide quiz section
+            const quizSection = document.getElementById('quiz');
+            if (quizSection) quizSection.style.display = 'none';
+            
+            // Show current item
+            if (currentItem.type === 'video') {
+                const sectionIndex = parseInt(currentItem.element.match(/\d+/)[0]) - 1;
+                if (contentSections[sectionIndex]) {
+                    contentSections[sectionIndex].classList.add('active');
+                }
+            } else if (currentItem.type === 'activity') {
+                // For activities, navigate to separate page
+                window.location.href = `${currentItem.id}.html`;
+            } else if (currentItem.type === 'assessment') {
+                window.location.href = 'assessment.html';
+            }
+            
+            // Update navigation
+            updateSequentialNavigation();
+        }
+        
+        function nextSequentialItem() {
+            if (currentSequentialIndex < sequentialContent.length - 1) {
+                currentSequentialIndex++;
+                showSequentialItem(currentSequentialIndex);
             }
         }
         
-        // Additional functions for lesson plan
-        function setupLessonPlanForm(activityId, moduleId) {
-            const form = document.getElementById('lesson-plan-form');
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    saveLessonPlan(activityId, moduleId);
-                });
+        function previousSequentialItem() {
+            if (currentSequentialIndex > 0) {
+                currentSequentialIndex--;
+                showSequentialItem(currentSequentialIndex);
             }
         }
         
-        function saveLessonPlan(activityId, moduleId) {
-            const formData = new FormData(document.getElementById('lesson-plan-form'));
-            const lessonPlan = {
-                title: formData.get('title'),
-                grade: formData.get('grade'),
-                objectives: formData.get('objectives'),
-                framework: formData.getAll('framework'),
-                activities: formData.get('activities'),
-                assessment: formData.get('assessment'),
-                created: new Date().toISOString()
-            };
+        function updateSequentialNavigation() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const currentItemSpan = document.getElementById('current-item');
+            const progressFill = document.getElementById('sequential-progress-fill');
             
-            // Save to localStorage
-            const plans = JSON.parse(localStorage.getItem('lessonPlans') || '[]');
-            plans.push(lessonPlan);
-            localStorage.setItem('lessonPlans', JSON.stringify(plans));
+            if (prevBtn) {
+                prevBtn.disabled = currentSequentialIndex === 0;
+            }
             
-            // Complete activity
-            window.aiLiteracy.completeActivity(moduleId, activityId);
+            if (nextBtn) {
+                if (currentSequentialIndex === sequentialContent.length - 1) {
+                    nextBtn.textContent = 'Complete Module';
+                    nextBtn.onclick = completeModule;
+                } else {
+                    nextBtn.innerHTML = `
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 0L16 8L8 16L6.6 14.6L12.2 9H0V7H12.2L6.6 1.4L8 0Z" fill="currentColor"/>
+                        </svg>
+                    `;
+                    nextBtn.onclick = nextSequentialItem;
+                }
+            }
             
-            alert('Lesson plan saved successfully!');
-        }
-        
-        function previewLessonPlan() {
-            const formData = new FormData(document.getElementById('lesson-plan-form'));
-            const preview = document.getElementById('lesson-preview');
+            if (currentItemSpan) {
+                currentItemSpan.textContent = currentSequentialIndex + 1;
+            }
             
-            preview.innerHTML = `
-                <div class="lesson-plan-preview">
-                    <h3>Lesson Plan Preview</h3>
-                    <div class="preview-content">
-                        <h4>${formData.get('title')}</h4>
-                        <p><strong>Grade Level:</strong> ${formData.get('grade')}</p>
-                        <p><strong>Objectives:</strong><br>${formData.get('objectives')}</p>
-                        <p><strong>UNESCO Framework:</strong> ${formData.getAll('framework').join(', ')}</p>
-                        <p><strong>Activities:</strong><br>${formData.get('activities')}</p>
-                        <p><strong>Assessment:</strong><br>${formData.get('assessment')}</p>
-                    </div>
-                    <button class="activity-btn" onclick="exportLessonPlan()">Export as PDF</button>
-                </div>
-            `;
-            
-            preview.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function exportLessonPlan() {
-            alert('PDF export feature would be implemented here');
-        }
-        
-        function checkRecommendations(activityId, moduleId) {
-            const pairs = document.querySelectorAll('.friend-pair');
-            if (pairs.length >= 2) {
-                window.aiLiteracy.completeActivity(moduleId, activityId);
-                alert('Great job creating friend recommendations based on shared interests!');
-            } else {
-                alert('Please create at least 2 friend recommendations.');
+            if (progressFill) {
+                const progressPercent = ((currentSequentialIndex + 1) / sequentialContent.length) * 100;
+                progressFill.style.width = `${progressPercent}%`;
             }
         }
         
-        // Add styles for module 2
-        const style = document.createElement('style');
-        style.textContent = `
-            .algorithm-builder {
-                background: var(--light-bg);
-                padding: 2rem;
-                border-radius: 1rem;
+        function completeModule() {
+            // Show completion message and return to hero view
+            alert('🎉 Congratulations! You have completed Module 2: Computational Thinking!');
+            
+            // Reset to normal view
+            sequentialMode = false;
+            currentSequentialIndex = 0;
+            
+            const heroContainer = document.querySelector('.module-hero-container');
+            const moduleFlow = document.querySelector('.module-flow');
+            const sequentialNav = document.querySelector('.sequential-nav');
+            
+            if (heroContainer) {
+                heroContainer.style.display = 'block';
             }
             
-            .steps-container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                margin: 2rem 0;
+            if (moduleFlow) {
+                moduleFlow.classList.remove('sequential-mode');
+                const contentSections = moduleFlow.querySelectorAll('.content-section');
+                contentSections.forEach(section => section.classList.remove('active'));
             }
             
-            .step {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                background: white;
-                padding: 0.75rem;
-                border-radius: 0.5rem;
-                box-shadow: var(--shadow-sm);
+            if (sequentialNav) {
+                sequentialNav.remove();
             }
             
-            .step-input {
-                flex: 1;
-                padding: 0.5rem;
-                border: 2px solid var(--border-color);
-                border-radius: 0.5rem;
-                font-family: inherit;
+            // Update progress to 100%
+            const progressFillOverlay = document.querySelector('.progress-fill-overlay');
+            const progressTextOverlay = document.querySelector('.progress-text-overlay');
+            
+            if (progressFillOverlay) {
+                progressFillOverlay.style.width = '100%';
             }
             
-            .remove-step {
-                background: var(--danger-color);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-                font-size: 1.2rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            if (progressTextOverlay) {
+                progressTextOverlay.textContent = '100% Complete';
             }
-            
-            .success {
-                color: var(--success-color);
-                background: rgba(16, 185, 129, 0.1);
-                padding: 1rem;
-                border-radius: 0.5rem;
-                margin-top: 1rem;
+        }
+
+        // Navigate to activity page
+        function openActivityWindow(activityId) {
+            if (activityId === 'pattern-game') {
+                window.location.href = 'pattern-game.html';
+            } else if (activityId === 'algorithm-builder') {
+                window.location.href = 'algorithm-builder.html';
+            } else if (activityId === 'assessment') {
+                window.location.href = 'assessment.html';
             }
-            
-            .warning {
-                color: var(--warning-color);
-                background: rgba(245, 158, 11, 0.1);
-                padding: 1rem;
-                border-radius: 0.5rem;
-                margin-top: 1rem;
-            }
-            
-            .activity-card {
-                background: var(--card-bg);
-                border-radius: 1rem;
-                padding: 2rem;
-                box-shadow: var(--shadow-md);
-            }
-            
-            .activity-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 1.5rem;
-            }
-            
-            .back-to-module-btn {
-                background: var(--text-secondary);
-                color: white;
-                border: none;
-                padding: 0.5rem 1rem;
-                border-radius: 0.5rem;
-                cursor: pointer;
-                font-size: 0.875rem;
-            }
-            
-            .activity-btn {
-                margin: 0.5rem 0.5rem 0.5rem 0;
-                padding: 0.75rem 1.5rem;
-                background: var(--gradient-primary);
-                color: white;
-                border: none;
-                border-radius: 0.5rem;
-                font-weight: 600;
-                cursor: pointer;
-            }
-            
-            .pattern-quiz {
-                padding: 2rem;
-                background: var(--light-bg);
-                border-radius: 1rem;
-            }
-            
-            .pattern-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                margin: 2rem 0;
-            }
-            
-            .pattern-question {
-                background: white;
-                padding: 1.5rem;
-                border-radius: 0.75rem;
-                box-shadow: var(--shadow-sm);
-            }
-            
-            .sequence {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                font-size: 1.25rem;
-                margin-bottom: 1rem;
-            }
-            
-            .sequence-item {
-                padding: 0.5rem 1rem;
-                background: var(--primary-color);
-                color: white;
-                border-radius: 0.5rem;
-                font-weight: 600;
-            }
-            
-            .answer-input {
-                width: 60px;
-                padding: 0.5rem;
-                border: 2px solid var(--border-color);
-                border-radius: 0.5rem;
-                text-align: center;
-                font-size: 1.25rem;
-                font-weight: 600;
-            }
-            
-            .pattern-hint {
-                color: var(--text-secondary);
-                font-style: italic;
-            }
-            
-            .lesson-plan-form {
-                background: var(--light-bg);
-                padding: 2rem;
-                border-radius: 1rem;
-            }
-            
-            .form-group {
-                margin-bottom: 1.5rem;
-            }
-            
-            .form-group label {
-                display: block;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-            }
-            
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                width: 100%;
-                padding: 0.75rem;
-                border: 2px solid var(--border-color);
-                border-radius: 0.5rem;
-                font-family: inherit;
-            }
-            
-            .checkbox-group {
-                display: flex;
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
-            
-            .checkbox-group label {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-weight: normal;
-            }
-            
-            .form-actions {
-                display: flex;
-                gap: 1rem;
-                margin-top: 2rem;
-            }
-            
-            .lesson-plan-preview {
-                margin-top: 2rem;
-                padding: 2rem;
-                background: white;
-                border-radius: 0.75rem;
-                box-shadow: var(--shadow-md);
-            }
-            
-            .student-cards {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1rem;
-                margin: 2rem 0;
-            }
-            
-            .student-card {
-                background: white;
-                padding: 1.5rem;
-                border-radius: 0.75rem;
-                text-align: center;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                border: 2px solid transparent;
-            }
-            
-            .student-card:hover {
-                transform: translateY(-4px);
-                box-shadow: var(--shadow-md);
-            }
-            
-            .student-card.selected {
-                border-color: var(--primary-color);
-                background: rgba(99, 102, 241, 0.05);
-            }
-            
-            .student-avatar {
-                width: 60px;
-                height: 60px;
-                background: var(--gradient-primary);
-                color: white;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.5rem;
-                font-weight: 700;
-                margin: 0 auto 1rem;
-            }
-            
-            .interests {
-                display: flex;
-                gap: 0.5rem;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-top: 0.5rem;
-            }
-            
-            .interest-tag {
-                padding: 0.25rem 0.75rem;
-                background: var(--light-bg);
-                border-radius: 1rem;
-                font-size: 0.75rem;
-            }
-            
-            .recommendation-pairs {
-                margin: 1rem 0;
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .friend-pair {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                padding: 0.75rem;
-                background: var(--light-bg);
-                border-radius: 0.5rem;
-            }
-            
-            .remove-pair {
-                margin-left: auto;
-                background: var(--danger-color);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 24px;
-                height: 24px;
-                cursor: pointer;
-            }
-            
-            .classification-demo {
-                background: var(--light-bg);
-                padding: 2rem;
-                border-radius: 1rem;
-            }
-            
-            .classification-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 1rem;
-                margin: 2rem 0;
-            }
-            
-            .classification-item {
-                background: white;
-                padding: 1rem;
-                border-radius: 0.75rem;
-                text-align: center;
-                transition: all 0.3s ease;
-            }
-            
-            .item-image {
-                color: var(--primary-color);
-                margin-bottom: 0.5rem;
-            }
-            
-            .classify-btn {
-                margin-top: 0.5rem;
-                padding: 0.25rem 0.75rem;
-                background: var(--primary-color);
-                color: white;
-                border: none;
-                border-radius: 0.25rem;
-                font-size: 0.875rem;
-                cursor: pointer;
-            }
-            
-            .classification-controls {
-                display: flex;
-                gap: 1rem;
-                justify-content: center;
-            }
-            
-            #classification-results {
-                margin-top: 1rem;
-                padding: 1rem;
-                background: white;
-                border-radius: 0.5rem;
-                text-align: center;
-            }
-        `;
-        document.head.appendChild(style);
+        }
         
-        // Make functions available globally
-        window.startQuiz = startQuiz;
-        window.checkPatterns = checkPatterns;
-        window.setupLessonPlanForm = setupLessonPlanForm;
-        window.saveLessonPlan = saveLessonPlan;
-        window.previewLessonPlan = previewLessonPlan;
-        window.exportLessonPlan = exportLessonPlan;
-        window.checkRecommendations = checkRecommendations;
+        // Export functions to global scope
+        window.startUnit = startUnit;
+        window.nextSequentialItem = nextSequentialItem;
+        window.previousSequentialItem = previousSequentialItem;
+        window.completeModule = completeModule;
+        window.openActivityWindow = openActivityWindow;
     </script>
 </body>
 </html>

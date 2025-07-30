@@ -29,19 +29,58 @@
 
     <div class="module-page">
         <div class="module-content">
-            <div class="module-header-detail">
-                <div class="module-header-top">
-                    <div>
-                        <h2>AI System Design</h2>
-                        <p>Build your own AI projects and create cool chatbots</p>
-                    </div>
-                    <div class="module-stats">
-                        <span>Duration: 2 hours</span>
-                        <span>Progress: <span class="progress-text">0%</span></span>
+            <!-- Enhanced Module Header with Image -->
+            <div class="module-hero-container">
+                <div class="module-hero-image">
+                    <!-- Placeholder for module image -->
+                    <div class="image-placeholder">
+                        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" class="placeholder-icon">
+                            <rect x="20" y="30" width="60" height="40" rx="8" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <circle cx="35" cy="20" r="8" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+                            <path d="M35 28V40" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+                            <path d="M25 45H75" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+                            <circle cx="30" cy="55" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="50" cy="55" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="70" cy="55" r="3" fill="currentColor" opacity="0.4"/>
+                        </svg>
+                        <p class="placeholder-text">Module Image</p>
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                
+                <!-- Overlaid Title (Top Left) -->
+                <div class="module-title-overlay">
+                    <button class="back-btn-overlay" onclick="window.location.href='../../index.html'">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 16L0 8L8 0L9.4 1.4L3.8 7H16V9H3.8L9.4 14.6L8 16Z" fill="currentColor"/>
+                        </svg>
+                        Back
+                    </button>
+                    <div class="module-meta-overlay">
+                        <span class="module-number">Module 03</span>
+                        <span class="module-duration">~2 hours</span>
+                    </div>
+                    <h1 class="module-title-main">AI System Design</h1>
+                    <p class="module-description-overlay">Learn to build your own AI projects, create intelligent chatbots, and design systems that solve real problems.</p>
+                </div>
+                
+                <!-- Progress Bar (Bottom) -->
+                <div class="module-progress-overlay">
+                    <div class="progress-info-overlay">
+                        <span class="progress-text-overlay">0% Complete</span>
+                    </div>
+                    <div class="progress-bar-overlay">
+                        <div class="progress-fill-overlay module-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Start Unit Button -->
+                <div class="start-unit-container">
+                    <button class="start-unit-btn" onclick="startUnit()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="start-icon">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Start Unit
+                    </button>
                 </div>
             </div>
 
@@ -83,7 +122,7 @@
                     
                     <!-- Activity Button after Video 2 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('chatbot-builder')">
+                        <button class="activity-button" onclick="openActivityWindow('chatbot-builder')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="15" y="15" width="30" height="25" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -138,7 +177,7 @@
                     
                     <!-- Activity Button after Video 4 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('ai-project')">
+                        <button class="activity-button" onclick="openActivityWindow('ai-project')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="10" y="15" width="40" height="25" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -159,7 +198,7 @@
                 <!-- Assessment Button -->
                 <div class="content-section">
                     <div class="assessment-button-section">
-                        <button class="assessment-button" onclick="startAssessment()">
+                        <button class="assessment-button" onclick="openActivityWindow('assessment')">
                             <div class="assessment-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <rect x="15" y="10" width="30" height="40" rx="4" stroke="currentColor" stroke-width="2"/>
@@ -211,14 +250,17 @@
     <script src="../../js/progress.js"></script>
     <script>
         const currentModuleId = 3;
-        let currentQuestionIndex = 0;
-        let quizAnswers = {};
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize progress tracking first
+            if (window.progressTracker) {
+                window.progressTracker.initializeProgress();
+            }
+            
             moduleManager.initializeModulePage(currentModuleId);
             
             // Add module 3 specific quiz questions
-            window.moduleContent[3] = {
+            window.moduleContent[3].quiz = {
                 quiz: {
                     questions: [
                         {
@@ -665,6 +707,68 @@
         window.backToModule = backToModule;
         window.nextQuestion = nextQuestion;
         window.previousQuestion = previousQuestion;
+        // Sequential Unit System
+        let sequentialMode = false;
+        let currentSequentialIndex = 0;
+        let sequentialContent = [];
+        
+        function startUnit() {
+            sequentialMode = true;
+            
+            // Define the sequential content order for Module 3
+            sequentialContent = [
+                { type: 'video', id: 'v1', title: 'Introduction to Chatbots', element: '.content-section:nth-child(1)' },
+                { type: 'video', id: 'v2', title: 'AI Image Generation', element: '.content-section:nth-child(2)' },
+                { type: 'activity', id: 'chatbot-builder', title: 'Math Helper Chatbot', element: '.content-section:nth-child(2)' },
+                { type: 'video', id: 'v3', title: 'Training AI Models', element: '.content-section:nth-child(3)' },
+                { type: 'video', id: 'v4', title: 'AI Project Planning', element: '.content-section:nth-child(4)' },
+                { type: 'activity', id: 'ai-project', title: 'AI Art Creator', element: '.content-section:nth-child(4)' },
+                { type: 'assessment', id: 'quiz', title: 'Module Assessment', element: '#quiz' }
+            ];
+            
+            currentSequentialIndex = 0;
+            
+            // Hide the hero container and show sequential mode
+            const heroContainer = document.querySelector('.module-hero-container');
+            if (heroContainer) {
+                heroContainer.style.display = 'none';
+            }
+            
+            // Show the first item
+            showSequentialItem(0);
+        }
+        
+        function showSequentialItem(index) {
+            if (index < 0 || index >= sequentialContent.length) return;
+            
+            const currentItem = sequentialContent[index];
+            
+            if (currentItem.type === 'activity' || currentItem.type === 'assessment') {
+                window.location.href = `${currentItem.id}.html`;
+            } else {
+                // Show video content
+                const moduleFlow = document.querySelector('.module-flow');
+                const contentSections = moduleFlow.querySelectorAll('.content-section');
+                contentSections.forEach(section => section.classList.remove('active'));
+                
+                const sectionIndex = parseInt(currentItem.element.match(/\d+/)[0]) - 1;
+                if (contentSections[sectionIndex]) {
+                    contentSections[sectionIndex].classList.add('active');
+                }
+            }
+        }
+
+        // Navigate to activity page
+        function openActivityWindow(activityId) {
+            if (activityId === 'chatbot-builder') {
+                window.location.href = 'chatbot-builder.html';
+            } else if (activityId === 'ai-project') {
+                window.location.href = 'ai-project.html';
+            } else if (activityId === 'assessment') {
+                window.location.href = 'assessment.html';
+            }
+        }
+
         window.submitQuiz = submitQuiz;
         window.selectAnswer = selectAnswer;
         window.addResponse = addResponse;
@@ -672,6 +776,8 @@
         window.testChatbot = testChatbot;
         window.sendMessage = sendMessage;
         window.submitProject = submitProject;
+        window.startUnit = startUnit;
+        window.openActivityWindow = openActivityWindow;
     </script>
 </body>
 </html>

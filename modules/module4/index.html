@@ -29,19 +29,57 @@
 
     <div class="module-page">
         <div class="module-content">
-            <div class="module-header-detail">
-                <div class="module-header-top">
-                    <div>
-                        <h2>AI in Your Future</h2>
-                        <p>Explore career paths and imagine how AI will shape your future</p>
-                    </div>
-                    <div class="module-stats">
-                        <span>Duration: 2 hours</span>
-                        <span>Progress: <span class="progress-text">0%</span></span>
+            <!-- Enhanced Module Header with Image -->
+            <div class="module-hero-container">
+                <div class="module-hero-image">
+                    <!-- Placeholder for module image -->
+                    <div class="image-placeholder">
+                        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" class="placeholder-icon">
+                            <circle cx="50" cy="40" r="20" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M30 60L50 40L70 60" stroke="currentColor" stroke-width="3" fill="none" opacity="0.4"/>
+                            <circle cx="35" cy="25" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="50" cy="20" r="3" fill="currentColor" opacity="0.4"/>
+                            <circle cx="65" cy="25" r="3" fill="currentColor" opacity="0.4"/>
+                            <path d="M20 70L80 70" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                        </svg>
+                        <p class="placeholder-text">Module Image</p>
                     </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill module-progress-fill" style="width: 0%"></div>
+                
+                <!-- Overlaid Title (Top Left) -->
+                <div class="module-title-overlay">
+                    <button class="back-btn-overlay" onclick="window.location.href='../../index.html'">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 16L0 8L8 0L9.4 1.4L3.8 7H16V9H3.8L9.4 14.6L8 16Z" fill="currentColor"/>
+                        </svg>
+                        Back
+                    </button>
+                    <div class="module-meta-overlay">
+                        <span class="module-number">Module 04</span>  
+                        <span class="module-duration">~2 hours</span>
+                    </div>
+                    <h1 class="module-title-main">AI in Your Future</h1>
+                    <p class="module-description-overlay">Explore career opportunities in AI, envision future possibilities, and prepare for an AI-integrated world.</p>
+                </div>
+                
+                <!-- Progress Bar (Bottom) -->
+                <div class="module-progress-overlay">
+                    <div class="progress-info-overlay">
+                        <span class="progress-text-overlay">0% Complete</span>
+                    </div>
+                    <div class="progress-bar-overlay">
+                        <div class="progress-fill-overlay module-progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Start Unit Button -->
+                <div class="start-unit-container">
+                    <button class="start-unit-btn" onclick="startUnit()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="start-icon">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Start Unit
+                    </button>
                 </div>
             </div>
 
@@ -83,7 +121,7 @@
                     
                     <!-- Activity Button after Video 2 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('career-explorer')">
+                        <button class="activity-button" onclick="openActivityWindow('career-explorer')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <circle cx="30" cy="20" r="8" stroke="currentColor" stroke-width="2"/>
@@ -136,7 +174,7 @@
                     
                     <!-- Activity Button after Video 4 -->
                     <div class="activity-button-section">
-                        <button class="activity-button" onclick="startActivity('future-vision')">
+                        <button class="activity-button" onclick="openActivityWindow('future-vision')">
                             <div class="activity-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <path d="M30 15L35 25L45 25L37 32L40 42L30 37L20 42L23 32L15 25L25 25L30 15Z" stroke="currentColor" stroke-width="2"/>
@@ -154,7 +192,7 @@
                 <!-- Assessment Button -->
                 <div class="content-section">
                     <div class="assessment-button-section">
-                        <button class="assessment-button" onclick="startAssessment()">
+                        <button class="assessment-button" onclick="openActivityWindow('assessment')">
                             <div class="assessment-thumbnail">
                                 <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
                                     <path d="M30 15L35 25L45 25L37 32L40 42L30 37L20 42L23 32L15 25L25 25L30 15Z" stroke="currentColor" stroke-width="2"/>
@@ -719,6 +757,70 @@
         `;
         document.head.appendChild(style);
         
+        // Sequential Unit System
+        let sequentialMode = false;
+        let currentSequentialIndex = 0;
+        let sequentialContent = [];
+        let currentQuestionIndex = 0;
+        let quizAnswers = {};
+        
+        function startUnit() {
+            sequentialMode = true;
+            
+            // Define the sequential content order for Module 4
+            sequentialContent = [
+                { type: 'video', id: 'v1', title: 'AI in Today\'s World', element: '.content-section:nth-child(1)' },
+                { type: 'video', id: 'v2', title: 'Future Career Opportunities', element: '.content-section:nth-child(2)' },
+                { type: 'activity', id: 'career-explorer', title: 'Career Explorer', element: '.content-section:nth-child(2)' },
+                { type: 'video', id: 'v3', title: 'Preparing for an AI Future', element: '.content-section:nth-child(3)' },
+                { type: 'video', id: 'v4', title: 'Your AI Learning Journey', element: '.content-section:nth-child(4)' },
+                { type: 'activity', id: 'future-vision', title: 'Future Vision Board', element: '.content-section:nth-child(4)' },
+                { type: 'assessment', id: 'quiz', title: 'Module Assessment', element: '#quiz' }
+            ];
+            
+            currentSequentialIndex = 0;
+            
+            // Hide the hero container and show sequential mode
+            const heroContainer = document.querySelector('.module-hero-container');
+            if (heroContainer) {
+                heroContainer.style.display = 'none';
+            }
+            
+            // Show the first item
+            showSequentialItem(0);
+        }
+        
+        function showSequentialItem(index) {
+            if (index < 0 || index >= sequentialContent.length) return;
+            
+            const currentItem = sequentialContent[index];
+            
+            if (currentItem.type === 'activity' || currentItem.type === 'assessment') {
+                window.location.href = `${currentItem.id}.html`;
+            } else {
+                // Show video content
+                const moduleFlow = document.querySelector('.module-flow');
+                const contentSections = moduleFlow.querySelectorAll('.content-section');
+                contentSections.forEach(section => section.classList.remove('active'));
+                
+                const sectionIndex = parseInt(currentItem.element.match(/\\d+/)[0]) - 1;
+                if (contentSections[sectionIndex]) {
+                    contentSections[sectionIndex].classList.add('active');
+                }
+            }
+        }
+
+        // Navigate to activity page
+        function openActivityWindow(activityId) {
+            if (activityId === 'career-explorer') {
+                window.location.href = 'career-explorer.html';
+            } else if (activityId === 'future-vision') {
+                window.location.href = 'future-vision.html';
+            } else if (activityId === 'assessment') {
+                window.location.href = 'assessment.html';
+            }
+        }
+
         // Make functions available globally
         window.startActivity = startActivity;
         window.startAssessment = startAssessment;
@@ -730,6 +832,8 @@
         window.selectInterest = selectInterest;
         window.createVisionBoard = createVisionBoard;
         window.downloadCertificate = downloadCertificate;
+        window.startUnit = startUnit;
+        window.openActivityWindow = openActivityWindow;
     </script>
 </body>
 </html>
