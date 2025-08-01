@@ -18,30 +18,37 @@ const appState = {
     modules: [
         {
             id: 1,
-            title: 'AI Fundamentals',
+            title: 'Problem Solving with AI',
             duration: 2,
-            activities: ['videos', 'classification-game', 'bias-experience', 'quiz'],
+            activities: ['videos', 'ai-assistant-demo', 'bias-hallucination-game', 'creative-ai-project', 'decision-making-scenario', 'quiz'],
             progress: 0
         },
         {
             id: 2,
-            title: 'Computational Thinking',
+            title: 'Foundations of AI Programming',
             duration: 2,
-            activities: ['videos', 'friend-recommendation', 'fish-classification', 'problem-solving', 'quiz'],
+            activities: ['videos', 'variable-practice', 'loop-challenge', 'conditional-game', 'function-builder', 'debug-detective', 'ethics-scenarios', 'quiz'],
             progress: 0
         },
         {
             id: 3,
-            title: 'AI System Design',
+            title: 'AI and the Systems That Power It',
             duration: 2,
-            activities: ['videos', 'chat-lab', 'image-generation', 'portfolio', 'quiz'],
+            activities: ['videos', 'hardware-explorer', 'data-pipeline', 'iot-designer', 'tech-trends', 'system-architecture', 'quiz'],
             progress: 0
         },
         {
             id: 4,
-            title: 'Professional Development',
+            title: 'The Fabric of the Internet and AI',
             duration: 2,
-            activities: ['videos', 'career-exploration', 'future-ai', 'final-project', 'certificate'],
+            activities: ['videos', 'data-journey', 'ip-explorer', 'security-audit', 'digital-divide-analysis', 'network-design', 'quiz'],
+            progress: 0
+        },
+        {
+            id: 5,
+            title: 'Cybersecurity and Global Impacts',
+            duration: 2,
+            activities: ['videos', 'privacy-audit', 'threat-modeling', 'ethics-framework', 'encryption-lab', 'global-impact-study', 'policy-proposal', 'quiz'],
             progress: 0
         }
     ]
@@ -148,10 +155,11 @@ function calculateOverallProgress() {
 // Update badges display
 function updateBadges() {
     const badges = [
-        { id: 'explorer', name: 'AI Explorer', requirement: 'module1' },
-        { id: 'pattern', name: 'Pattern Detective', requirement: 'module2' },
-        { id: 'creator', name: 'AI Builder', requirement: 'module3' },
-        { id: 'teacher', name: 'AI Champion', requirement: 'module4' }
+        { id: 'problem-solver', name: 'Problem Solver', requirement: 'module1' },
+        { id: 'programmer', name: 'AI Programmer', requirement: 'module2' },
+        { id: 'systems-expert', name: 'Systems Expert', requirement: 'module3' },
+        { id: 'network-navigator', name: 'Network Navigator', requirement: 'module4' },
+        { id: 'cyber-guardian', name: 'Cyber Guardian', requirement: 'module5' }
     ];
     
     badges.forEach((badge, index) => {
@@ -193,10 +201,11 @@ function updateModuleProgress(moduleId, progress) {
 // Unlock a badge
 function unlockBadge(moduleId) {
     const badgeMap = {
-        1: 'explorer',
-        2: 'pattern',
-        3: 'creator',
-        4: 'teacher'
+        1: 'problem-solver',
+        2: 'programmer',
+        3: 'systems-expert',
+        4: 'network-navigator',
+        5: 'cyber-guardian'
     };
     
     const badgeId = badgeMap[moduleId];
@@ -209,10 +218,11 @@ function unlockBadge(moduleId) {
 // Show badge notification
 function showBadgeNotification(badgeId) {
     const badgeNames = {
-        explorer: 'AI Explorer',
-        pattern: 'Pattern Detective',
-        creator: 'AI Builder',
-        teacher: 'AI Champion'
+        'problem-solver': 'Problem Solver',
+        'programmer': 'AI Programmer',
+        'systems-expert': 'Systems Expert',
+        'network-navigator': 'Network Navigator',
+        'cyber-guardian': 'Cyber Guardian'
     };
     
     // Create notification element

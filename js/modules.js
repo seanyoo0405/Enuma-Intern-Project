@@ -1,51 +1,55 @@
 // Module navigation and content management
 
-// Module content structure
+// Module content structure - 5 Unit Curriculum
 const moduleContent = {
     1: {
-        title: 'AI Fundamentals',
+        title: 'Problem Solving with AI',
+        description: 'AI as an Assistant, AI Limitations, Bias and Hallucinations, AI for Creativity, AI in Decision-Making',
         videos: [
-            { id: 'v1', title: 'What is AI?', duration: '10:30', url: 'placeholder' },
-            { id: 'v2', title: 'Can AI Lie?', duration: '12:15', url: 'placeholder' },
-            { id: 'v3', title: 'AI in Your Daily Life', duration: '8:45', url: 'placeholder' },
-            { id: 'v4', title: 'AI Ethics and Bias', duration: '9:00', url: 'placeholder' }
+            { id: 'v1', title: 'AI as Your Assistant', duration: '12:30', url: 'placeholder' },
+            { id: 'v2', title: 'Understanding AI Limitations', duration: '10:45', url: 'placeholder' },
+            { id: 'v3', title: 'Bias and Hallucinations in AI', duration: '14:20', url: 'placeholder' },
+            { id: 'v4', title: 'AI for Creative Problem Solving', duration: '11:15', url: 'placeholder' },
+            { id: 'v5', title: 'AI in Decision-Making', duration: '13:00', url: 'placeholder' }
         ],
         activities: [
-            { id: 'truth-hallucination', title: 'Truth or Hallucination?', type: 'interactive' },
-            { id: 'bias-experience', title: 'AI Bias Experience', type: 'interactive' }
+            { id: 'ai-assistant-demo', title: 'AI Assistant Challenge', type: 'interactive' },
+            { id: 'bias-hallucination-game', title: 'Spot the Bias & Hallucination', type: 'interactive' },
+            { id: 'creative-ai-project', title: 'Creative AI Project', type: 'creative' },
+            { id: 'decision-making-scenario', title: 'AI Decision Making Scenarios', type: 'simulation' }
         ],
         quiz: {
             questions: [
                 {
                     id: 'q1',
-                    text: 'What is the main difference between AI and traditional computer programs?',
+                    text: 'What is a key limitation of AI assistants?',
                     options: [
-                        'AI can learn from data',
-                        'AI is faster',
-                        'AI uses more memory',
-                        'AI is more colorful'
+                        'They can hallucinate or generate false information',
+                        'They are too expensive',
+                        'They work too slowly',
+                        'They only understand English'
                     ],
                     correct: 0
                 },
                 {
                     id: 'q2',
-                    text: 'Which of the following is an example of AI bias?',
+                    text: 'AI bias occurs when:',
                     options: [
-                        'An AI system running slowly',
-                        'A facial recognition system working better for certain skin tones',
-                        'An AI using too much electricity',
-                        'A chatbot giving random responses'
+                        'AI systems favor certain groups over others',
+                        'AI runs out of battery',
+                        'AI processes data too quickly',
+                        'AI costs too much money'
                     ],
-                    correct: 1
+                    correct: 0
                 },
                 {
                     id: 'q3',
-                    text: 'What does "machine learning" mean?',
+                    text: 'Which area can AI effectively assist with creativity?',
                     options: [
-                        'Machines that can move',
-                        'Computers that improve through experience',
-                        'Robots that build other robots',
-                        'Software that never needs updates'
+                        'Replacing human imagination entirely',
+                        'Generating ideas and initial concepts',
+                        'Making all creative decisions',
+                        'Eliminating the need for human input'
                     ],
                     correct: 1
                 }
@@ -53,46 +57,227 @@ const moduleContent = {
         }
     },
     2: {
-        title: 'Computational Thinking',
+        title: 'Foundations of AI Programming',
+        description: 'Variables, Loops, Conditionals, Functions, Debugging, Ethical Computing',
         videos: [
-            { id: 'v1', title: 'Pattern Recognition Basics', duration: '11:20', url: 'placeholder' },
-            { id: 'v2', title: 'Algorithms in Daily Life', duration: '9:50', url: 'placeholder' },
-            { id: 'v3', title: 'Decomposition Strategies', duration: '10:15', url: 'placeholder' },
-            { id: 'v4', title: 'Abstraction Concepts', duration: '8:35', url: 'placeholder' }
+            { id: 'v1', title: 'Variables in AI Programming', duration: '10:30', url: 'placeholder' },
+            { id: 'v2', title: 'Loops and Iteration', duration: '12:15', url: 'placeholder' },
+            { id: 'v3', title: 'Conditionals and Logic', duration: '11:45', url: 'placeholder' },
+            { id: 'v4', title: 'Functions and Modularity', duration: '13:20', url: 'placeholder' },
+            { id: 'v5', title: 'Debugging AI Code', duration: '9:40', url: 'placeholder' },
+            { id: 'v6', title: 'Ethical Computing Principles', duration: '15:10', url: 'placeholder' }
         ],
         activities: [
-            { id: 'friend-recommendation', title: 'Friend Recommendation AI', type: 'card-game' },
-            { id: 'fish-classification', title: 'Fish vs Shark Classifier', type: 'interactive' },
-            { id: 'lesson-plan', title: 'Create Lesson Plan', type: 'form' }
-        ]
+            { id: 'variable-practice', title: 'AI Variable Playground', type: 'coding' },
+            { id: 'loop-challenge', title: 'Loop Logic Challenge', type: 'coding' },
+            { id: 'conditional-game', title: 'Conditional Decision Tree', type: 'interactive' },
+            { id: 'function-builder', title: 'AI Function Builder', type: 'coding' },
+            { id: 'debug-detective', title: 'Debug Detective', type: 'debugging' },
+            { id: 'ethics-scenarios', title: 'Ethical Computing Scenarios', type: 'discussion' }
+        ],
+        quiz: {
+            questions: [
+                {
+                    id: 'q1',
+                    text: 'What is a variable in programming?',
+                    options: [
+                        'A container that stores data values',
+                        'A type of computer virus',
+                        'A broken piece of code',
+                        'A programming language'
+                    ],
+                    correct: 0
+                },
+                {
+                    id: 'q2',
+                    text: 'What does a loop do in programming?',
+                    options: [
+                        'Breaks the program',
+                        'Repeats a set of instructions',
+                        'Stores data permanently',
+                        'Connects to the internet'
+                    ],
+                    correct: 1
+                },
+                {
+                    id: 'q3',
+                    text: 'Why is ethical computing important in AI?',
+                    options: [
+                        'It makes programs run faster',
+                        'It ensures AI systems are fair and beneficial',
+                        'It reduces electricity costs',
+                        'It makes code easier to read'
+                    ],
+                    correct: 1
+                }
+            ]
+        }
     },
     3: {
-        title: 'AI System Design',
+        title: 'AI and the Systems That Power It',
+        description: 'Hardware, Software, Data Processing, IoT, Emerging Technologies',
         videos: [
-            { id: 'v1', title: 'Introduction to Chatbots', duration: '13:00', url: 'placeholder' },
-            { id: 'v2', title: 'AI Image Generation', duration: '11:30', url: 'placeholder' },
-            { id: 'v3', title: 'Training AI Models', duration: '14:20', url: 'placeholder' },
-            { id: 'v4', title: 'AI Project Planning', duration: '9:10', url: 'placeholder' }
+            { id: 'v1', title: 'Hardware for AI Systems', duration: '13:45', url: 'placeholder' },
+            { id: 'v2', title: 'AI Software Architecture', duration: '11:30', url: 'placeholder' },
+            { id: 'v3', title: 'Data Processing in AI', duration: '14:20', url: 'placeholder' },
+            { id: 'v4', title: 'Internet of Things (IoT) and AI', duration: '12:10', url: 'placeholder' },
+            { id: 'v5', title: 'Emerging AI Technologies', duration: '16:00', url: 'placeholder' }
         ],
         activities: [
-            { id: 'chat-lab', title: 'Math Helper Chatbot', type: 'simulator' },
-            { id: 'image-generation', title: 'AI Art Creator', type: 'creative' },
-            { id: 'portfolio', title: 'Build Your Portfolio', type: 'collection' }
-        ]
+            { id: 'hardware-explorer', title: 'AI Hardware Explorer', type: 'interactive' },
+            { id: 'data-pipeline', title: 'Build a Data Pipeline', type: 'simulation' },
+            { id: 'iot-designer', title: 'IoT System Designer', type: 'design' },
+            { id: 'tech-trends', title: 'Emerging Tech Trends Research', type: 'research' },
+            { id: 'system-architecture', title: 'Design AI System Architecture', type: 'design' }
+        ],
+        quiz: {
+            questions: [
+                {
+                    id: 'q1',
+                    text: 'What type of hardware is most important for training AI models?',
+                    options: [
+                        'Graphics Processing Units (GPUs)',
+                        'Computer mice',
+                        'Keyboards',
+                        'Speakers'
+                    ],
+                    correct: 0
+                },
+                {
+                    id: 'q2',
+                    text: 'What does IoT stand for?',
+                    options: [
+                        'Internet of Things',
+                        'Intelligence of Technology',
+                        'Integration of Tools',
+                        'Information on Time'
+                    ],
+                    correct: 0
+                },
+                {
+                    id: 'q3',
+                    text: 'Why is data processing crucial for AI systems?',
+                    options: [
+                        'It makes computers prettier',
+                        'AI needs clean, organized data to learn effectively',
+                        'It reduces internet costs',
+                        'It makes programs load faster'
+                    ],
+                    correct: 1
+                }
+            ]
+        }
     },
     4: {
-        title: 'Professional Development',
+        title: 'The Fabric of the Internet and AI',
+        description: 'Data Transmission, IP Addresses, Cybersecurity, Digital Divide',
         videos: [
-            { id: 'v1', title: 'Teaching AI Effectively', duration: '12:40', url: 'placeholder' },
-            { id: 'v2', title: 'Future of Education', duration: '10:55', url: 'placeholder' },
-            { id: 'v3', title: 'Case Studies', duration: '15:00', url: 'placeholder' },
-            { id: 'v4', title: 'Best Practices', duration: '11:25', url: 'placeholder' }
+            { id: 'v1', title: 'How AI Data Travels the Internet', duration: '12:20', url: 'placeholder' },
+            { id: 'v2', title: 'IP Addresses and AI Networks', duration: '10:45', url: 'placeholder' },
+            { id: 'v3', title: 'Cybersecurity for AI Systems', duration: '15:30', url: 'placeholder' },
+            { id: 'v4', title: 'Digital Divide and AI Access', duration: '13:15', url: 'placeholder' },
+            { id: 'v5', title: 'AI in Network Infrastructure', duration: '11:00', url: 'placeholder' }
         ],
         activities: [
-            { id: 'mock-lesson', title: 'Practice Teaching', type: 'presentation' },
-            { id: 'future-classroom', title: '2035 Classroom Vision', type: 'drawing' },
-            { id: 'final-project', title: 'Final Project', type: 'submission' }
-        ]
+            { id: 'data-journey', title: 'Trace AI Data Journey', type: 'simulation' },
+            { id: 'ip-explorer', title: 'IP Address Explorer', type: 'interactive' },
+            { id: 'security-audit', title: 'AI Security Audit', type: 'assessment' },
+            { id: 'digital-divide-analysis', title: 'Digital Divide Impact Study', type: 'research' },
+            { id: 'network-design', title: 'Design AI Network', type: 'design' }
+        ],
+        quiz: {
+            questions: [
+                {
+                    id: 'q1',
+                    text: 'What is an IP address?',
+                    options: [
+                        'A unique identifier for devices on the internet',
+                        'A type of AI algorithm',
+                        'A programming language',
+                        'A cybersecurity threat'
+                    ],
+                    correct: 0
+                },
+                {
+                    id: 'q2',
+                    text: 'What is the digital divide?',
+                    options: [
+                        'A mathematical calculation',
+                        'The gap between those with and without access to technology',
+                        'A type of computer virus',
+                        'A programming error'
+                    ],
+                    correct: 1
+                },
+                {
+                    id: 'q3',
+                    text: 'Why is cybersecurity important for AI systems?',
+                    options: [
+                        'To protect against malicious attacks and data breaches',
+                        'To make AI run faster',
+                        'To reduce electricity costs',
+                        'To improve user interfaces'
+                    ],
+                    correct: 0
+                }
+            ]
+        }
+    },
+    5: {
+        title: 'Cybersecurity and Global Impacts',
+        description: 'Privacy, Security Risks, Ethical Computing, Encryption',
+        videos: [
+            { id: 'v1', title: 'AI and Privacy Protection', duration: '14:30', url: 'placeholder' },
+            { id: 'v2', title: 'Security Risks in AI Systems', duration: '12:45', url: 'placeholder' },
+            { id: 'v3', title: 'Ethical Computing in Practice', duration: '16:20', url: 'placeholder' },
+            { id: 'v4', title: 'Encryption and AI Data', duration: '11:15', url: 'placeholder' },
+            { id: 'v5', title: 'Global Impact of AI Technology', duration: '18:00', url: 'placeholder' }
+        ],
+        activities: [
+            { id: 'privacy-audit', title: 'AI Privacy Audit', type: 'assessment' },
+            { id: 'threat-modeling', title: 'AI Threat Modeling', type: 'security' },
+            { id: 'ethics-framework', title: 'Build Ethics Framework', type: 'framework' },
+            { id: 'encryption-lab', title: 'Encryption Laboratory', type: 'hands-on' },
+            { id: 'global-impact-study', title: 'Global AI Impact Study', type: 'research' },
+            { id: 'policy-proposal', title: 'AI Policy Proposal', type: 'policy' }
+        ],
+        quiz: {
+            questions: [
+                {
+                    id: 'q1',
+                    text: 'What is encryption?',
+                    options: [
+                        'A way to secure data by converting it into code',
+                        'A type of AI algorithm',
+                        'A programming language',
+                        'A computer virus'
+                    ],
+                    correct: 0
+                },
+                {
+                    id: 'q2',
+                    text: 'What is a major privacy concern with AI systems?',
+                    options: [
+                        'They consume too much electricity',
+                        'They can collect and misuse personal data',
+                        'They are too expensive',
+                        'They work too slowly'
+                    ],
+                    correct: 1
+                },
+                {
+                    id: 'q3',
+                    text: 'Why should we consider the global impact of AI?',
+                    options: [
+                        'AI affects societies, economies, and individuals worldwide',
+                        'It makes programming easier',
+                        'It reduces internet costs',
+                        'It makes computers run faster'
+                    ],
+                    correct: 0
+                }
+            ]
+        }
     }
 };
 
