@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revised or Rejected? - Interactive AI Evaluation Game</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Revised or Rejected?</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Module
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="game-page">
+        <div class="game-container">
+            <!-- Game Header -->
+            <div class="game-header">
+                <div class="game-intro">
+                    <h2>🤖 AI Evaluation Game</h2>
+                    <p>Test your ability to critically evaluate AI responses! For each scenario, decide whether you should <strong>Revise</strong>, <strong>Reject</strong>, or <strong>Trust</strong> the AI's output.</p>
+                    <div class="time-estimate">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 4V8L11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        Estimated time: 10 minutes
+                    </div>
+                </div>
+                
+                <div class="game-progress">
+                    <div class="progress-info">
+                        <span>Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 20%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Content -->
+            <div class="game-content" id="gameContent">
+                <!-- Questions will be loaded here -->
+            </div>
+
+            <!-- Game Actions -->
+            <div class="game-actions" id="gameActions">
+                <button class="game-btn secondary" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="game-btn primary" id="nextBtn" onclick="nextQuestion()">Next Question</button>
+                <button class="game-btn primary" id="finishBtn" onclick="showResults()" style="display: none;">Finish Game</button>
+            </div>
+
+            <!-- Results Section -->
+            <div class="game-results" id="gameResults" style="display: none;">
+                <div class="results-header">
+                    <h2>🎉 Game Complete!</h2>
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="scorePercentage">0%</span>
+                        </div>
+                        <div class="score-text">
+                            <p>You scored <span id="correctCount">0</span> out of <span id="totalCount">5</span> correct!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-feedback" id="resultsFeedback">
+                    <!-- Feedback will be inserted here -->
+                </div>
+
+                <div class="results-actions">
+                    <button class="game-btn secondary" onclick="restartGame()">Try Again</button>
+                    <button class="game-btn primary" onclick="showExitPoll()">Continue to Exit Poll</button>
+                </div>
+            </div>
+
+            <!-- Exit Poll Section -->
+            <div class="exit-poll" id="exitPoll" style="display: none;">
+                <div class="poll-header">
+                    <h2>📊 Exit Poll</h2>
+                    <p>Help us improve this learning experience by sharing your thoughts!</p>
+                </div>
+
+                <div class="poll-questions">
+                    <div class="poll-question">
+                        <h3>1. How confident do you feel about evaluating AI responses now?</h3>
+                        <div class="poll-options">
+                            <label class="poll-option">
+                                <input type="radio" name="confidence" value="very-confident">
+                                <span class="option-text">Very confident</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="confidence" value="somewhat-confident">
+                                <span class="option-text">Somewhat confident</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="confidence" value="neutral">
+                                <span class="option-text">Neutral</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="confidence" value="not-very-confident">
+                                <span class="option-text">Not very confident</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="poll-question">
+                        <h3>2. How useful was this interactive game for learning?</h3>
+                        <div class="poll-options">
+                            <label class="poll-option">
+                                <input type="radio" name="usefulness" value="very-useful">
+                                <span class="option-text">Very useful</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="usefulness" value="useful">
+                                <span class="option-text">Useful</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="usefulness" value="somewhat-useful">
+                                <span class="option-text">Somewhat useful</span>
+                            </label>
+                            <label class="poll-option">
+                                <input type="radio" name="usefulness" value="not-very-useful">
+                                <span class="option-text">Not very useful</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="poll-question">
+                        <h3>3. Any feedback about this activity?</h3>
+                        <textarea class="poll-textarea" placeholder="What did you find most helpful? Any suggestions for improvement?" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="poll-actions">
+                    <button class="game-btn secondary" onclick="showResults()">Back to Results</button>
+                    <button class="game-btn primary" onclick="submitPoll()">Submit & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const gameQuestions = [
+            {
+                id: 1,
+                scenario: "An AI gives you a step-by-step math solution that solves the problem correctly but uses a different method than your teacher taught.",
+                options: ["Revise", "Reject", "Trust"],
+                correct: "Revise",
+                explanation: "Check if the method is valid and understand differences before fully trusting it.",
+                feedback: "Correct! Even when AI provides correct answers, it's important to understand and verify different methods, especially in educational contexts."
+            },
+            {
+                id: 2,
+                scenario: "AI provides a summary of a historical event, but some facts don't match your textbook.",
+                options: ["Revise", "Reject", "Trust"],
+                correct: "Revise",
+                explanation: "Verify facts with multiple reliable sources before accepting.",
+                feedback: "Excellent! When there are discrepancies, the best approach is to verify information with multiple reliable sources rather than immediately accepting or rejecting it."
+            },
+            {
+                id: 3,
+                scenario: "The AI's answer shows a clear bias or only one side of a controversial topic.",
+                options: ["Revise", "Reject", "Trust"],
+                correct: "Revise",
+                explanation: "Try to include other perspectives or correct the bias.",
+                feedback: "Great job! Biased information should be revised to include multiple perspectives and provide a more balanced view of controversial topics."
+            },
+            {
+                id: 4,
+                scenario: "AI generates information that is clearly incorrect or misleading.",
+                options: ["Revise", "Reject", "Trust"],
+                correct: "Reject",
+                explanation: "Do not accept misinformation.",
+                feedback: "Perfect! When AI provides clearly incorrect or misleading information, the appropriate response is to reject it entirely rather than trying to salvage parts of it."
+            },
+            {
+                id: 5,
+                scenario: "The AI gives an accurate and well-explained answer that matches what you learned in class.",
+                options: ["Revise", "Reject", "Trust"],
+                correct: "Trust",
+                explanation: "It aligns with what you know and can be accepted.",
+                feedback: "Excellent! When AI provides accurate, well-explained information that aligns with verified knowledge, it's appropriate to trust the response."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let gameStarted = false;
+
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', function() {
+            showQuestion(0);
+        });
+
+        function showQuestion(index) {
+            const question = gameQuestions[index];
+            const gameContent = document.getElementById('gameContent');
+            
+            gameContent.innerHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <h3>Scenario ${question.id}</h3>
+                        <div class="scenario-text">
+                            ${question.scenario}
+                        </div>
+                    </div>
+                    
+                    <div class="question-body">
+                        <h4>What should you do?</h4>
+                        <div class="answer-options">
+                            ${question.options.map(option => `
+                                <button class="answer-option ${userAnswers[index] === option ? 'selected' : ''}" 
+                                        onclick="selectAnswer('${option}')">
+                                    <div class="option-icon">
+                                        ${getOptionIcon(option)}
+                                    </div>
+                                    <div class="option-text">
+                                        <strong>${option}</strong>
+                                        <p>${getOptionDescription(option)}</p>
+                                    </div>
+                                </button>
+                            `).join('')}
+                        </div>
+                        
+                        ${userAnswers[index] ? `
+                            <div class="answer-feedback ${userAnswers[index] === question.correct ? 'correct' : 'incorrect'}">
+                                <div class="feedback-header">
+                                    <div class="feedback-icon">
+                                        ${userAnswers[index] === question.correct ? '✅' : '❌'}
+                                    </div>
+                                    <h4>${userAnswers[index] === question.correct ? 'Correct!' : 'Not quite right'}</h4>
+                                </div>
+                                <p><strong>Correct Answer:</strong> ${question.correct}</p>
+                                <p><strong>Explanation:</strong> ${question.explanation}</p>
+                                <div class="detailed-feedback">
+                                    ${question.feedback}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            // Update progress
+            document.getElementById('current-question').textContent = index + 1;
+            document.getElementById('progress-fill').style.width = `${((index + 1) / gameQuestions.length) * 100}%`;
+            
+            // Update buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').style.display = index === gameQuestions.length - 1 ? 'none' : 'inline-block';
+            document.getElementById('finishBtn').style.display = index === gameQuestions.length - 1 && userAnswers[index] ? 'inline-block' : 'none';
+        }
+
+        function getOptionIcon(option) {
+            switch(option) {
+                case 'Revise': return '🔄';
+                case 'Reject': return '❌';
+                case 'Trust': return '✅';
+                default: return '🤔';
+            }
+        }
+
+        function getOptionDescription(option) {
+            switch(option) {
+                case 'Revise': return 'Modify or improve the AI response';
+                case 'Reject': return 'Completely dismiss the AI response';
+                case 'Trust': return 'Accept the AI response as reliable';
+                default: return '';
+            }
+        }
+
+        function selectAnswer(answer) {
+            userAnswers[currentQuestionIndex] = answer;
+            showQuestion(currentQuestionIndex);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < gameQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showResults() {
+            // Calculate score
+            let correctCount = 0;
+            gameQuestions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = Math.round((correctCount / gameQuestions.length) * 100);
+            
+            // Update score display
+            document.getElementById('scorePercentage').textContent = `${percentage}%`;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('totalCount').textContent = gameQuestions.length;
+
+            // Generate feedback
+            let feedbackHTML = '';
+            if (percentage >= 80) {
+                feedbackHTML = `
+                    <div class="feedback-excellent">
+                        <h3>🌟 Excellent Work!</h3>
+                        <p>You have a strong understanding of how to evaluate AI responses critically. You know when to trust, revise, or reject AI-generated content.</p>
+                        <div class="key-strengths">
+                            <h4>Your Key Strengths:</h4>
+                            <ul>
+                                <li>Critical thinking about AI responses</li>
+                                <li>Understanding the importance of verification</li>
+                                <li>Recognizing when bias correction is needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (percentage >= 60) {
+                feedbackHTML = `
+                    <div class="feedback-good">
+                        <h3>👍 Good Progress!</h3>
+                        <p>You're developing good skills for evaluating AI responses, but there's room for improvement in some areas.</p>
+                        <div class="improvement-areas">
+                            <h4>Focus Areas for Improvement:</h4>
+                            <ul>
+                                <li>Practice identifying when information needs verification</li>
+                                <li>Learn to recognize bias in AI responses</li>
+                                <li>Understand when complete rejection is necessary</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackHTML = `
+                    <div class="feedback-needs-work">
+                        <h3>📚 Keep Learning!</h3>
+                        <p>Critical evaluation of AI responses is a crucial skill that needs more development. Don't worry - this takes practice!</p>
+                        <div class="learning-recommendations">
+                            <h4>Recommended Next Steps:</h4>
+                            <ul>
+                                <li>Review the cybersecurity module materials</li>
+                                <li>Practice fact-checking information from multiple sources</li>
+                                <li>Learn to identify common types of bias</li>
+                                <li>Retake this game to reinforce your learning</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('resultsFeedback').innerHTML = feedbackHTML;
+
+            // Show results section
+            document.getElementById('gameContent').style.display = 'none';
+            document.getElementById('gameActions').style.display = 'none';
+            document.getElementById('gameResults').style.display = 'block';
+            document.getElementById('exitPoll').style.display = 'none';
+        }
+
+        function restartGame() {
+            // Reset game state
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            
+            // Show game content
+            document.getElementById('gameContent').style.display = 'block';
+            document.getElementById('gameActions').style.display = 'flex';
+            document.getElementById('gameResults').style.display = 'none';
+            document.getElementById('exitPoll').style.display = 'none';
+            
+            // Reset to first question
+            showQuestion(0);
+        }
+
+        function showExitPoll() {
+            document.getElementById('gameResults').style.display = 'none';
+            document.getElementById('exitPoll').style.display = 'block';
+        }
+
+        function submitPoll() {
+            // Collect poll responses (in a real app, these would be sent to a server)
+            const pollData = {
+                confidence: document.querySelector('input[name="confidence"]:checked')?.value,
+                usefulness: document.querySelector('input[name="usefulness"]:checked')?.value,
+                feedback: document.querySelector('.poll-textarea').value,
+                activity: 'revised-or-rejected-game',
+                timestamp: new Date().toISOString()
+            };
+            
+            // In a real application, you would send this data to your analytics/learning platform
+            console.log('Activity poll submitted:', pollData);
+            
+            // Show completion message
+            alert('🎉 Thank you for your feedback! Your responses help us improve the learning experience.');
+            
+            // Navigate back to module
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <style>
+        .game-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .game-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 2rem;
+        }
+
+        .game-intro h2 {
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .game-intro p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .time-estimate {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .game-progress {
+            margin-top: 2rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .game-content {
+            padding: 2rem;
+        }
+
+        .question-card {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+
+        .question-header h3 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-text {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .question-body h4 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .answer-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            width: 100%;
+        }
+
+        .answer-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .answer-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .option-text strong {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-text p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .answer-feedback {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .answer-feedback.correct {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .answer-feedback.incorrect {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-icon {
+            font-size: 1.5rem;
+        }
+
+        .feedback-header h4 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .detailed-feedback {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .game-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .game-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .game-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .game-btn.secondary {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .game-btn.secondary:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Styles */
+        .game-results {
+            padding: 2rem;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .score-text {
+            text-align: left;
+        }
+
+        .score-text p {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .results-feedback {
+            margin-bottom: 2rem;
+        }
+
+        .feedback-excellent, .feedback-good, .feedback-needs-work {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+
+        .feedback-excellent {
+            border-left: 4px solid #10b981;
+        }
+
+        .feedback-good {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .feedback-needs-work {
+            border-left: 4px solid #ef4444;
+        }
+
+        .feedback-excellent h3 {
+            color: #10b981;
+        }
+
+        .feedback-good h3 {
+            color: #f59e0b;
+        }
+
+        .feedback-needs-work h3 {
+            color: #ef4444;
+        }
+
+        .key-strengths, .improvement-areas, .learning-recommendations {
+            margin-top: 1.5rem;
+        }
+
+        .key-strengths ul, .improvement-areas ul, .learning-recommendations ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .key-strengths li, .improvement-areas li, .learning-recommendations li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .results-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Exit Poll Styles */
+        .exit-poll {
+            padding: 2rem;
+        }
+
+        .poll-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .poll-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .poll-questions {
+            margin-bottom: 2rem;
+        }
+
+        .poll-question {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .poll-question h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .poll-options {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .poll-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .poll-option:hover {
+            background: rgba(99, 102, 241, 0.05);
+            transform: translateX(4px);
+        }
+
+        .poll-option input[type="radio"] {
+            margin: 0;
+        }
+
+        .option-text {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .poll-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .poll-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .poll-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .game-page {
+                padding: 1rem;
+            }
+
+            .score-display {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .score-text {
+                text-align: center;
+            }
+
+            .game-actions {
+                flex-direction: column;
+            }
+
+            .poll-actions {
+                flex-direction: column;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>

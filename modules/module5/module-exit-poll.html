@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 5 Reflection - Cybersecurity and Global Impacts</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/modules.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>Module 5 Reflection</h1>
+            </div>
+            <div class="nav-user">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 5L7 10L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Back to Module
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="reflection-page">
+        <div class="reflection-container">
+            <!-- Reflection Header -->
+            <div class="reflection-header">
+                <div class="completion-badge">
+                    <div class="badge-icon">🛡️</div>
+                    <h2>Module 5 Complete!</h2>
+                    <p>Congratulations on completing <strong>Cybersecurity and Global Impacts</strong></p>
+                </div>
+            </div>
+
+            <!-- Reflection Questions -->
+            <div class="reflection-content">
+                <div class="intro-section">
+                    <h3>🤔 Take a Moment to Reflect</h3>
+                    <p>Before moving on, let's reflect on what you've learned about cybersecurity and how you can apply this knowledge to stay safe online.</p>
+                </div>
+
+                <form class="reflection-form" id="reflectionForm">
+                    <div class="question-section">
+                        <div class="question-card">
+                            <div class="question-header">
+                                <div class="question-icon">🔒</div>
+                                <h4>Personal Action Plan</h4>
+                            </div>
+                            <div class="question-body">
+                                <label for="action-plan">What's one thing you'll do differently to stay safe online?</label>
+                                <textarea 
+                                    id="action-plan" 
+                                    name="actionPlan" 
+                                    rows="4" 
+                                    placeholder="Think about specific changes you'll make to your online habits, passwords, privacy settings, or how you evaluate information..."
+                                    required></textarea>
+                                <div class="question-hints">
+                                    <p><strong>Consider:</strong> Password management, two-factor authentication, privacy settings, suspicious link handling, or information verification</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card">
+                            <div class="question-header">
+                                <div class="question-icon">💡</div>
+                                <h4>Key Discovery</h4>
+                            </div>
+                            <div class="question-body">
+                                <label for="surprise">What surprised you most about cybersecurity?</label>
+                                <textarea 
+                                    id="surprise" 
+                                    name="surprise" 
+                                    rows="4" 
+                                    placeholder="Was there something that changed your perspective or something you didn't expect to learn..."
+                                    required></textarea>
+                                <div class="question-hints">
+                                    <p><strong>Think about:</strong> Global impact, personal vulnerability, AI connections, or the role of individual responsibility</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card">
+                            <div class="question-header">
+                                <div class="question-icon">👥</div>
+                                <h4>Share Your Knowledge</h4>
+                            </div>
+                            <div class="question-body">
+                                <label for="friend-tip">Share one tip you'd give a friend about protecting their data.</label>
+                                <textarea 
+                                    id="friend-tip" 
+                                    name="friendTip" 
+                                    rows="4" 
+                                    placeholder="What's the most important advice you would give to help someone protect their digital life..."
+                                    required></textarea>
+                                <div class="question-hints">
+                                    <p><strong>Make it practical:</strong> Something they could implement right away to improve their security</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-card optional">
+                            <div class="question-header">
+                                <div class="question-icon">📝</div>
+                                <h4>Additional Thoughts (Optional)</h4>
+                            </div>
+                            <div class="question-body">
+                                <label for="additional-thoughts">Any other thoughts about this module or cybersecurity in general?</label>
+                                <textarea 
+                                    id="additional-thoughts" 
+                                    name="additionalThoughts" 
+                                    rows="3" 
+                                    placeholder="Questions that came up, connections to other topics, or anything else you'd like to share..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Summary -->
+                    <div class="learning-summary">
+                        <h3>🎯 What You've Accomplished</h3>
+                        <div class="accomplishments-grid">
+                            <div class="accomplishment-item">
+                                <div class="accomplishment-icon">🛡️</div>
+                                <div class="accomplishment-text">
+                                    <h4>Cybersecurity Awareness</h4>
+                                    <p>Learned why cybersecurity matters for everyone</p>
+                                </div>
+                            </div>
+                            <div class="accomplishment-item">
+                                <div class="accomplishment-icon">🔐</div>
+                                <div class="accomplishment-text">
+                                    <h4>Data Protection</h4>
+                                    <p>Understand privacy rights and protection methods</p>
+                                </div>
+                            </div>
+                            <div class="accomplishment-item">
+                                <div class="accomplishment-icon">🌐</div>
+                                <div class="accomplishment-text">
+                                    <h4>Global Impact</h4>
+                                    <p>Explored cybersecurity's effect on society</p>
+                                </div>
+                            </div>
+                            <div class="accomplishment-item">
+                                <div class="accomplishment-icon">⚖️</div>
+                                <div class="accomplishment-text">
+                                    <h4>Digital Citizenship</h4>
+                                    <p>Learned ethical computing principles</p>
+                                </div>
+                            </div>
+                            <div class="accomplishment-item">
+                                <div class="accomplishment-icon">🤖</div>
+                                <div class="accomplishment-text">
+                                    <h4>AI Evaluation</h4>
+                                    <p>Practiced critically assessing AI responses</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Section -->
+                    <div class="submit-section">
+                        <div class="submit-info">
+                            <p>Your reflections help us understand your learning journey and improve the course experience.</p>
+                        </div>
+                        <div class="submit-actions">
+                            <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Skip Reflection</button>
+                            <button type="submit" class="btn-primary">
+                                <span>Complete Module</span>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Completion Message -->
+            <div class="completion-message" id="completionMessage" style="display: none;">
+                <div class="completion-content">
+                    <div class="completion-icon">🎉</div>
+                    <h2>Thank You!</h2>
+                    <p>Your thoughtful reflections have been recorded. You're now ready to continue your AI literacy journey.</p>
+                    <div class="next-steps">
+                        <h4>What's Next?</h4>
+                        <ul>
+                            <li>Return to the main dashboard</li>
+                            <li>Continue to Module 6: Digital Citizenship and Future Technologies</li>
+                            <li>Review your progress and certificates</li>
+                        </ul>
+                    </div>
+                    <div class="completion-actions">
+                        <button class="btn-primary" onclick="goToDashboard()">
+                            <span>Continue Learning</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 13L12 8L7 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('reflectionForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitReflection();
+            });
+        });
+
+        function submitReflection() {
+            // Collect form data
+            const formData = new FormData(document.getElementById('reflectionForm'));
+            const reflectionData = {
+                actionPlan: formData.get('actionPlan'),
+                surprise: formData.get('surprise'),
+                friendTip: formData.get('friendTip'),
+                additionalThoughts: formData.get('additionalThoughts') || '',
+                moduleId: 5,
+                moduleName: 'Cybersecurity and Global Impacts',
+                timestamp: new Date().toISOString()
+            };
+
+            // Validate required fields
+            if (!reflectionData.actionPlan || !reflectionData.surprise || !reflectionData.friendTip) {
+                alert('Please complete all required reflection questions before submitting.');
+                return;
+            }
+
+            // In a real application, you would send this data to your learning analytics platform
+            console.log('Module reflection submitted:', reflectionData);
+
+            // Mark module as completed in progress tracking
+            if (window.progressTracker) {
+                window.progressTracker.markModuleCompleted(5, reflectionData);
+            }
+
+            // Show completion message
+            showCompletionMessage();
+        }
+
+        function showCompletionMessage() {
+            document.querySelector('.reflection-content').style.display = 'none';
+            document.getElementById('completionMessage').style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToDashboard() {
+            // Navigate to main dashboard
+            window.location.href = '../../index.html';
+        }
+    </script>
+
+    <style>
+        .reflection-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .reflection-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .reflection-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .completion-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .badge-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-badge h2 {
+            font-size: 2rem;
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-badge p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .reflection-content {
+            padding: 2rem;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .reflection-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question-section {
+            margin-bottom: 3rem;
+        }
+
+        .question-card {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question-card.optional {
+            border-left-color: var(--text-secondary);
+            opacity: 0.9;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .question-header h4 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .question-body label {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .question-body textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .question-body textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .question-hints {
+            margin-top: 1rem;
+        }
+
+        .question-hints p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .learning-summary {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .learning-summary h3 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .accomplishments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .accomplishment-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .accomplishment-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .accomplishment-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .accomplishment-text h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .accomplishment-text p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .submit-info {
+            margin-bottom: 2rem;
+        }
+
+        .submit-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .submit-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Completion Message Styles */
+        .completion-message {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .completion-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .completion-content h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .completion-content > p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .next-steps {
+            background: var(--light-bg);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .next-steps h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .next-steps ul {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            padding-left: 1.5rem;
+        }
+
+        .next-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        .completion-actions {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .reflection-page {
+                padding: 1rem;
+            }
+
+            .reflection-header {
+                padding: 2rem 1rem;
+            }
+
+            .reflection-content {
+                padding: 1.5rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .submit-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .accomplishments-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>

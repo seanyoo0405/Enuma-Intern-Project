@@ -249,6 +249,28 @@
                     </div>
                 </div>
 
+                <!-- Interactive Game Section -->
+                <div class="content-section">
+                    <div class="activity-button-section">
+                        <button class="activity-button" onclick="openActivityWindow('revised-or-rejected-game')">
+                            <div class="activity-thumbnail">
+                                <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="25" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M20 30L27 37L40 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15 15L25 25M35 15L25 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="45" cy="15" r="8" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M42 12L48 18M48 12L42 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="activity-content">
+                                <h4>🤖 Revised or Rejected? Interactive Game</h4>
+                                <p>Test your ability to critically evaluate AI responses in different scenarios</p>
+                                <span class="activity-duration">⏱️ 10 minutes</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Assessment Button -->
                 <div class="content-section">
                     <div class="assessment-button-section">
@@ -265,6 +287,35 @@
                             <div class="assessment-content">
                                 <h4>Module Assessment</h4>
                                 <p>Test your cybersecurity knowledge and digital citizenship understanding</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Module Exit Poll -->
+                <div class="content-section">
+                    <div class="exit-poll-section">
+                        <div class="exit-poll-header">
+                            <h3>📝 Module Reflection</h3>
+                            <p>Complete your learning journey by reflecting on what you've discovered about cybersecurity.</p>
+                        </div>
+                        <button class="exit-poll-button" onclick="openActivityWindow('module-exit-poll')">
+                            <div class="poll-thumbnail">
+                                <svg width="50" height="50" viewBox="0 0 60 60" fill="none">
+                                    <circle cx="30" cy="30" r="25" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                                    <path d="M25 20H35M20 25H40M22 30H38M20 35H40M25 40H35" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="45" cy="15" r="8" fill="var(--primary-color)"/>
+                                    <path d="M42 15L44 17L48 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="poll-content">
+                                <h4>🤔 Reflect on Your Learning</h4>
+                                <p>Share your insights and complete Module 5</p>
+                                <div class="poll-questions-preview">
+                                    <span class="question-preview">💭 What will you do differently to stay safe online?</span>
+                                    <span class="question-preview">💡 What surprised you about cybersecurity?</span>
+                                    <span class="question-preview">👥 Share a tip for protecting data</span>
+                                </div>
                             </div>
                         </button>
                     </div>
@@ -612,8 +663,12 @@
                 window.location.href = 'password-strength.html';
             } else if (activityId === 'threat-simulation') {
                 window.location.href = 'threat-simulation.html';
+            } else if (activityId === 'revised-or-rejected-game') {
+                window.location.href = 'revised-or-rejected-game.html';
             } else if (activityId === 'assessment') {
                 window.location.href = 'assessment.html';
+            } else if (activityId === 'module-exit-poll') {
+                window.location.href = 'module-exit-poll.html';
             }
         }
         
@@ -972,6 +1027,141 @@
             
             .video-overlay .play-btn svg {
                 filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            }
+            
+            /* Activity Duration Styling */
+            .activity-duration {
+                display: inline-block;
+                background: rgba(99, 102, 241, 0.1);
+                color: var(--primary-color);
+                padding: 0.25rem 0.75rem;
+                border-radius: 1rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin-top: 0.5rem;
+            }
+            
+            /* Exit Poll Section Styling */
+            .exit-poll-section {
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                border-radius: 1rem;
+                padding: 2rem;
+                margin: 2rem 0;
+                border: 2px solid var(--primary-color);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .exit-poll-section::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+                pointer-events: none;
+            }
+            
+            .exit-poll-header {
+                text-align: center;
+                margin-bottom: 2rem;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .exit-poll-header h3 {
+                color: var(--primary-color);
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .exit-poll-header p {
+                color: var(--text-secondary);
+                font-size: 1.1rem;
+                line-height: 1.6;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .exit-poll-button {
+                width: 100%;
+                background: var(--card-bg);
+                border: 2px solid transparent;
+                border-radius: 1rem;
+                padding: 2rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                position: relative;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+            }
+            
+            .exit-poll-button:hover {
+                border-color: var(--primary-color);
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .poll-thumbnail {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-color);
+            }
+            
+            .poll-content {
+                flex-grow: 1;
+                text-align: left;
+            }
+            
+            .poll-content h4 {
+                color: var(--text-primary);
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .poll-content > p {
+                color: var(--text-secondary);
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
+            
+            .poll-questions-preview {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .question-preview {
+                display: inline-block;
+                background: rgba(99, 102, 241, 0.1);
+                color: var(--primary-color);
+                padding: 0.5rem 1rem;
+                border-radius: 2rem;
+                font-size: 0.85rem;
+                font-weight: 500;
+                line-height: 1.2;
+            }
+            
+            @media (max-width: 768px) {
+                .exit-poll-button {
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 1.5rem;
+                }
+                
+                .poll-content {
+                    text-align: center;
+                }
+                
+                .exit-poll-section {
+                    padding: 1.5rem;
+                }
             }
         `;
         document.head.appendChild(style);
