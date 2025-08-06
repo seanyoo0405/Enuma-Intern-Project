@@ -109,7 +109,7 @@ const moduleContent = {
     6: {
         title: 'Digital Citizenship and Future Technologies',
         videos: [
-            { id: 'v1', title: 'Digital Rights and Responsibilities', duration: '11:30', url: 'placeholder' },
+            { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '2:00', url: 'https://www.renderforest.com/watch-105906131?queue_id=159267567&quality=1080' },
             { id: 'v2', title: 'AI Governance and Policy', duration: '13:45', url: 'placeholder' },
             { id: 'v3', title: 'Emerging Technologies and Society', duration: '14:20', url: 'placeholder' },
             { id: 'v4', title: 'Building a Better Digital World', duration: '12:15', url: 'placeholder' }

@@ -84,17 +84,34 @@
                 <!-- Video 1 -->
                 <div class="content-section">
                     <div class="video-section">
-                        <div class="video-player">
-                            <div class="play-btn">
-                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                                    <path d="M10 7L22 15L10 23V7Z" fill="currentColor"/>
-                                </svg>
+                        <div class="video-player" onclick="window.location.href='video1.html'">
+                            <div class="video-thumbnail">
+                                <img src="../../assets/images/how-ai-learns-video-thumbnail.jpg" 
+                                     alt="How AI Learns and Solves Problems Video" 
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                     style="width: 100%; height: 315px; object-fit: cover; border-radius: 0.75rem;">
+                                <div class="video-placeholder" style="display: none; width: 100%; height: 315px; background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); border-radius: 0.75rem; align-items: center; justify-content: center; color: white; flex-direction: column; gap: 1rem;">
+                                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                        <circle cx="40" cy="40" r="35" stroke="currentColor" stroke-width="3" opacity="0.3"/>
+                                        <path d="M30 25L55 40L30 55V25Z" fill="currentColor"/>
+                                    </svg>
+                                    <h4 style="margin: 0; font-size: 1.25rem; font-weight: 600;">How AI Learns and Solves Problems</h4>
+                                    <p style="margin: 0; opacity: 0.8;">Click to watch video</p>
+                                </div>
+                            </div>
+                            <div class="video-overlay">
+                                <div class="play-btn">
+                                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                        <circle cx="30" cy="30" r="28" fill="rgba(255, 255, 255, 0.95)" stroke="none"/>
+                                        <path d="M23 18L42 30L23 42V18Z" fill="var(--primary-color)"/>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                         <div class="video-info">
-                            <h3 class="video-title">Digital Rights and Responsibilities</h3>
-                            <p class="video-description">Understand your rights and responsibilities as a digital citizen in the modern world.</p>
-                            <span class="video-duration">Duration: 11:30</span>
+                            <h3 class="video-title">How AI Learns and Solves Problems</h3>
+                            <p class="video-description">Discover the fascinating process of how artificial intelligence systems learn and solve complex problems.</p>
+                            <span class="video-duration">Duration: 2:00</span>
                         </div>
                     </div>
                     
@@ -1029,6 +1046,87 @@
                 font-size: 0.875rem;
             }
             
+            /* Video Player Styles */
+            .video-player {
+                position: relative;
+                background: var(--card-bg);
+                border-radius: 0.75rem;
+                overflow: hidden;
+                box-shadow: var(--shadow-md);
+                cursor: pointer;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .video-player:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .video-thumbnail {
+                position: relative;
+                width: 100%;
+                height: 315px;
+                overflow: hidden;
+                border-radius: 0.75rem;
+            }
+            
+            .video-thumbnail img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+            
+            .video-player:hover .video-thumbnail img {
+                transform: scale(1.05);
+            }
+            
+            .video-placeholder {
+                display: flex !important;
+                width: 100%;
+                height: 315px;
+                background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                border-radius: 0.75rem;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .video-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+                border-radius: 0.75rem;
+            }
+            
+            .video-player:hover .video-overlay {
+                opacity: 1;
+            }
+            
+            .video-overlay .play-btn {
+                transition: transform 0.3s ease;
+            }
+            
+            .video-player:hover .video-overlay .play-btn {
+                transform: scale(1.1);
+            }
+            
+            .video-overlay .play-btn svg {
+                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            }
+            
             @media (max-width: 768px) {
                 .journey-highlights {
                     grid-template-columns: 1fr;
@@ -1047,6 +1145,12 @@
         `;
         document.head.appendChild(style);
         
+        // Video player functions
+        function openVideo(videoUrl) {
+            // Open video in a new tab for better viewing experience
+            window.open(videoUrl, '_blank');
+        }
+        
         // Make functions available globally
         window.startActivity = startActivity;
         window.startAssessment = startAssessment;
@@ -1058,6 +1162,7 @@
         window.downloadCertificate = downloadCertificate;
         window.startUnit = startUnit;
         window.openActivityWindow = openActivityWindow;
+        window.openVideo = openVideo;
     </script>
 </body>
 </html>
