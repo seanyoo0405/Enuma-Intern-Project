@@ -249,6 +249,133 @@
                     </div>
                 </div>
 
+                <!-- Quiz Section -->
+                <div class="content-section">
+                    <h3>📝 Cybersecurity Quiz</h3>
+                    <p>Test your understanding of cybersecurity concepts with this quick quiz.</p>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question" data-question="1">
+                            <h4>Question 1: What is cybersecurity?</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="a">
+                                    <span>A) A type of computer virus</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="b">
+                                    <span>B) Protecting digital information and systems from threats</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="c">
+                                    <span>C) A social media platform</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="d">
+                                    <span>D) A type of software</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question" data-question="2">
+                            <h4>Question 2: What is identity theft?</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="a">
+                                    <span>A) When someone uses your personal information without permission</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="b">
+                                    <span>B) Losing your ID card</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="c">
+                                    <span>C) Forgetting your password</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="d">
+                                    <span>D) Changing your username</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question" data-question="3">
+                            <h4>Question 3: What does encryption do?</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="a">
+                                    <span>A) Scrambles data to keep it secure</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="b">
+                                    <span>B) Deletes files permanently</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="c">
+                                    <span>C) Makes computers run faster</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="d">
+                                    <span>D) Creates backup copies</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question" data-question="4">
+                            <h4>Question 4: Why is privacy important online?</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="a">
+                                    <span>A) To protect your personal information from misuse</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="b">
+                                    <span>B) To make the internet slower</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="c">
+                                    <span>C) To hide your browsing history from yourself</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="d">
+                                    <span>D) To prevent websites from loading</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question" data-question="5">
+                            <h4>Question 5: Which is an example of a security risk?</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="a">
+                                    <span>A) Using a secure password</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="b">
+                                    <span>B) Clicking on suspicious links from unknown sources</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="c">
+                                    <span>C) Updating your software regularly</span>
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="d">
+                                    <span>D) Logging out of accounts when finished</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="submit-quiz-btn" onclick="submitQuiz()">Submit Quiz</button>
+                        
+                        <div class="quiz-results" id="quizResults" style="display: none;">
+                            <h4>Quiz Results</h4>
+                            <p id="quizScore"></p>
+                            <div id="quizFeedback"></div>
+                            <button class="retry-quiz-btn" onclick="retryQuiz()">Try Again</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Interactive Game Section -->
                 <div class="content-section">
                     <div class="activity-button-section">
@@ -1084,6 +1211,160 @@
                 margin: 0 auto;
             }
             
+            /* Quiz Styles */
+            .quiz-container {
+                background: var(--card-bg);
+                border-radius: 1rem;
+                padding: 2rem;
+                box-shadow: var(--shadow-sm);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 1.5rem;
+            }
+            
+            .quiz-question {
+                margin-bottom: 2rem;
+                padding: 1.5rem;
+                background: rgba(99, 102, 241, 0.05);
+                border-radius: 0.75rem;
+                border: 1px solid rgba(99, 102, 241, 0.1);
+            }
+            
+            .quiz-question h4 {
+                color: var(--text-primary);
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                line-height: 1.4;
+            }
+            
+            .quiz-options {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .quiz-option {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.75rem 1rem;
+                background: var(--bg-secondary);
+                border: 2px solid transparent;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+            
+            .quiz-option:hover {
+                background: rgba(99, 102, 241, 0.1);
+                border-color: rgba(99, 102, 241, 0.3);
+                transform: translateY(-1px);
+            }
+            
+            .quiz-option input[type="radio"] {
+                width: 18px;
+                height: 18px;
+                accent-color: var(--primary-color);
+            }
+            
+            .quiz-option span {
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+            
+            .submit-quiz-btn, .retry-quiz-btn {
+                width: 100%;
+                background: linear-gradient(135deg, var(--primary-color) 0%, #7c3aed 100%);
+                color: white;
+                border: none;
+                padding: 0.875rem 2rem;
+                border-radius: 0.5rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-top: 1.5rem;
+            }
+            
+            .submit-quiz-btn:hover, .retry-quiz-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            }
+            
+            .retry-quiz-btn {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                margin-top: 1rem;
+            }
+            
+            .quiz-results {
+                background: var(--card-bg);
+                border-radius: 0.75rem;
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .quiz-results h4 {
+                color: var(--text-primary);
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+            
+            #quizScore {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .correct-feedback {
+                color: #10b981;
+                font-weight: 500;
+                margin: 0.5rem 0;
+                padding: 0.5rem;
+                background: rgba(16, 185, 129, 0.1);
+                border-radius: 0.375rem;
+                border-left: 3px solid #10b981;
+            }
+            
+            .incorrect-feedback {
+                color: #ef4444;
+                font-weight: 500;
+                margin: 0.5rem 0;
+                padding: 0.5rem;
+                background: rgba(239, 68, 68, 0.1);
+                border-radius: 0.375rem;
+                border-left: 3px solid #ef4444;
+            }
+            
+            .unanswered-feedback {
+                color: #f59e0b;
+                font-weight: 500;
+                margin: 0.5rem 0;
+                padding: 0.5rem;
+                background: rgba(245, 158, 11, 0.1);
+                border-radius: 0.375rem;
+                border-left: 3px solid #f59e0b;
+            }
+            
+            @media (max-width: 768px) {
+                .quiz-container {
+                    padding: 1.5rem;
+                }
+                
+                .quiz-question {
+                    padding: 1rem;
+                }
+                
+                .quiz-option {
+                    padding: 0.625rem 0.75rem;
+                    font-size: 0.9rem;
+                }
+            }
+
             .exit-poll-button {
                 width: 100%;
                 background: var(--card-bg);
@@ -1166,6 +1447,58 @@
         `;
         document.head.appendChild(style);
         
+        // Quiz functionality
+        function submitQuiz() {
+            const quizContainer = document.querySelector('.quiz-container');
+            const questions = quizContainer.querySelectorAll('.quiz-question');
+            const correctAnswers = ['b', 'a', 'a', 'a', 'b']; // B, A, A, A, B
+            let score = 0;
+            let totalQuestions = questions.length;
+            let feedback = [];
+
+            questions.forEach((question, index) => {
+                const selectedAnswer = question.querySelector('input[type="radio"]:checked');
+                const questionNumber = index + 1;
+                
+                if (selectedAnswer) {
+                    if (selectedAnswer.value === correctAnswers[index]) {
+                        score++;
+                        feedback.push(`<p class="correct-feedback">✅ Question ${questionNumber}: Correct!</p>`);
+                    } else {
+                        const correctText = question.querySelector(`input[value="${correctAnswers[index]}"]`).nextElementSibling.textContent;
+                        feedback.push(`<p class="incorrect-feedback">❌ Question ${questionNumber}: Incorrect. The correct answer is ${correctText}</p>`);
+                    }
+                } else {
+                    feedback.push(`<p class="unanswered-feedback">⚠️ Question ${questionNumber}: No answer selected</p>`);
+                }
+            });
+
+            // Display results
+            const resultsDiv = document.getElementById('quizResults');
+            const scoreDiv = document.getElementById('quizScore');
+            const feedbackDiv = document.getElementById('quizFeedback');
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            scoreDiv.innerHTML = `Your Score: ${score}/${totalQuestions} (${percentage}%)`;
+            feedbackDiv.innerHTML = feedback.join('');
+            resultsDiv.style.display = 'block';
+            
+            // Hide quiz questions after submission
+            quizContainer.querySelector('.quiz-question').parentElement.style.display = 'none';
+            quizContainer.querySelector('.submit-quiz-btn').style.display = 'none';
+        }
+
+        function retryQuiz() {
+            // Reset all radio buttons
+            const radioButtons = document.querySelectorAll('.quiz-container input[type="radio"]');
+            radioButtons.forEach(radio => radio.checked = false);
+            
+            // Hide results and show quiz again
+            document.getElementById('quizResults').style.display = 'none';
+            document.querySelector('.quiz-container .quiz-question').parentElement.style.display = 'block';
+            document.querySelector('.submit-quiz-btn').style.display = 'block';
+        }
+
         // Make functions available globally
         window.startActivity = startActivity;
         window.startAssessment = startAssessment;
@@ -1173,6 +1506,7 @@
         window.nextQuestion = nextQuestion;
         window.previousQuestion = previousQuestion;
         window.submitQuiz = submitQuiz;
+        window.retryQuiz = retryQuiz;
         window.selectAnswer = selectAnswer;
         window.startUnit = startUnit;
         window.openActivityWindow = openActivityWindow;
