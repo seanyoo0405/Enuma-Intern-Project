@@ -1225,6 +1225,51 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+/* Video Fullscreen Fix */
+.video-player,
+.video-player iframe,
+.video-player video {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure sequential navigation stays visible after fullscreen */
+.sequential-nav {
+    position: relative;
+    z-index: 10 !important;
+    margin-top: 2rem !important;
+}
+
+.nav-btn {
+    position: relative;
+    z-index: 11 !important;
+}
+
+/* Prevent layout shift on fullscreen exit */
+body:not(.fullscreen-active) .sequential-nav {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Force navigation to stay at bottom */
+.module-flow.sequential-mode {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+}
+
+.module-flow.sequential-mode .content-section {
+    flex-grow: 1;
+}
+
+.module-flow.sequential-mode .sequential-nav {
+    margin-top: auto !important;
+    position: sticky;
+    bottom: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
 
 /* Responsive sidebar styles */
 @media (max-width: 768px) {
@@ -1241,5 +1286,15 @@
     .lesson-sidebar {
         width: 100%;
         right: -100%;
+    }
+     /* Mobile fullscreen fixes */
+     .sequential-nav {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        z-index: 9999 !important;
     }
 }
