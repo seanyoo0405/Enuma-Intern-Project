@@ -109,15 +109,14 @@ const moduleContent = {
     6: {
         title: 'Digital Citizenship and Future Technologies',
         videos: [
-            { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '2:00', url: 'https://www.renderforest.com/watch-105906131?queue_id=159267567&quality=1080' },
-            { id: 'v2', title: 'AI Governance and Policy', duration: '13:45', url: 'placeholder' },
-            { id: 'v3', title: 'Emerging Technologies and Society', duration: '14:20', url: 'placeholder' },
-            { id: 'v4', title: 'Building a Better Digital World', duration: '12:15', url: 'placeholder' }
+            { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '15:30', url: 'placeholder' },
+            { id: 'v2', title: 'How AI Learns and Helps Us', duration: '12:45', url: 'placeholder' }
         ],
         activities: [
-            { id: 'digital-rights-charter', title: 'Digital Rights Charter', type: 'form' },
-            { id: 'technology-impact-assessment', title: 'Technology Impact Assessment', type: 'interactive' },
-            { id: 'digital-future-manifesto', title: 'Digital Future Manifesto', type: 'creative' }
+            { id: 'vocab-bank', title: 'Vocabulary Bank', type: 'interactive' },
+            { id: 'quiz', title: 'Quiz', type: 'assessment' },
+            { id: 'data-detective', title: 'Data Detective', type: 'interactive' },
+            { id: 'exit-poll', title: 'Exit Poll', type: 'form' }
         ]
     }
 };
@@ -335,6 +334,15 @@ function createLessonViewer() {
                     <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
             </button>
+            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                <button class="sidebar-nav-btn" onclick="if(window.resetModuleProgress && confirm('Are you sure you want to reset all progress? This cannot be undone.')) { window.resetModuleProgress(); }" style="width: 100%; background: #ef4444; color: white; border: none;">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3.51 15A9 9 0 006 2.13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Reset Progress
+                </button>
+            </div>
         </div>
     `;
     
