@@ -107,7 +107,7 @@ const moduleContent = {
         ]
     },
     6: {
-        title: 'Digital Citizenship and Future Technologies',
+        title: 'AI in Our Lives',
         videos: [
             { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '15:30', url: 'placeholder' },
             { id: 'v2', title: 'How AI Learns and Helps Us', duration: '12:45', url: 'placeholder' }
