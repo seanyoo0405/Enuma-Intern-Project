@@ -109,8 +109,8 @@ const moduleContent = {
     6: {
         title: 'AI in Our Lives',
         videos: [
-            { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '15:30', url: 'placeholder' },
-            { id: 'v2', title: 'How AI Learns and Helps Us', duration: '12:45', url: 'placeholder' }
+            { id: 'v1', title: 'How AI Learns and Solves Problems', duration: '1:43', url: 'placeholder' },
+            { id: 'v2', title: 'How AI Learns and Helps Us', duration: '2:00', url: 'placeholder' }
         ],
         activities: [
             { id: 'vocab-bank', title: 'Vocabulary Bank', type: 'interactive' },
