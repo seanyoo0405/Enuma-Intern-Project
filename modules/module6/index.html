@@ -74,12 +74,12 @@
             </div>
 
             <div class="module-flow">
-                <!-- Video 1: How AI Learns and Solves Problems -->
+                <!-- Video 1: How AI Learns and Helps Us -->
                 <div class="content-section">
                     <div class="video-section">
                         <div class="video-player" onclick="playMainVideo()">
                             <video id="main-video" width="100%" height="300" controls style="display: none;">
-                                <source src="../../LineStyle Explainer Video Toolkit_1080p.mp4" type="video/mp4">
+                                <source src="../../AI is shaping our world.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                             <div class="play-btn" id="main-play-btn">
@@ -89,9 +89,9 @@
                             </div>
                         </div>
                         <div class="video-info">
-                            <h3 class="video-title">How AI Learns and Solves Problems</h3>
-                            <p class="video-description">Discover how AI uses data to learn patterns and make decisions, and understand the importance of ethical data collection.</p>
-                            <span class="video-duration">Duration: 15:30</span>
+                            <h3 class="video-title">How AI Learns and Helps Us</h3>
+                            <p class="video-description">Explore the ways AI assists us in daily life and how it continues to learn and improve.</p>
+                            <span class="video-duration">Duration: 12:45</span>
                         </div>
                     </div>
                     
@@ -136,12 +136,12 @@
                     </div>
                 </div>
 
-                <!-- Video 2: How AI Learns and Helps Us -->
+                <!-- Video 2: How AI Learns and Solves Problems -->
                 <div class="content-section">
                     <div class="video-section">
                         <div class="video-player" onclick="playSecondVideo()">
                             <video id="second-video" width="100%" height="300" controls style="display: none;">
-                                <source src="../../AI is shaping our world.mp4" type="video/mp4">
+                                <source src="../../LineStyle Explainer Video Toolkit_1080p.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                             <div class="play-btn" id="second-play-btn">
@@ -151,9 +151,9 @@
                             </div>
                         </div>
                         <div class="video-info">
-                            <h3 class="video-title">How AI Learns and Helps Us</h3>
-                            <p class="video-description">Explore the ways AI assists us in daily life and how it continues to learn and improve.</p>
-                            <span class="video-duration">Duration: 12:45</span>
+                            <h3 class="video-title">How AI Learns and Solves Problems</h3>
+                            <p class="video-description">Discover how AI uses data to learn patterns and make decisions, and understand the importance of ethical data collection.</p>
+                            <span class="video-duration">Duration: 15:30</span>
                         </div>
                     </div>
                 </div>
@@ -2364,10 +2364,10 @@
             
             // Define the slideshow content order for Module 6
             slideshowContent = [
-                { type: 'video', id: 'v1', title: 'How AI Learns and Solves Problems', description: 'Watch this video to understand how AI processes data and solves complex problems.' },
+                { type: 'video', id: 'v1', title: 'How AI Learns and Helps Us', description: 'Explore how AI assists us in daily life and continues to learn.' },
                 { type: 'activity', id: 'vocab-bank', title: 'Vocabulary Bank', description: 'Learn essential AI and data science terminology.' },
                 { type: 'activity', id: 'quiz', title: 'Knowledge Check Quiz', description: 'Test your understanding of AI learning concepts.' },
-                { type: 'video', id: 'v2', title: 'How AI Learns and Helps Us', description: 'Explore how AI assists us in daily life and continues to learn.' },
+                { type: 'video', id: 'v2', title: 'How AI Learns and Solves Problems', description: 'Watch this video to understand how AI processes data and solves complex problems.' },
                 { type: 'activity', id: 'data-detective', title: 'Data Detective', description: 'Investigate and analyze data patterns like an AI detective.' },
                 { type: 'activity', id: 'exit-poll', title: 'Exit Poll', description: 'Share your thoughts and feedback about this learning journey.' }
             ];
@@ -2513,9 +2513,9 @@
         function createVideoSlide(slide) {
             let videoSrc = 'placeholder';
             if (slide.id === 'v1') {
-                videoSrc = '../../LineStyle Explainer Video Toolkit_1080p.mp4';
-            } else if (slide.id === 'v2') {
                 videoSrc = '../../AI is shaping our world.mp4';
+            } else if (slide.id === 'v2') {
+                videoSrc = '../../LineStyle Explainer Video Toolkit_1080p.mp4';
             }
             
             return `
